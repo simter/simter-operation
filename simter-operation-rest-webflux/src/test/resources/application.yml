@@ -1,0 +1,26 @@
+spring:
+  main:
+    banner-mode: 'OFF'
+logging:
+  #file: target/test.log
+  level:                               # one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
+    root: ERROR
+
+    #---- simter ----#
+    #tech.simter.operation.rest.webflux: INFO
+
+    #---- spring ----#
+    #org.springframework.web: WARN
+
+    #---- spring-boot ----#
+    #org.springframework.boot: WARN
+    #org.springframework.boot.context.embedded: INFO
+    #org.springframework.boot.web.embedded.netty.NettyWebServer: INFO # server port
+
+    #---- spring reactive ----#
+    #org.springframework.http.client.reactive: DEBUG
+    #org.springframework.http.server.reactive: DEBUG
+    #org.springframework.web.reactive: DEBUG # debug to show mapped and matches routes
+
+    #---- reactor ----#
+    #reactor.ipc.netty: DEBUG # debug to show request/response
