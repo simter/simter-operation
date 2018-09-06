@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+  <!-- trace < debug < info < warn < error -->
+  <root level="error"/>
+
+  <logger name="tech.simter.operation.dao.reactive.mongo" level="warn"/>
+</configuration>
