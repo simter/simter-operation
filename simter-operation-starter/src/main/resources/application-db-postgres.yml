@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${db.host}:${db.port:5432}/${db.name}
+    username: ${db.username}
+    password: ${db.password}
+    #driver-class-name: org.postgresql.Driver
+    schema: # available when initialization-mode=always
+      # drop
+      - classpath:tech/simter/operation/sql/${db.platform}/schema-drop.sql
+      # create
+      - classpath:tech/simter/operation/sql/${db.platform}/schema-create.sql
+    data: # available when initialization-mode=always
+      - classpath:tech/simter/operation/sql/${db.platform}/data.sql
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect

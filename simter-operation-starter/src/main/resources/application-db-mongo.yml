@@ -1,0 +1,6 @@
+simter.mongodb.enabled-logging-event-listener: ${debug:false}
+spring:
+  data:
+    mongodb:
+      # mongodb://<user>:<password>@<host>:<port>/<db-name>
+      uri: mongodb://${db.username}:${db.password}@${db.host}:${db.port}/${db.name}
