@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+  <!-- trace < debug < info < warn < error -->
+  <root level="warn"/>
+
+  <logger name="tech.simter.operation" level="warn"/>
+</configuration>
