@@ -61,6 +61,18 @@
           <artifactId>reactor-test</artifactId>
           <scope>test</scope>
         </dependency>
+
+        <!-- json by jackson-->
+        <dependency>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jsr353</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.glassfish</groupId>
+          <artifactId>javax.json</artifactId>
+          <scope>test</scope>
+        </dependency>
       </dependencies>
     </profile>
   </profiles>

@@ -7,7 +7,10 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.test.StepVerifier
 import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.po.Operation
+import tech.simter.operation.po.Operator
 import java.util.*
+
+fun randomString() = UUID.randomUUID().toString()
 
 /**
  * Test [OperationDaoImpl.get].
@@ -21,9 +24,19 @@ class GetMethodImplTest @Autowired constructor(
   private val dao: OperationDao
 ) {
   private fun randomOperation(): Operation {
-    return Operation(id = UUID.randomUUID().toString())
+    return Operation(
+      type = randomString(),
+      operator = Operator(
+        id = randomString(),
+        name = randomString()
+      ),
+      target = tech.simter.operation.po.Target(
+        id = randomString(),
+        type = randomString(),
+        name = randomString()
+      )
+    )
   }
-
 
   @Test
   fun `Get existent data`() {
@@ -41,7 +54,7 @@ class GetMethodImplTest @Autowired constructor(
 
   @Test
   fun `Get nonexistent data`() {
-    StepVerifier.create(dao.get(UUID.randomUUID().toString()))
+    StepVerifier.create(dao.get(randomString()))
       .expectComplete()
       .verify()
   }
