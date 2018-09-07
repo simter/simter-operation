@@ -25,4 +25,11 @@ interface OperationService {
    * Return [Operation]s or a empty flux without data if none found
    */
   fun findByCluster(cluster: String): Flux<Operation>
+
+  /**
+   * Create one [Operation].
+   *
+   * @return [Mono] signaling when operation has completed
+   */
+  fun create(operation: Operation): Mono<Void>
 }
