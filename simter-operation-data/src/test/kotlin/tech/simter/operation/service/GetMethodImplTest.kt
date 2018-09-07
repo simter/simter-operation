@@ -9,7 +9,10 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.po.Operation
+import tech.simter.operation.po.Operator
 import java.util.*
+
+fun randomString() = UUID.randomUUID().toString()
 
 @SpringJUnitConfig(OperationServiceImpl::class)
 @MockBean(OperationDao::class)
@@ -18,7 +21,18 @@ class GetMethodImplTest @Autowired constructor(
   private val service: OperationService
 ) {
   private fun randomOperation(): Operation {
-    return Operation(id = UUID.randomUUID().toString())
+    return Operation(
+      type = randomString(),
+      operator = Operator(
+        id = randomString(),
+        name = randomString()
+      ),
+      target = tech.simter.operation.po.Target(
+        id = randomString(),
+        type = randomString(),
+        name = randomString()
+      )
+    )
   }
 
   @Test
@@ -40,7 +54,7 @@ class GetMethodImplTest @Autowired constructor(
   @Test
   fun `Get nonexistent data`() {
     // mock
-    val id = UUID.randomUUID().toString()
+    val id = randomString()
     Mockito.`when`(dao.get(id)).thenReturn(Mono.empty())
 
     // invoke
