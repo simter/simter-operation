@@ -25,4 +25,8 @@ class OperationServiceImpl @Autowired constructor(
   override fun findByCluster(cluster: String): Flux<Operation> {
     return dao.findByCluster(cluster)
   }
+
+  override fun create(operation: Operation): Mono<Void> {
+    return dao.create(operation)
+  }
 }
