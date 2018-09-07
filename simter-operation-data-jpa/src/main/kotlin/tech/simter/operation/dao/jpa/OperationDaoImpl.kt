@@ -23,4 +23,8 @@ class OperationDaoImpl @Autowired constructor(
   override fun findByCluster(cluster: String): Flux<Operation> {
     TODO("not implemented")
   }
+
+  override fun create(operation: Operation): Mono<Void> {
+    TODO("not implemented")
+  }
 }
