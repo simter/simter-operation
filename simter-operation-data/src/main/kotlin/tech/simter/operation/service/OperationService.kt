@@ -1,5 +1,6 @@
 package tech.simter.operation.service
 
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import tech.simter.operation.po.Operation
 
@@ -17,4 +18,11 @@ interface OperationService {
    * Return [Mono.empty] if not exists.
    */
   fun get(id: String): Mono<Operation>
+
+  /**
+   * Find all [Operation]s with the specific [cluster].
+   *
+   * Return [Operation]s or a empty flux without data if none found
+   */
+  fun findByCluster(cluster: String): Flux<Operation>
 }
