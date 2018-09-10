@@ -39,7 +39,7 @@ internal class OperationDaoImplTest @Autowired constructor(
   @Test
   fun findByClusterFound() {
     // init data
-    val cluster=UUID.randomUUID().toString()
+    val cluster = UUID.randomUUID().toString()
     val operation1 = getRandomOperation(cluster)
     val operation2 = getRandomOperation(cluster)
     val operation3 = getRandomOperation(UUID.randomUUID().toString())
@@ -83,5 +83,18 @@ internal class OperationDaoImplTest @Autowired constructor(
 
     // verify
     StepVerifier.create(result).verifyComplete()
+  }
+
+  @Test
+  fun create() {
+    // init data
+    val operation = getRandomOperation(UUID.randomUUID().toString())
+
+    // invoke
+    val result = dao.create(operation)
+
+    // verify
+    StepVerifier.create(result).verifyComplete()
+    assertEquals(operation, repository.getOne(operation.id))
   }
 }
