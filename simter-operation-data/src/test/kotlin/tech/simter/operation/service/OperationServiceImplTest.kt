@@ -2,10 +2,12 @@ package tech.simter.operation.service
 
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.po.Operation
@@ -53,5 +55,16 @@ internal class OperationServiceImplTest @Autowired constructor(
       .expectNext(operation1)
       .expectNext(operation2)
       .verifyComplete()
+  }
+
+  @Test
+  fun create() {
+    // mock
+    val operation = getRandomOperation(UUID.randomUUID().toString())
+    `when`(dao.create(operation)).thenReturn(Mono.empty())
+
+    // invoke and verify
+    StepVerifier.create(service.create(operation)).verifyComplete()
+    verify(dao).create(operation)
   }
 }
