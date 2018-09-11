@@ -46,7 +46,7 @@ class ModuleConfiguration @Autowired constructor(
   fun operationRoutes() = router {
     contextPath.nest {
       // GET /cluster/{cluster} find Operations by cluster
-      FindByClusterHandler.REQUEST_PREDICATE.invoke(findByClusterHandler::findByCluster)
+      FindByClusterHandler.REQUEST_PREDICATE.invoke(findByClusterHandler::handle)
       // POST / create Operation
       CreateHandler.REQUEST_PREDICATE.invoke (createHandler::handle)
       // GET /

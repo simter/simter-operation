@@ -7,19 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient.bindToRouterFunction
-import org.springframework.web.reactive.function.server.HandlerFunction
 import org.springframework.web.reactive.function.server.RouterFunctions
 import reactor.core.publisher.Flux
-import tech.simter.operation.po.Operation
-import tech.simter.operation.po.Operator
-import tech.simter.operation.po.Target
+import tech.simter.operation.rest.webflux.handler.PoUtil.Companion.randomOperation
+import tech.simter.operation.rest.webflux.handler.PoUtil.Companion.randomString
 import tech.simter.operation.rest.webflux.handler.operation.FindByClusterHandler
 import tech.simter.operation.rest.webflux.handler.operation.FindByClusterHandler.Companion.REQUEST_PREDICATE
 import tech.simter.operation.service.OperationService
-import java.util.*
 
 /**
- * test of [FindByClusterHandler]
+ * Test [FindByClusterHandler]
  *
  * @author zh
  */
@@ -29,24 +26,14 @@ internal class FindByClusterHandlerTest @Autowired constructor(
   private val handler: FindByClusterHandler,
   private val service: OperationService
 ) {
-  fun getRandomOperation(cluster: String?): Operation {
-    return Operation(
-      type = UUID.randomUUID().toString(),
-      operator = Operator(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
-      target = Target(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString()),
-      cluster = cluster
-    )
-  }
 
   @Test
-  fun findByCluster() {
-    val client = bindToRouterFunction(
-      RouterFunctions.route(REQUEST_PREDICATE, HandlerFunction(handler::findByCluster))
-    ).build()
+  fun handle() {
+    val client = bindToRouterFunction(RouterFunctions.route(REQUEST_PREDICATE, handler)).build()
     // mock
-    val cluster = UUID.randomUUID().toString()
-    val operation1 = getRandomOperation(cluster)
-    val operation2 = getRandomOperation(cluster)
+    val cluster = randomString()
+    val operation1 = randomOperation(cluster)
+    val operation2 = randomOperation(cluster)
     `when`(service.findByCluster(cluster)).thenReturn(Flux.just(operation1, operation2))
 
     // invoke

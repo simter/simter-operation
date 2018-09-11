@@ -10,12 +10,10 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
+import org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
-import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.RouterFunctions.route
-import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
 import tech.simter.operation.rest.webflux.handler.PoUtil.Companion.randomOperation
 import tech.simter.operation.service.OperationService
@@ -23,7 +21,7 @@ import java.time.format.DateTimeFormatter
 import javax.json.Json
 
 /**
- * test of [CreateHandler]
+ * Test [CreateHandler]
  *
  * @author zh
  */
@@ -37,7 +35,7 @@ internal class CreateHandlerTest @Autowired constructor(
   @Configuration
   class Cfg {
     @Bean
-    fun theRoute(handler: CreateHandler): RouterFunction<ServerResponse> = route(CreateHandler.REQUEST_PREDICATE, handler)
+    fun theRoute(handler: CreateHandler) = route(CreateHandler.REQUEST_PREDICATE, handler)
   }
 
   @Test
@@ -61,7 +59,7 @@ internal class CreateHandlerTest @Autowired constructor(
 
     // invoke
     val response = client.post().uri("/")
-      .header("Content-Type", APPLICATION_JSON_UTF8.toString())
+      .header("Content-Type", APPLICATION_JSON_UTF8_VALUE)
       .syncBody(data.build().toString())
       .exchange()
 

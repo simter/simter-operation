@@ -15,8 +15,8 @@ import tech.simter.operation.service.OperationService
  */
 class FindByClusterHandler @Autowired constructor(
   private val operationService: OperationService
-) {
-  fun findByCluster(request: ServerRequest): Mono<ServerResponse> {
+) : HandlerFunction<ServerResponse> {
+  override fun handle(request: ServerRequest): Mono<ServerResponse> {
     return ok().contentType(APPLICATION_JSON_UTF8)
       .body(operationService.findByCluster(request.pathVariable("cluster")))
   }

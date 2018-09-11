@@ -10,13 +10,11 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import tech.simter.operation.dao.OperationDao
-import tech.simter.operation.po.Operation
-import tech.simter.operation.po.Operator
-import tech.simter.operation.po.Target
-import java.util.*
+import tech.simter.operation.service.PoUtil.Companion.randomOperation
+import tech.simter.operation.service.PoUtil.Companion.randomString
 
 /**
- * test of [OperationServiceImpl]
+ * Test [OperationServiceImpl]
  *
  * @author zh
  */
@@ -26,14 +24,6 @@ internal class OperationServiceImplTest @Autowired constructor(
   private val service: OperationService,
   private val dao: OperationDao
 ) {
-  fun getRandomOperation(cluster: String?): Operation {
-    return Operation(
-      type = UUID.randomUUID().toString(),
-      operator = Operator(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
-      target = Target(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString()),
-      cluster = cluster
-    )
-  }
 
   @Test
   fun get() {
@@ -42,9 +32,9 @@ internal class OperationServiceImplTest @Autowired constructor(
   @Test
   fun findByCluster() {
     // mock
-    val cluster = UUID.randomUUID().toString()
-    val operation1 = getRandomOperation(cluster)
-    val operation2 = getRandomOperation(cluster)
+    val cluster = randomString()
+    val operation1 = randomOperation(cluster)
+    val operation2 = randomOperation(cluster)
     `when`(dao.findByCluster(cluster)).thenReturn(Flux.just(operation1, operation2))
 
     // invoke
@@ -60,7 +50,7 @@ internal class OperationServiceImplTest @Autowired constructor(
   @Test
   fun create() {
     // mock
-    val operation = getRandomOperation(UUID.randomUUID().toString())
+    val operation = randomOperation()
     `when`(dao.create(operation)).thenReturn(Mono.empty())
 
     // invoke and verify

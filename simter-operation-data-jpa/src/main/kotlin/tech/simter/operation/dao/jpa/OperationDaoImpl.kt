@@ -25,7 +25,7 @@ class OperationDaoImpl @Autowired constructor(
   }
 
   override fun findByCluster(cluster: String): Flux<Operation> {
-    return Flux.fromIterable(repository.findByCluster(cluster, Sort(Sort.Direction.DESC,"time")))
+    return Flux.fromIterable(repository.findByCluster(cluster, Sort(Sort.Direction.DESC, "time")))
   }
 
   override fun create(operation: Operation): Mono<Void> {

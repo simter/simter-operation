@@ -19,11 +19,8 @@ class CreateHandler @Autowired constructor(
 ) : HandlerFunction<ServerResponse> {
   override fun handle(request: ServerRequest): Mono<ServerResponse> {
     return request.bodyToMono<Operation>()
-      .flatMap {
-        operationService.create(it)
-      }.then(
-        noContent().build()
-      )
+      .flatMap { operationService.create(it) }
+      .then(noContent().build())
   }
 
   companion object {

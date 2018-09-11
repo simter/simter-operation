@@ -6,14 +6,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.test.StepVerifier
 import tech.simter.operation.dao.OperationDao
-import tech.simter.operation.po.Operation
-import tech.simter.operation.po.Operator
-import tech.simter.operation.po.Target
-import java.util.*
+import tech.simter.operation.dao.jpa.PoUtil.Companion.randomOperation
+import tech.simter.operation.dao.jpa.PoUtil.Companion.randomString
+import java.time.OffsetDateTime
 import kotlin.test.assertEquals
 
 /**
- * OperationDaoImpl's test
+ * Test [OperationDaoImpl]
  *
  * @author zh
  */
@@ -23,14 +22,6 @@ internal class OperationDaoImplTest @Autowired constructor(
   private val repository: OperationJpaRepository,
   private val dao: OperationDao
 ) {
-  fun getRandomOperation(cluster: String?): Operation {
-    return Operation(
-      type = UUID.randomUUID().toString(),
-      operator = Operator(UUID.randomUUID().toString(), UUID.randomUUID().toString()),
-      target = Target(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString()),
-      cluster = cluster
-    )
-  }
 
   @Test
   fun get() {
@@ -39,16 +30,15 @@ internal class OperationDaoImplTest @Autowired constructor(
   @Test
   fun findByClusterFound() {
     // init data
-    val cluster = UUID.randomUUID().toString()
-    val operation1 = getRandomOperation(cluster)
-    val operation2 = getRandomOperation(cluster)
-    val operation3 = getRandomOperation(UUID.randomUUID().toString())
-    val operation4 = getRandomOperation(null)
-    repository.apply {
+    val cluster = randomString()
+    val now = OffsetDateTime.now()
+    val operation1 = randomOperation(cluster = cluster, offsetDateTime = now)
+    val operation2 = randomOperation(cluster = cluster, offsetDateTime = now.minusHours(1))
+    repository.run {
       save(operation1)
       save(operation2)
-      save(operation3)
-      saveAndFlush(operation4)
+      save(randomOperation(cluster = randomString()))
+      saveAndFlush(randomOperation())
     }
 
     // invoke
@@ -56,30 +46,27 @@ internal class OperationDaoImplTest @Autowired constructor(
 
     // verify
     StepVerifier.create(result)
-      .expectNext(operation2)
       .expectNext(operation1)
+      .expectNext(operation2)
       .verifyComplete()
   }
 
   @Test
   fun findByClusterNothing() {
-    StepVerifier.create(dao.findByCluster(UUID.randomUUID().toString())).verifyComplete()
+    StepVerifier.create(dao.findByCluster(randomString())).verifyComplete()
   }
 
   @Test
   fun findByClusterNotFound() {
     // init data
-    val operation1 = getRandomOperation(UUID.randomUUID().toString())
-    val operation2 = getRandomOperation(UUID.randomUUID().toString())
-    val operation3 = getRandomOperation(null)
-    repository.apply {
-      save(operation1)
-      save(operation2)
-      saveAndFlush(operation3)
+    repository.run {
+      save(randomOperation(cluster = randomString()))
+      save(randomOperation(cluster = randomString()))
+      saveAndFlush(randomOperation())
     }
 
     // invoke
-    val result = dao.findByCluster(UUID.randomUUID().toString())
+    val result = dao.findByCluster(randomString())
 
     // verify
     StepVerifier.create(result).verifyComplete()
@@ -88,7 +75,7 @@ internal class OperationDaoImplTest @Autowired constructor(
   @Test
   fun create() {
     // init data
-    val operation = getRandomOperation(UUID.randomUUID().toString())
+    val operation = randomOperation(cluster = randomString())
 
     // invoke
     val result = dao.create(operation)
