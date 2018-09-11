@@ -1,6 +1,7 @@
 package tech.simter.operation.dao.jpa
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
@@ -12,6 +13,7 @@ import tech.simter.operation.po.Operation
  * The JPA implementation of [OperationDao].
  *
  * @author RJ
+ * @author zh
  */
 @Component
 @Transactional
@@ -23,10 +25,11 @@ class OperationDaoImpl @Autowired constructor(
   }
 
   override fun findByCluster(cluster: String): Flux<Operation> {
-    TODO("not implemented")
+    return Flux.fromIterable(repository.findByCluster(cluster, Sort(Sort.Direction.DESC, "time")))
   }
 
   override fun create(operation: Operation): Mono<Void> {
-    TODO("not implemented")
+    repository.save(operation)
+    return Mono.empty()
   }
 }

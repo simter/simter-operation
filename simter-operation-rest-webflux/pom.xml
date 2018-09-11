@@ -47,7 +47,11 @@
           <artifactId>jackson-module-kotlin</artifactId>
           <scope>test</scope>
         </dependency>
-
+        <dependency>
+          <groupId>tech.simter.reactive</groupId>
+          <artifactId>simter-reactive-web</artifactId>
+          <scope>test</scope>
+        </dependency>
         <!-- json jsr353 by jackson-->
         <dependency>
           <groupId>org.glassfish</groupId>
