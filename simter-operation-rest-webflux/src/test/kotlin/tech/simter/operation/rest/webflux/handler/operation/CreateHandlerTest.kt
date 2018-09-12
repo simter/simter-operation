@@ -1,6 +1,5 @@
 package tech.simter.operation.rest.webflux.handler.operation
 
-import cn.gftaxi.traffic.accident.rest.webflux.UnitTestConfiguration
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.verify
 import org.junit.jupiter.api.Test
@@ -16,6 +15,7 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.web.reactive.function.server.RouterFunctions.route
 import reactor.core.publisher.Mono
 import tech.simter.operation.rest.webflux.handler.PoUtil.Companion.randomOperation
+import tech.simter.operation.rest.webflux.handler.UnitTestConfiguration
 import tech.simter.operation.service.OperationService
 import java.time.format.DateTimeFormatter
 import javax.json.Json

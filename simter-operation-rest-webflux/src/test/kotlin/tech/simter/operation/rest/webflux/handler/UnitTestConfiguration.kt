@@ -1,4 +1,4 @@
-package cn.gftaxi.traffic.accident.rest.webflux
+package tech.simter.operation.rest.webflux.handler
 
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
 import org.springframework.context.annotation.Configuration
