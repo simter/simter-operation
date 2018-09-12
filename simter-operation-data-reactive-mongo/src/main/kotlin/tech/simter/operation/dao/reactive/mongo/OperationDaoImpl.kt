@@ -27,6 +27,7 @@ class OperationDaoImpl @Autowired constructor(
   }
 
   override fun create(operation: Operation): Mono<Void> {
-    TODO("not implemented")
+    return repository.save(operation)
+      .then(Mono.empty())
   }
 }
