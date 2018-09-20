@@ -1,6 +1,7 @@
 /**
  * Create table script.
  * @author RJ
+ * @author zh
  */
 create table st_operation (
   id            varchar(36)  not null  primary key,
@@ -21,3 +22,5 @@ create table st_operation (
 comment on table st_operation is 'Operation';
 comment on column st_operation.attachments is '[{id, name, ext, size}, ...]';
 comment on column st_operation.fields is '[{id, name, type, oldValue, newValue}, ...]';
+
+create index st_operation_on_type on st_operation (type, target_type, target_id);
