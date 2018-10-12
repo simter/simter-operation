@@ -2,6 +2,7 @@ package tech.simter.operation.rest.webflux.handler.operation
 
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
 import org.springframework.web.reactive.function.server.RequestPredicates.POST
 import org.springframework.web.reactive.function.server.ServerResponse.noContent
@@ -14,6 +15,7 @@ import tech.simter.operation.service.OperationService
  *
  * @author zh
  */
+@Component
 class CreateHandler @Autowired constructor(
   private val operationService: OperationService
 ) : HandlerFunction<ServerResponse> {
