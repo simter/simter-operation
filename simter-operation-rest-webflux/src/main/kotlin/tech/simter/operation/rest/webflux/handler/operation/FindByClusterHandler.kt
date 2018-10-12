@@ -2,6 +2,7 @@ package tech.simter.operation.rest.webflux.handler.operation
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
+import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
 import org.springframework.web.reactive.function.server.RequestPredicates.GET
 import org.springframework.web.reactive.function.server.ServerResponse.ok
@@ -13,6 +14,7 @@ import tech.simter.operation.service.OperationService
  *
  * @author zh
  */
+@Component
 class FindByClusterHandler @Autowired constructor(
   private val operationService: OperationService
 ) : HandlerFunction<ServerResponse> {
