@@ -48,9 +48,11 @@ data class Operation(
 
   /** The optional attachments */
   @Convert(converter = AttachmentsConverter::class)
+  @Column(length = 20000)
   val attachments: List<Attachment>? = null,
 
   /** The optional changed fields */
   @Convert(converter = FieldsConverter::class)
+  @Column(length = 20000)
   val fields: List<Field>? = null
 )
