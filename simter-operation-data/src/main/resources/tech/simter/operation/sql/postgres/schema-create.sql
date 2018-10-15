@@ -16,8 +16,8 @@ create table st_operation (
   result        varchar(100),
   cluster       varchar(100),
   comment       text,
-  attachments   jsonb,
-  fields        jsonb
+  attachments   text,
+  fields        text
 );
 comment on table st_operation is 'Operation';
 comment on column st_operation.attachments is '[{id, name, ext, size}, ...]';
