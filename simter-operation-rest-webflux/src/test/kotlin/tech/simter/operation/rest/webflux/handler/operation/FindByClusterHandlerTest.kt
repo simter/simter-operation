@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient.bindToRouterFunction
-import org.springframework.web.reactive.function.server.RouterFunctions
+import org.springframework.web.reactive.function.server.RouterFunctions.route
 import reactor.core.publisher.Flux
 import tech.simter.operation.rest.webflux.handler.PoUtil.Companion.randomOperation
 import tech.simter.operation.rest.webflux.handler.PoUtil.Companion.randomString
@@ -18,17 +18,17 @@ import tech.simter.operation.service.OperationService
  * Test [FindByClusterHandler]
  *
  * @author zh
+ * @author RJ
  */
 @SpringJUnitConfig(FindByClusterHandler::class)
 @MockBean(OperationService::class)
-internal class FindByClusterHandlerTest @Autowired constructor(
+class FindByClusterHandlerTest @Autowired constructor(
   private val handler: FindByClusterHandler,
   private val service: OperationService
 ) {
-
   @Test
   fun handle() {
-    val client = bindToRouterFunction(RouterFunctions.route(REQUEST_PREDICATE, handler)).build()
+    val client = bindToRouterFunction(route(REQUEST_PREDICATE, handler)).build()
     // mock
     val cluster = randomString()
     val operation1 = randomOperation(cluster)

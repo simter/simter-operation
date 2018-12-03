@@ -3,19 +3,22 @@ package tech.simter.operation.rest.webflux.handler.operation
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.verify
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
+import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.RouterFunctions.route
+import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
 import tech.simter.operation.rest.webflux.handler.PoUtil.Companion.randomOperation
 import tech.simter.operation.rest.webflux.handler.UnitTestConfiguration
+import tech.simter.operation.rest.webflux.handler.operation.CreateHandler.Companion.REQUEST_PREDICATE
 import tech.simter.operation.service.OperationService
 import java.time.format.DateTimeFormatter
 import javax.json.Json
@@ -24,18 +27,19 @@ import javax.json.Json
  * Test [CreateHandler]
  *
  * @author zh
+ * @author RJ
  */
-@SpringJUnitConfig(UnitTestConfiguration::class, CreateHandler::class)
+@SpringJUnitConfig(UnitTestConfiguration::class, CreateHandler::class, CreateHandlerTest.Cfg::class)
 @MockBean(OperationService::class)
 @WebFluxTest
-internal class CreateHandlerTest @Autowired constructor(
+class CreateHandlerTest @Autowired constructor(
   private val client: WebTestClient,
   private val service: OperationService
 ) {
   @Configuration
   class Cfg {
     @Bean
-    fun theRoute(handler: CreateHandler) = route(CreateHandler.REQUEST_PREDICATE, handler)
+    fun theRoute(handler: CreateHandler): RouterFunction<ServerResponse> = route(REQUEST_PREDICATE, handler)
   }
 
   @Test
@@ -55,11 +59,11 @@ internal class CreateHandlerTest @Autowired constructor(
         .add("id", operation.target.id)
         .add("type", operation.target.type)
         .build())
-    Mockito.`when`(service.create(any())).thenReturn(Mono.empty())
+    `when`(service.create(any())).thenReturn(Mono.empty())
 
     // invoke
     val response = client.post().uri("/")
-      .header("Content-Type", APPLICATION_JSON_UTF8_VALUE)
+      .contentType(APPLICATION_JSON_UTF8)
       .syncBody(data.build().toString())
       .exchange()
 
@@ -67,5 +71,4 @@ internal class CreateHandlerTest @Autowired constructor(
     response.expectStatus().isNoContent.expectBody().isEmpty
     verify(service).create(any())
   }
-
 }
