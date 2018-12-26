@@ -84,4 +84,19 @@ internal class OperationDaoImplTest @Autowired constructor(
     StepVerifier.create(result).verifyComplete()
     assertEquals(operation, repository.getOne(operation.id))
   }
+
+  @Test
+  fun saveAll() {
+    // init data
+    val operations = List(5) { randomOperation(cluster = randomString()) }
+
+    // invoke
+    val result = dao.saveAll(operations)
+
+    // verify
+    StepVerifier.create(result).verifyComplete()
+    operations.forEach {
+      assertEquals(it, repository.findById(it.id).get())
+    }
+  }
 }

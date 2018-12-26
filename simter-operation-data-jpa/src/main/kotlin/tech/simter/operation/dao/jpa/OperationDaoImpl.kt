@@ -21,7 +21,8 @@ class OperationDaoImpl @Autowired constructor(
   private val repository: OperationJpaRepository
 ) : OperationDao {
   override fun saveAll(operations: List<Operation>): Mono<Void> {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    repository.saveAll(operations)
+    return Mono.empty()
   }
 
   override fun get(id: String): Mono<Operation> {
