@@ -32,4 +32,11 @@ interface OperationService {
    * @return [Mono] signaling when operation has completed
    */
   fun create(operation: Operation): Mono<Void>
+
+  /**
+   * Batch save some [Operation].
+   *
+   * @return [Mono] signaling when operation has completed
+   */
+  fun saveAll(operations: List<Operation>): Mono<Void>
 }

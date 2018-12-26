@@ -57,4 +57,15 @@ internal class OperationServiceImplTest @Autowired constructor(
     StepVerifier.create(service.create(operation)).verifyComplete()
     verify(dao).create(operation)
   }
+
+  @Test
+  fun saveAll() {
+    // mock
+    val operations = List(5) { randomOperation() }
+    `when`(dao.saveAll(operations)).thenReturn(Mono.empty())
+
+    // invoke and verify
+    StepVerifier.create(service.saveAll(operations)).verifyComplete()
+    verify(dao).saveAll(operations)
+  }
 }

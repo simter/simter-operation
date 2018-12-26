@@ -20,6 +20,10 @@ import tech.simter.operation.po.Operation
 class OperationDaoImpl @Autowired constructor(
   private val repository: OperationJpaRepository
 ) : OperationDao {
+  override fun saveAll(operations: List<Operation>): Mono<Void> {
+    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  }
+
   override fun get(id: String): Mono<Operation> {
     return Mono.justOrEmpty(repository.findById(id))
   }

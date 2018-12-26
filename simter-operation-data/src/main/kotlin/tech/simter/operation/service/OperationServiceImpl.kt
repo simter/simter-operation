@@ -16,6 +16,10 @@ import tech.simter.operation.po.Operation
 class OperationServiceImpl @Autowired constructor(
   private val dao: OperationDao
 ) : OperationService {
+  override fun saveAll(operations: List<Operation>): Mono<Void> {
+    return dao.saveAll(operations)
+  }
+
   override fun get(id: String): Mono<Operation> {
     return dao.get(id)
   }
