@@ -24,7 +24,7 @@ class OperationServiceImpl @Autowired constructor(
     return dao.findByCluster(cluster)
   }
 
-  override fun create(operation: Operation): Mono<Void> {
-    return dao.create(operation)
+  override fun create(vararg operations: Operation): Mono<Void> {
+    return dao.create(*operations)
   }
 }

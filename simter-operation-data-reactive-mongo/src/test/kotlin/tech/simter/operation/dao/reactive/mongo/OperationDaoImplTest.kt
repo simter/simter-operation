@@ -61,14 +61,20 @@ internal class OperationDaoImplTest @Autowired constructor(
   @Test
   fun create() {
     // init data
-    val operation = randomOperation(cluster = randomString())
+    val operations = List(5) { randomOperation(cluster = randomString()) }
 
-    // invoke
-    val result = dao.create(operation)
+    // 1. create one, invoke and verify
+    StepVerifier.create(dao.create(operations[0])).verifyComplete()
+    StepVerifier.create(repository.findById(operations[0].id))
+      .expectNext(operations[0]).verifyComplete()
 
-    // verify
-    StepVerifier.create(result).verifyComplete()
-    StepVerifier.create(repository.findById(operation.id))
-      .expectNext(operation).verifyComplete()
+    // 2. create some, invoke and verify
+    repository.deleteAll()
+    val operationArray = operations.toTypedArray()
+    StepVerifier.create(dao.create(*operationArray)).verifyComplete()
+    operations.forEach {
+      StepVerifier.create(repository.findById(it.id))
+        .expectNext(it).verifyComplete()
+    }
   }
 }

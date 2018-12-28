@@ -1,5 +1,6 @@
 package tech.simter.operation.service
 
+import com.nhaarman.mockito_kotlin.reset
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
@@ -49,12 +50,27 @@ internal class OperationServiceImplTest @Autowired constructor(
 
   @Test
   fun create() {
+    // init data
+    val operations = List(5) { randomOperation() }
+
+    // 1. create one
+
     // mock
-    val operation = randomOperation()
-    `when`(dao.create(operation)).thenReturn(Mono.empty())
+    `when`(dao.create(operations[0])).thenReturn(Mono.empty())
 
     // invoke and verify
-    StepVerifier.create(service.create(operation)).verifyComplete()
-    verify(dao).create(operation)
+    StepVerifier.create(service.create(operations[0])).verifyComplete()
+    verify(dao).create(operations[0])
+
+    // 2. create some
+
+    // mock
+    reset(dao)
+    val operationArray = operations.toTypedArray()
+    `when`(dao.create(*operationArray)).thenReturn(Mono.empty())
+
+    // invoke and verify
+    StepVerifier.create(service.create(*operationArray)).verifyComplete()
+    verify(dao).create(*operationArray)
   }
 }

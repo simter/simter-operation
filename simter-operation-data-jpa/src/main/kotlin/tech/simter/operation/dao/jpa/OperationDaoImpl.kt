@@ -28,8 +28,8 @@ class OperationDaoImpl @Autowired constructor(
     return Flux.fromIterable(repository.findByCluster(cluster, Sort(Sort.Direction.DESC, "time")))
   }
 
-  override fun create(operation: Operation): Mono<Void> {
-    repository.save(operation)
+  override fun create(vararg operations: Operation): Mono<Void> {
+    repository.saveAll(operations.toList())
     return Mono.empty()
   }
 }
