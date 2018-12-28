@@ -28,9 +28,9 @@ interface OperationDao {
   fun findByCluster(cluster: String): Flux<Operation>
 
   /**
-   * Create one [Operation].
+   * Create one or some [Operation].
    *
-   * @return [Mono] signaling when operation has completed
+   * @return [Mono] signaling when operations has completed
    */
-  fun create(operation: Operation): Mono<Void>
+  fun create(vararg operations: Operation): Mono<Void>
 }

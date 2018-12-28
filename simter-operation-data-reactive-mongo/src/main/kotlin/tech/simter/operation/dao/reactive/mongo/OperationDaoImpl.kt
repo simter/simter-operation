@@ -26,8 +26,8 @@ class OperationDaoImpl @Autowired constructor(
     return repository.findByCluster(cluster, Sort(Sort.Direction.DESC, "time"))
   }
 
-  override fun create(operation: Operation): Mono<Void> {
-    return repository.save(operation)
+  override fun create(vararg operations: Operation): Mono<Void> {
+    return repository.saveAll(operations.toList())
       .then(Mono.empty())
   }
 }
