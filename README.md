@@ -2,8 +2,8 @@
 
 ## Requirement
 
-- Maven 3.5.2+
-- Kotlin 1.2.31+
+- Maven 3.6+
+- Kotlin 1.3+
 - Java 8+
 - Spring Framework 5+
 - Spring Boot 2+
@@ -13,7 +13,7 @@
 
 Sn | Name                                   | Parent                        | Remark
 ---|----------------------------------------|-------------------------------|--------
-1  | [simter-operation-build]               | [simter-build:0.6.0]          | Build modules and define global properties and pluginManagement
+1  | [simter-operation-build]               | [simter-build:1.0.0]          | Build modules and define global properties and pluginManagement
 2  | [simter-operation-dependencies]        | simter-operation-build        | Define global dependencyManagement
 3  | [simter-operation-parent]              | simter-operation-dependencies | All sub modules parent module, Define global dependencies and plugins
 4  | [simter-operation-data]                | simter-operation-parent       | Define Service and Dao Interfaces
@@ -26,7 +26,7 @@ Sn | Name                                   | Parent                        | Re
 Remark : Module 1, 2, 3 all has maven-enforcer-plugin and flatten-maven-plugin config. Other modules must not configure them.
 
 
-[simter-build:0.6.0]: https://github.com/simter/simter-build/tree/0.6.0
+[simter-build:1.0.0]: https://github.com/simter/simter-build/tree/1.0.0
 [simter-operation-build]: https://github.com/simter/simter-operation
 [simter-operation-dependencies]: https://github.com/simter/simter-operation/tree/master/simter-operation-dependencies
 [simter-operation-parent]: https://github.com/simter/simter-operation/tree/master/simter-operation-parent
