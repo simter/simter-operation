@@ -1,5 +1,9 @@
 # simter-operation changelog
 
+## 0.4.0 2019-01-14
+
+- Upgrade to simter-build-1.1.0 and simter-dependencies-1.1.0
+
 ## 0.3.0 2019-01-10
 
 - Change `Dao|Service.create(operation: Operation)` to `Dao|Service.create(vararg operations: Operation)`
