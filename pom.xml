@@ -14,7 +14,7 @@
   <packaging>pom</packaging>
   <description>Builder</description>
   <properties>
-    <revision>0.4-SNAPSHOT</revision>
+    <revision>0.4.0</revision>
     <simter-operation.version>${revision}</simter-operation.version>
   </properties>
   <modules>
