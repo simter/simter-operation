@@ -9,6 +9,7 @@ import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.dao.reactive.mongo.PoUtil.Companion.randomOperation
 import tech.simter.operation.dao.reactive.mongo.PoUtil.Companion.randomString
 import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
 
 /**
  * Test [OperationDaoImpl]
@@ -26,7 +27,7 @@ internal class OperationDaoImplTest @Autowired constructor(
   fun findByCluster() {
     // init data
     val cluster = randomString()
-    val now = OffsetDateTime.now()
+    val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
     val operation1 = randomOperation(cluster = cluster, offsetDateTime = now)
     val operation2 = randomOperation(cluster = cluster, offsetDateTime = now.minusHours(1))
 

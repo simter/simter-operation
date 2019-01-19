@@ -8,6 +8,8 @@ import reactor.test.StepVerifier
 import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.po.Operation
 import tech.simter.operation.po.Operator
+import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 fun randomString() = UUID.randomUUID().toString()
@@ -26,6 +28,7 @@ class GetMethodImplTest @Autowired constructor(
   private fun randomOperation(): Operation {
     return Operation(
       type = randomString(),
+      time = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS),
       operator = Operator(
         id = randomString(),
         name = randomString()

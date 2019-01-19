@@ -4,6 +4,7 @@ import tech.simter.operation.po.Operation
 import tech.simter.operation.po.Operator
 import tech.simter.operation.po.Target
 import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 /**
@@ -13,7 +14,10 @@ import java.util.*
  */
 class PoUtil {
   companion object {
-    fun randomOperation(cluster: String? = null, offsetDateTime: OffsetDateTime = OffsetDateTime.now()): Operation {
+    fun randomOperation(
+      cluster: String? = null,
+      offsetDateTime: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+    ): Operation {
       return Operation(
         type = randomString(),
         operator = Operator(randomString(), randomString()),
