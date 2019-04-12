@@ -1,5 +1,6 @@
 package tech.simter.operation.dao.jpa
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -9,7 +10,6 @@ import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.dao.jpa.PoUtil.Companion.randomOperation
 import tech.simter.operation.dao.jpa.PoUtil.Companion.randomString
 import java.time.OffsetDateTime
-import kotlin.test.assertEquals
 
 /**
  * Test [OperationDaoImpl]
