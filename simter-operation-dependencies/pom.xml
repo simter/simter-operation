@@ -2,8 +2,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>tech.simter</groupId>
-    <artifactId>simter-operation-build</artifactId>
+    <groupId>tech.simter.operation</groupId>
+    <artifactId>simter-operation</artifactId>
     <version>${revision}</version>
     <relativePath>..</relativePath>
   </parent>
@@ -19,28 +19,23 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>tech.simter</groupId>
+        <groupId>tech.simter.operation</groupId>
         <artifactId>simter-operation-data</artifactId>
         <version>${simter-operation.version}</version>
       </dependency>
       <dependency>
-        <groupId>tech.simter</groupId>
+        <groupId>tech.simter.operation</groupId>
         <artifactId>simter-operation-data-jpa</artifactId>
         <version>${simter-operation.version}</version>
       </dependency>
       <dependency>
-        <groupId>tech.simter</groupId>
+        <groupId>tech.simter.operation</groupId>
         <artifactId>simter-operation-data-reactive-mongo</artifactId>
         <version>${simter-operation.version}</version>
       </dependency>
       <dependency>
-        <groupId>tech.simter</groupId>
+        <groupId>tech.simter.operation</groupId>
         <artifactId>simter-operation-rest-webflux</artifactId>
-        <version>${simter-operation.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>tech.simter</groupId>
-        <artifactId>simter-operation-starter</artifactId>
         <version>${simter-operation.version}</version>
       </dependency>
     </dependencies>
