@@ -1,5 +1,0 @@
-spring:
-  datasource:
-    url: ~
-    username: ${db.username}
-    password: ${db.password}

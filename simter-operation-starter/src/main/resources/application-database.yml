@@ -1,0 +1,63 @@
+spring.test.database.replace: none
+spring:
+  datasource:
+    url: @db.url@
+    username: @db.username@
+    password: @db.password@
+    continue-on-error: @db.continue-on-error@
+    sql-script-encoding: UTF-8
+    initialization-mode: @db.init-mode@ # never|embedded|always
+    # available when initialization-mode=embedded|always
+    schema:
+      # drop
+      - classpath:tech/simter/operation/sql/@db.platform@/schema-drop.sql
+      # create
+      - classpath:tech/simter/operation/sql/@db.platform@/schema-create.sql
+    data:
+      - classpath:tech/simter/operation/sql/@db.platform@/data.sql
+    driver-class-name: @db.driver-class@
+  data:
+    mongodb:
+      # mongodb://<user>:<password>@<host>:<port>/<db-name>
+      uri: @db.url@
+  mongodb:
+    embedded:
+      version: @mongo-embedded.version@
+      #storage.database-dir: target/mongodb
+simter.embedded-database:
+  concat-sql-script: true # default false, true - save concatenate sql content to file target/{platform}.sql
+  disabled-datasource: false # default false, true - not auto instance and register a datasource
+  postgres:
+    # available 9.5.16-1, 9.6.12-1, 10.7-1, 11.2-1
+    version: @postgres-embedded.version@
+    # default http://get.enterprisedb.com/postgresql/, can set to file:///C://Users//simter//download/
+    download-url: ~
+  mysql:
+    # available 5.7.13~19, 5.7.10, 5.6.31~36, 5.6.21~24, 5.5.50~52, 5.5.40
+    version: @mysql-embedded.version@
+    # default http://get.enterprisedb.com/postgresql/, can set to file:///C://Users//simter//download/
+    download-url: ~
+simter.mongodb.enabled-logging-event-listener: ${debug:false}
+# TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
+logging.level:
+  #---- simter ----#
+  tech.simter.embeddeddatabase: INFO # INFO - Starting embedded database: url=..., DEBUG - Load script
+
+  #---- spring ----#
+  org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory: INFO # INFO - Starting embedded database: url='jdbc:h2:mem:...', username='sa'
+  #org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG # DEBUG - show executing SQL script file and result
+
+  #---- mongo ----#
+  #org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG # DEBUG to show query
+
+  #---- embedded mongodb ----#
+  #org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongo: INFO # INFO - show initial and connection
+
+  #---- flapdoodle ----#
+  #de.flapdoodle.process.runtime.ProcessControl: DEBUG # DEBUG - Detected pid: 3252
+
+  #---- embed postgres ----#
+  #ru.yandex.qatools.embed.postgresql.PostgresProcess: INFO # INFO - trying to stop postgresql
+
+  #---- embed mysql ----#
+  #com.wix.mysql.EmbeddedMysql: INFO # INFO - Preparing EmbeddedMysql version 'Version 5.7.19'...

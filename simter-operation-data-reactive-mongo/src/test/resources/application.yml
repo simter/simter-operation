@@ -1,15 +1,14 @@
 spring:
-  main:
-    banner-mode: 'OFF'
+  main.banner-mode: 'off'
   mongodb:
     embedded:
       version: @mongo-embedded.version@
       storage.database-dir: target/mongodb
 logging:
-  #file: target/test.log
-  level:                               # one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
+  file: target/test.log
+  level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
     root: ERROR
-    org.springframework: WARN
+    tech.simter.operation: WARN
 
     #---- mongo ----#
     #org.springframework.boot.autoconfigure.mongo: INFO

@@ -13,14 +13,23 @@
   <packaging>jar</packaging>
   <description>Microservice Starter</description>
   <properties>
-    <db.platform>no-name</db.platform>
-    <db.init-mode>never</db.init-mode>
-    <db.ddl-auto>none</db.ddl-auto>
+    <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+    <simter.jwt.secret-key>simter-demo</simter.jwt.secret-key>
+    <simter.jwt.require-authorized>false</simter.jwt.require-authorized>
+    <db.platform>none</db.platform>
     <db.host>localhost</db.host>
     <db.port>~</db.port>
-    <db.name>test_operation</db.name>
-    <db.username>test</db.username>
+    <db.name>testdb</db.name>
+    <db.username>tester</db.username>
     <db.password>password</db.password>
+    <db.url>~</db.url>
+    <db.driver-class>~</db.driver-class>
+    <db.init-mode>always</db.init-mode>
+    <db.jpa-ddl-auto>none</db.jpa-ddl-auto>
+    <db.jpa-implementation>none</db.jpa-implementation>
+    <db.jpa-quote-sql>false</db.jpa-quote-sql>
+    <db.continue-on-error>false</db.continue-on-error>
+    <logging.file>target/test.log</logging.file>
   </properties>
   <dependencies>
     <dependency>
@@ -39,23 +48,17 @@
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
     </dependency>
+
     <!-- json jsr353 by jackson-->
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jsr353</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.glassfish</groupId>
       <artifactId>javax.json</artifactId>
-    </dependency>
-    <!-- log -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr353</artifactId>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
   <build>
@@ -105,39 +108,39 @@
     </plugins>
   </build>
   <profiles>
+    <!-- For package production  -->
     <profile>
-      <id>test</id>
+      <id>prod</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <activeByDefault>false</activeByDefault>
       </activation>
-      <dependencies>
-        <!-- test -->
-        <dependency>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-test</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>io.projectreactor</groupId>
-          <artifactId>reactor-test</artifactId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
+      <properties>
+        <kotlin.compiler.incremental>false</kotlin.compiler.incremental>
+        <db.name>st_operation</db.name>
+        <db.username>st_operation</db.username>
+        <db.init-mode>never</db.init-mode>
+        <logging.file>${project.artifactId}-${project.version}.log</logging.file>
+      </properties>
     </profile>
+
     <profile>
-      <id>dev-reactive-mongo</id>
+      <id>reactive-embedded-mongodb</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <spring-active-profiles>dev,db-mongo-embed</spring-active-profiles>
-        <db.platform>mongo-embed</db.platform>
+        <db.platform>mongodb</db.platform>
+        <db.port>27017</db.port>
+        <db.url><![CDATA[mongodb://${db.username}:${db.password}@${db.host}:${db.port}/${db.name}]]> </db.url>
       </properties>
       <dependencies>
         <dependency>
           <groupId>tech.simter.operation</groupId>
           <artifactId>simter-operation-data-reactive-mongo</artifactId>
+          <scope>runtime</scope>
         </dependency>
+
+        <!-- embedded mongodb -->
         <dependency>
           <groupId>de.flapdoodle.embed</groupId>
           <artifactId>de.flapdoodle.embed.mongo</artifactId>
@@ -146,109 +149,255 @@
       </dependencies>
     </profile>
     <profile>
-      <id>prod-reactive-mongo</id>
+      <id>reactive-mongodb</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
       <properties>
-        <kotlin.compiler.incremental>false</kotlin.compiler.incremental>
-        <spring-active-profiles>prod,db-mongo</spring-active-profiles>
-        <db.host>localhost</db.host>
+        <db.platform>mongodb</db.platform>
         <db.port>27017</db.port>
-        <db.name>st_operation</db.name>
-        <db.username>operation</db.username>
-        <db.password>password</db.password>
+        <db.url><![CDATA[mongodb://${db.username}:${db.password}@${db.host}:${db.port}/${db.name}]]> </db.url>
       </properties>
       <dependencies>
         <dependency>
           <groupId>tech.simter.operation</groupId>
           <artifactId>simter-operation-data-reactive-mongo</artifactId>
+          <scope>runtime</scope>
         </dependency>
       </dependencies>
     </profile>
     <profile>
-      <!-- development environment: spring-boot + webflux + hibernate-jpa + hsql) -->
-      <id>dev-jpa-hsql</id>
+      <id>jpa-hibernate-embedded-h2</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
-        <spring-active-profiles>dev,db-hsql</spring-active-profiles>
-        <db.platform>hsql</db.platform>
-        <db.init-mode>never</db.init-mode>
-        <db.ddl-auto>create-drop</db.ddl-auto>
-        <db.host>localhost</db.host>
-        <db.port>~</db.port>
-        <db.name>test_operation</db.name>
-        <db.username>test</db.username>
-        <db.password>password</db.password>
+        <db.jpa-implementation>hibernate</db.jpa-implementation>
+        <db.platform>h2</db.platform>
       </properties>
       <dependencies>
         <dependency>
           <groupId>tech.simter.operation</groupId>
           <artifactId>simter-operation-data-jpa</artifactId>
+          <scope>runtime</scope>
         </dependency>
         <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-data-jpa</artifactId>
+          <scope>runtime</scope>
         </dependency>
-        <dependency>
-          <groupId>javax.persistence</groupId>
-          <artifactId>javax.persistence-api</artifactId>
-        </dependency>
+
+        <!-- hibernate -->
         <dependency>
           <groupId>org.hibernate</groupId>
           <artifactId>hibernate-entitymanager</artifactId>
+          <scope>runtime</scope>
         </dependency>
         <dependency>
           <groupId>org.hibernate.validator</groupId>
           <artifactId>hibernate-validator</artifactId>
+          <scope>runtime</scope>
         </dependency>
+
+        <!-- embedded h2 -->
         <dependency>
-          <groupId>org.hsqldb</groupId>
-          <artifactId>hsqldb</artifactId>
+          <groupId>com.h2database</groupId>
+          <artifactId>h2</artifactId>
+          <scope>runtime</scope>
         </dependency>
       </dependencies>
     </profile>
     <profile>
-      <!-- production environment: spring-boot + webflux + hibernate-jpa + postgres) -->
-      <id>prod-jpa-postgres</id>
+      <id>jpa-hibernate-embedded-postgres</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
-        <kotlin.compiler.incremental>false</kotlin.compiler.incremental>
-        <spring-active-profiles>prod,db-postgres</spring-active-profiles>
+        <db.jpa-implementation>hibernate</db.jpa-implementation>
         <db.platform>postgres</db.platform>
-        <db.init-mode>never</db.init-mode>
-        <db.ddl-auto>none</db.ddl-auto>
-        <db.host>localhost</db.host>
-        <db.port>5432</db.port>
-        <db.name>st_operation</db.name>
-        <db.username>operation</db.username>
-        <db.password>password</db.password>
       </properties>
       <dependencies>
         <dependency>
-          <groupId>tech.simter</groupId>
+          <groupId>tech.simter.operation</groupId>
           <artifactId>simter-operation-data-jpa</artifactId>
+          <scope>runtime</scope>
         </dependency>
         <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-data-jpa</artifactId>
+          <scope>runtime</scope>
         </dependency>
-        <dependency>
-          <groupId>javax.persistence</groupId>
-          <artifactId>javax.persistence-api</artifactId>
-        </dependency>
+
+        <!-- hibernate -->
         <dependency>
           <groupId>org.hibernate</groupId>
           <artifactId>hibernate-entitymanager</artifactId>
+          <scope>runtime</scope>
         </dependency>
         <dependency>
           <groupId>org.hibernate.validator</groupId>
           <artifactId>hibernate-validator</artifactId>
+          <scope>runtime</scope>
         </dependency>
+
+        <!-- postgres jdbc driver -->
         <dependency>
           <groupId>org.postgresql</groupId>
           <artifactId>postgresql</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- embedded postgres -->
+        <dependency>
+          <groupId>tech.simter</groupId>
+          <artifactId>simter-embedded-database-ext</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>ru.yandex.qatools.embed</groupId>
+          <artifactId>postgresql-embedded</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>jpa-hibernate-postgres</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.jpa-implementation>hibernate</db.jpa-implementation>
+        <db.platform>postgres</db.platform>
+        <db.port>5432</db.port>
+        <db.url><![CDATA[jdbc:postgresql://${db.host}:${db.port}/${db.name}]]> </db.url>
+        <db.driver-class>org.postgresql.Driver</db.driver-class>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>tech.simter.operation</groupId>
+          <artifactId>simter-operation-data-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- hibernate -->
+        <dependency>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-entitymanager</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.hibernate.validator</groupId>
+          <artifactId>hibernate-validator</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- postgres jdbc driver -->
+        <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>jpa-hibernate-embedded-mysql</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.jpa-implementation>hibernate</db.jpa-implementation>
+        <db.platform>mysql</db.platform>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>tech.simter.operation</groupId>
+          <artifactId>simter-operation-data-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- hibernate -->
+        <dependency>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-entitymanager</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.hibernate.validator</groupId>
+          <artifactId>hibernate-validator</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- mysql jdbc driver -->
+        <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- embedded mysql -->
+        <dependency>
+          <groupId>tech.simter</groupId>
+          <artifactId>simter-embedded-database-ext</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.wix</groupId>
+          <artifactId>wix-embedded-mysql</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>jpa-hibernate-mysql</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.jpa-implementation>hibernate</db.jpa-implementation>
+        <db.platform>mysql</db.platform>
+        <db.port>3306</db.port>
+        <db.url><![CDATA[jdbc:mysql://${db.host}:${db.port}/${db.name}]]></db.url>
+        <db.driver-class>com.mysql.cj.jdbc.Driver</db.driver-class>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>tech.simter.operation</groupId>
+          <artifactId>simter-operation-data-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- hibernate -->
+        <dependency>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-entitymanager</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.hibernate.validator</groupId>
+          <artifactId>hibernate-validator</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- mysql jdbc driver -->
+        <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <scope>runtime</scope>
         </dependency>
       </dependencies>
     </profile>

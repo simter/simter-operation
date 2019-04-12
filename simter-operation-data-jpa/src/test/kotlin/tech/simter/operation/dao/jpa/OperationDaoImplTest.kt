@@ -16,7 +16,7 @@ import java.time.OffsetDateTime
  *
  * @author zh
  */
-@SpringJUnitConfig(ModuleConfiguration::class)
+@SpringJUnitConfig(UnitTestConfiguration::class)
 @DataJpaTest
 internal class OperationDaoImplTest @Autowired constructor(
   private val repository: OperationJpaRepository,
