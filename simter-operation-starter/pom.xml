@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>tech.simter</groupId>
+    <groupId>tech.simter.operation</groupId>
     <artifactId>simter-operation-parent</artifactId>
     <version>${revision}</version>
     <relativePath>../simter-operation-parent</relativePath>
@@ -24,11 +24,11 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>tech.simter</groupId>
+      <groupId>tech.simter.operation</groupId>
       <artifactId>simter-operation-data</artifactId>
     </dependency>
     <dependency>
-      <groupId>tech.simter</groupId>
+      <groupId>tech.simter.operation</groupId>
       <artifactId>simter-operation-rest-webflux</artifactId>
     </dependency>
     <dependency>
@@ -135,7 +135,7 @@
       </properties>
       <dependencies>
         <dependency>
-          <groupId>tech.simter</groupId>
+          <groupId>tech.simter.operation</groupId>
           <artifactId>simter-operation-data-reactive-mongo</artifactId>
         </dependency>
         <dependency>
@@ -158,7 +158,7 @@
       </properties>
       <dependencies>
         <dependency>
-          <groupId>tech.simter</groupId>
+          <groupId>tech.simter.operation</groupId>
           <artifactId>simter-operation-data-reactive-mongo</artifactId>
         </dependency>
       </dependencies>
@@ -182,7 +182,7 @@
       </properties>
       <dependencies>
         <dependency>
-          <groupId>tech.simter</groupId>
+          <groupId>tech.simter.operation</groupId>
           <artifactId>simter-operation-data-jpa</artifactId>
         </dependency>
         <dependency>
