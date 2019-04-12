@@ -19,7 +19,7 @@ fun randomString() = UUID.randomUUID().toString()
  *
  * @author RJ
  */
-@SpringJUnitConfig(ModuleConfiguration::class)
+@SpringJUnitConfig(UnitTestConfiguration::class)
 @DataJpaTest
 class GetMethodImplTest @Autowired constructor(
   private val repository: OperationJpaRepository,

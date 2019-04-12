@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <include resource="org/springframework/boot/logging/logback/base.xml"/>
-  <!-- trace < debug < info < warn < error -->
-  <root level="warn"/>
-
-  <logger name="tech.simter.operation.dao.jpa" level="warn"/>
+  <!-- TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF -->
+  <root level="ERROR"/>
+  <logger name="tech.simter.operation" level="WARN"/>
 </configuration>

@@ -1,29 +1,38 @@
 module.version.simter-operation: @project.version@
-db:
-  platform: @db.platform@
-  init-mode: @db.init-mode@
-  ddl-auto: @db.ddl-auto@
-  host: @db.host@
-  port: @db.port@
-  name: @db.name@
-  username: @db.username@
-  password: @db.password@
+module.authorization.simter-operation.defaultPermission: "Allow"   # Allow|Deny
+simter.jwt:
+  secret-key: @simter.jwt.secret-key@
+  require-authorized: @simter.jwt.require-authorized@
+  exclude-paths: /static/
+spring:
+  main.banner-mode: 'off'
+  profiles.active:
+    - database
+    - jpa-@db.jpa-implementation@
+  application.name: @project.artifactId@-@project.version@
 server:
   port: ${port:9014}
-  servlet:
-    context-path: /
+  servlet.context-path: /
   server-header: @project.artifactId@-@project.version@
-spring:
-  main:
-    banner-mode: 'OFF'
-  profiles:
-    active: @spring-active-profiles@
-  application:
-    name: @project.artifactId@-@project.version@
-  jpa:
-    open-in-view: false
-    hibernate.ddl-auto: ${db.ddl-auto:none}  # none | create | create-drop | update | validate
-  datasource:
-    continue-on-error: false
-    sql-script-encoding: UTF-8
-    initialization-mode: ${db.init-mode} # embedded|always|never
+logging:
+  file: @logging.file@
+  level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
+    root: ERROR
+    tech.simter.operation: WARN
+    tech.simter.operation.starter: INFO # INFO - show active profiles and started time
+
+    #---- spring ----#
+    #org.springframework: WARN
+
+    #---- spring-boot ----#
+    #org.springframework.boot: WARN
+    org.springframework.boot.context.embedded: TRACE
+    org.springframework.boot.web.embedded.netty.NettyWebServer: INFO # INFO - show server port
+
+    #---- spring reactive ----#
+    #org.springframework.http.client.reactive: DEBUG
+    #org.springframework.http.server.reactive: DEBUG
+    #org.springframework.web.reactive: DEBUG # debug to show mapped and matches routes
+
+    #---- reactor ----#
+    #reactor.ipc.netty: DEBUG # debug to show request/response

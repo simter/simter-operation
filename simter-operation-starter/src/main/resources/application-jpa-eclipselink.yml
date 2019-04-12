@@ -1,0 +1,22 @@
+spring.jpa.properties:
+  eclipselink.weaving: "false"
+  #eclipselink.ddl-generation: @db.jpa-ddl-auto@ # none|create-tables|drop-and-create-tables
+
+  #eclipselink.logging.file: eclipselink.log
+
+  # DefaultLogger|JavaLogger|ServerLogger|org.eclipse.persistence.logging.slf4j.SLF4JLogger
+  #eclipselink.logging.logger: org.eclipse.persistence.logging.slf4j.SLF4JLogger
+
+  # Log Levels - ALL<FINEST<FINER<FINE<CONFIG<INFO<WARNING<SEVERE<OFF
+  eclipselink.logging.level: WARNING
+  eclipselink.logging.level.sql: WARNING # FINE to show sql
+  #eclipselink.logging.parameters: true # true|false, true to show bind param value
+
+  eclipselink.logging.timestamp: true # *true|false
+  eclipselink.logging.session: true # *true|false
+  eclipselink.logging.thread: true # true|*false
+  eclipselink.logging.exceptions: true # *true|false
+logging.level:
+  #---- EclipseLink ----#
+  #org.eclipse.persistence: DEBUG
+  #org.eclipse.persistence.jpa: TRACE
