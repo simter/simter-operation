@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>tech.simter</groupId>
-    <artifactId>simter-operation-build</artifactId>
+    <artifactId>simter-operation</artifactId>
     <version>${revision}</version>
     <relativePath>..</relativePath>
   </parent>
