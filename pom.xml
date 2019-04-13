@@ -20,7 +20,7 @@
     <simter-dependencies.version>1.2.0-M3</simter-dependencies.version>
   </properties>
   <modules>
-    <module>simter-operation-dependencies</module>
+    <module>simter-operation-bom</module>
     <module>simter-operation-parent</module>
     <module>simter-operation-data</module>
     <module>simter-operation-data-jpa</module>
