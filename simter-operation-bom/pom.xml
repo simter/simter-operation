@@ -7,7 +7,7 @@
     <version>${revision}</version>
     <relativePath>..</relativePath>
   </parent>
-  <artifactId>simter-operation-dependencies</artifactId>
+  <artifactId>simter-operation-bom</artifactId>
   <packaging>pom</packaging>
   <description>Dependencies</description>
   <developers>

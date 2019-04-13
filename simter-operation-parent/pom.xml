@@ -21,7 +21,7 @@
       <!-- simter-operation -->
       <dependency>
         <groupId>tech.simter.operation</groupId>
-        <artifactId>simter-operation-dependencies</artifactId>
+        <artifactId>simter-operation-bom</artifactId>
         <version>${simter-operation.version}</version>
         <type>pom</type>
         <scope>import</scope>
