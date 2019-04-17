@@ -10,27 +10,35 @@ import tech.simter.operation.dao.reactive.mongo.TestHelper.randomOperation
 import tech.simter.operation.dao.reactive.mongo.TestHelper.randomString
 
 /**
- * Test [OperationDaoImpl.get].
+ * Test [OperationDaoImpl]
  *
+ * @author zh
  * @author RJ
  */
 @SpringJUnitConfig(ModuleConfiguration::class)
 @DataMongoTest
-class GetMethodImplTest @Autowired constructor(
+class CreateMethodImplTest @Autowired constructor(
   private val repository: OperationReactiveRepository,
   private val dao: OperationDao
 ) {
   @Test
-  fun `get existent data`() {
+  fun `create one`() {
     // init data
-    val expected = repository.save(randomOperation()).block()!!
+    val po = randomOperation(cluster = randomString())
 
     // invoke and verify
-    dao.get(expected.id).test().expectNext(expected).verifyComplete()
+    dao.create(po).test().verifyComplete()
+    repository.findById(po.id).test().expectNext(po).verifyComplete()
   }
 
   @Test
-  fun `get nonexistent data`() {
-    dao.get(randomString()).test().expectComplete().verify()
+  fun `create many`() {
+    // init data
+    val operations = List(5) { randomOperation(cluster = randomString()) }.toTypedArray()
+
+    dao.create(*operations).test().verifyComplete()
+    operations.forEach {
+      repository.findById(it.id).test().expectNext(it).verifyComplete()
+    }
   }
 }

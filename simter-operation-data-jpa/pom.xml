@@ -61,6 +61,12 @@
       <artifactId>simter-reactive-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- json jsr353 provider-->
+    <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.json</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <profiles>
     <!-- jpa implementation -->

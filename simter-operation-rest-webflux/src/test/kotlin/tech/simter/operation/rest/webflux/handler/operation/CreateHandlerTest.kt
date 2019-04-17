@@ -1,12 +1,11 @@
 package tech.simter.operation.rest.webflux.handler.operation
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.verify
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.every
+import io.mockk.verify
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
@@ -16,7 +15,7 @@ import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.RouterFunctions.route
 import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
-import tech.simter.operation.rest.webflux.handler.PoUtil.Companion.randomOperation
+import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperation
 import tech.simter.operation.rest.webflux.handler.UnitTestConfiguration
 import tech.simter.operation.rest.webflux.handler.operation.CreateHandler.Companion.REQUEST_PREDICATE
 import tech.simter.operation.service.OperationService
@@ -30,7 +29,7 @@ import javax.json.Json
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class, CreateHandler::class, CreateHandlerTest.Cfg::class)
-@MockBean(OperationService::class)
+@MockkBean(OperationService::class)
 @WebFluxTest
 class CreateHandlerTest @Autowired constructor(
   private val client: WebTestClient,
@@ -59,7 +58,7 @@ class CreateHandlerTest @Autowired constructor(
         .add("id", operation.target.id)
         .add("type", operation.target.type)
         .build())
-    `when`(service.create(any())).thenReturn(Mono.empty())
+    every { service.create(any()) } returns Mono.empty()
 
     // invoke
     val response = client.post().uri("/")
@@ -69,6 +68,8 @@ class CreateHandlerTest @Autowired constructor(
 
     // verify
     response.expectStatus().isNoContent.expectBody().isEmpty
-    verify(service).create(any())
+    verify(exactly = 1) {
+      service.create(any())
+    }
   }
 }

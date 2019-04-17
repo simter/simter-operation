@@ -10,43 +10,42 @@ import reactor.core.publisher.Mono
 import reactor.test.test
 import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.service.TestHelper.randomOperation
-import tech.simter.operation.service.TestHelper.randomString
 
 /**
- * Test [OperationServiceImpl.get].
+ * Test [OperationServiceImpl.create].
  *
  * @author zh
  * @author RJ
  */
 @SpringJUnitConfig(OperationServiceImpl::class)
 @MockkBean(OperationDao::class)
-class GetMethodImplTest @Autowired constructor(
-  private val dao: OperationDao,
-  private val service: OperationService
+class CreateMethodImplTest @Autowired constructor(
+  private val service: OperationService,
+  private val dao: OperationDao
 ) {
   @Test
-  fun `get existent data`() {
+  fun `create one`() {
     // mock
-    val data = randomOperation()
-    every { dao.get(data.id) } returns Mono.just(data)
+    val po = randomOperation()
+    every { dao.create(po) } returns Mono.empty()
 
     // invoke and verify
-    service.get(data.id).test().expectNext(data).verifyComplete()
+    service.create(po).test().verifyComplete()
     verify(exactly = 1) {
-      dao.get(data.id)
+      dao.create(po)
     }
   }
 
   @Test
-  fun `get nonexistent data`() {
+  fun `create many`() {
     // mock
-    val id = randomString()
-    every { dao.get(id) } returns Mono.empty()
+    val pos = List(5) { randomOperation() }.toTypedArray()
+    every { dao.create(*pos) } returns Mono.empty()
 
     // invoke and verify
-    service.get(id).test().expectComplete().verify()
+    service.create(*pos).test().verifyComplete()
     verify(exactly = 1) {
-      dao.get(id)
+      dao.create(*pos)
     }
   }
 }

@@ -4,15 +4,13 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
-import reactor.test.StepVerifier
+import reactor.test.test
 import tech.simter.operation.dao.OperationDao
+import tech.simter.operation.dao.jpa.TestHelper.randomString
 import tech.simter.operation.po.Attachment
 import tech.simter.operation.po.Field
 import tech.simter.operation.po.Operation
 import tech.simter.operation.po.Operator
-import java.util.*
-
-fun randomString() = UUID.randomUUID().toString()
 
 /**
  * Test [OperationDaoImpl.get].
@@ -66,55 +64,38 @@ class GetMethodImplTest @Autowired constructor(
   }
 
   @Test
-  fun `Get existent data`() {
+  fun `get existent data`() {
     // init data
     val expected = repository.saveAndFlush(randomOperation())
 
-    // invoke
-    val actual = dao.get(expected.id)
-
-    // verify
-    StepVerifier.create(actual)
-      .expectNext(expected)
-      .verifyComplete()
+    // invoke and verify
+    dao.get(expected.id).test().expectNext(expected).verifyComplete()
   }
 
   @Test
-  fun `Get existent data with attachment`() {
+  fun `get existent data with attachment`() {
     // init data
     val expected = repository.saveAndFlush(randomOperation(
       attachments = listOf(randomAttachment(), randomAttachment())
     ))
 
-    // invoke
-    val actual = dao.get(expected.id)
-
-    // verify
-    StepVerifier.create(actual)
-      .expectNext(expected)
-      .verifyComplete()
+    // invoke and verify
+    dao.get(expected.id).test().expectNext(expected).verifyComplete()
   }
 
   @Test
-  fun `Get existent data with fields`() {
+  fun `get existent data with fields`() {
     // init data
     val expected = repository.saveAndFlush(randomOperation(
       fields = listOf(randomField(nullOld = true), randomField(nullNew = true))
     ))
 
-    // invoke
-    val actual = dao.get(expected.id)
-
-    // verify
-    StepVerifier.create(actual)
-      .expectNext(expected)
-      .verifyComplete()
+    // invoke and verify
+    dao.get(expected.id).test().expectNext(expected).verifyComplete()
   }
 
   @Test
-  fun `Get nonexistent data`() {
-    StepVerifier.create(dao.get(randomString()))
-      .expectComplete()
-      .verify()
+  fun `get nonexistent data`() {
+    dao.get(randomString()).test().expectComplete().verify()
   }
 }
