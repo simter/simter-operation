@@ -13,6 +13,7 @@ import org.springframework.web.reactive.function.server.router
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
+import tech.simter.operation.PACKAGE
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
 
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit
  *
  * @author RJ
  */
-@Configuration("tech.simter.operation.starter.AppConfiguration")
+@Configuration("$PACKAGE.starter.AppConfiguration")
 @EnableWebFlux
 class AppConfiguration @Autowired constructor(
   @Value("\${module.version.simter-operation:UNKNOWN}") private val version: String

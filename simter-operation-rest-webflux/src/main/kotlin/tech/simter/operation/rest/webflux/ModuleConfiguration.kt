@@ -8,13 +8,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType.TEXT_PLAIN
-import org.springframework.web.reactive.function.server.ServerResponse.noContent
-import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.reactive.function.server.router
+import tech.simter.operation.PACKAGE
 import tech.simter.operation.rest.webflux.handler.operation.CreateHandler
 import tech.simter.operation.rest.webflux.handler.operation.FindByClusterHandler
-
-private const val MODULE = "tech.simter.operation.rest.webflux"
 
 /**
  * All configuration for this module.
@@ -25,8 +22,8 @@ private const val MODULE = "tech.simter.operation.rest.webflux"
  * @author RJ
  * @author zh
  */
-@Configuration("$MODULE.ModuleConfiguration")
-@ComponentScan(MODULE)
+@Configuration("$PACKAGE.rest.webflux.ModuleConfiguration")
+@ComponentScan("$PACKAGE.rest.webflux")
 class ModuleConfiguration @Autowired constructor(
   @Value("\${module.version.simter-operation:UNKNOWN}") private val version: String,
   @Value("\${module.rest-context-path.simter-operation:/operation}") private val contextPath: String,
@@ -41,14 +38,14 @@ class ModuleConfiguration @Autowired constructor(
   }
 
   /** Register a `RouterFunction<ServerResponse>` with all routers for this module */
-  @Bean("$MODULE.Routes")
-  @ConditionalOnMissingBean(name = ["$MODULE.Routes"])
+  @Bean("$PACKAGE.rest.webflux.Routes")
+  @ConditionalOnMissingBean(name = ["$PACKAGE.rest.webflux.Routes"])
   fun operationRoutes() = router {
     contextPath.nest {
       // GET /cluster/{cluster} find Operations by cluster
       FindByClusterHandler.REQUEST_PREDICATE.invoke(findByClusterHandler::handle)
       // POST / create Operation
-      CreateHandler.REQUEST_PREDICATE.invoke (createHandler::handle)
+      CreateHandler.REQUEST_PREDICATE.invoke(createHandler::handle)
       // GET /
       GET("/") { ok().contentType(TEXT_PLAIN).syncBody("simter-operation-$version") }
       // OPTIONS /*

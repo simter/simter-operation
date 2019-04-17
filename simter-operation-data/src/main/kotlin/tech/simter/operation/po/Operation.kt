@@ -1,6 +1,7 @@
 package tech.simter.operation.po
 
 import org.springframework.data.mongodb.core.mapping.Document
+import tech.simter.operation.TABLE_OPERATION
 import tech.simter.operation.po.converter.AttachmentsConverter
 import tech.simter.operation.po.converter.FieldsConverter
 import java.time.OffsetDateTime
@@ -16,8 +17,8 @@ import javax.persistence.*
  * @author RJ
  */
 @Entity
-@Table(name = "st_operation")
-@Document(collection = "st_operation")
+@Table(name = TABLE_OPERATION)
+@Document(collection = TABLE_OPERATION)
 data class Operation(
   /** UUID */
   @javax.persistence.Id
