@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType.TEXT_HTML
 import org.springframework.web.cors.reactive.CorsUtils
 import org.springframework.web.reactive.config.*
 import org.springframework.web.reactive.function.server.router
@@ -14,6 +13,7 @@ import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import tech.simter.operation.PACKAGE
+import tech.simter.reactive.web.Utils.TEXT_HTML_UTF8
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
 
@@ -75,7 +75,13 @@ class AppConfiguration @Autowired constructor(
    */
   @Bean
   fun rootRoutes() = router {
-    "/".nest { GET("/") { ok().contentType(TEXT_HTML).syncBody(rootPage) } }
+    "/".nest {
+      // root /
+      GET("/") { ok().contentType(TEXT_HTML_UTF8).syncBody(rootPage) }
+
+      // OPTIONS /*
+      OPTIONS("/**") { noContent().build() }
+    }
   }
 
   /**

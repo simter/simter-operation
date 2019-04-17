@@ -48,8 +48,6 @@ class ModuleConfiguration @Autowired constructor(
       CreateHandler.REQUEST_PREDICATE.invoke(createHandler::handle)
       // GET /
       GET("/") { ok().contentType(TEXT_PLAIN).syncBody("simter-operation-$version") }
-      // OPTIONS /*
-      OPTIONS("/**") { noContent().build() }
     }
   }
 }
