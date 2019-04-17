@@ -20,7 +20,7 @@ private const val MODULE = "tech.simter.operation.rest.webflux"
  * All configuration for this module.
  *
  * Register a `RouterFunction<ServerResponse>` with all routers for this module.
- * The default context-path of this router is '/'. And can be config by property `simter.rest.context-path.operation`.
+ * The default context-path of this router is '/operation'. And can be config by property `module.rest-context-path.simter-operation`.
  *
  * @author RJ
  * @author zh
