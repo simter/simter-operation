@@ -3,4 +3,4 @@ logging:
   file: target/test.log
   level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
     root: ERROR
-    tech.simter.kv: WARN
+    tech.simter.operation: WARN
