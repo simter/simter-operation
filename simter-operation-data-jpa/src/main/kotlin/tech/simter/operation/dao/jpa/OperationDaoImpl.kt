@@ -1,13 +1,12 @@
 package tech.simter.operation.dao.jpa
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.po.Operation
+import tech.simter.reactive.jpa.ReactiveJpaWrapper
 
 /**
  * The JPA implementation of [OperationDao].
@@ -16,20 +15,21 @@ import tech.simter.operation.po.Operation
  * @author zh
  */
 @Component
-@Transactional
 class OperationDaoImpl @Autowired constructor(
-  private val repository: OperationJpaRepository
+  private val blockDao: OperationBlockDao,
+  private val wrapper: ReactiveJpaWrapper
 ) : OperationDao {
   override fun get(id: String): Mono<Operation> {
-    return Mono.justOrEmpty(repository.findById(id))
+    return wrapper.fromCallable { blockDao.get(id) }
+      .flatMap { if (it.isPresent) Mono.just(it.get()) else Mono.empty() }
   }
 
   override fun findByCluster(cluster: String): Flux<Operation> {
-    return Flux.fromIterable(repository.findByCluster(cluster, Sort(Sort.Direction.DESC, "time")))
+    return wrapper.fromIterable { blockDao.findByCluster(cluster) }
   }
 
   override fun create(vararg operations: Operation): Mono<Void> {
-    repository.saveAll(operations.toList())
+    blockDao.create(*operations)
     return Mono.empty()
   }
 }
