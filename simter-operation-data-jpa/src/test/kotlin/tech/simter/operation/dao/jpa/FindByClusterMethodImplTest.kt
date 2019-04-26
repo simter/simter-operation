@@ -2,12 +2,13 @@ package tech.simter.operation.dao.jpa
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.test.test
 import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.dao.jpa.TestHelper.randomOperation
-import tech.simter.operation.dao.jpa.TestHelper.randomString
+import tech.simter.reactive.test.jpa.ReactiveDataJpaTest
+import tech.simter.reactive.test.jpa.TestEntityManager
+import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 
 /**
@@ -17,9 +18,9 @@ import java.time.OffsetDateTime
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
-@DataJpaTest
+@ReactiveDataJpaTest
 class FindByClusterMethodImplTest @Autowired constructor(
-  private val repository: OperationJpaRepository,
+  val rem: TestEntityManager,
   private val dao: OperationDao
 ) {
   @Test
@@ -27,14 +28,10 @@ class FindByClusterMethodImplTest @Autowired constructor(
     // init data
     val cluster = randomString()
     val now = OffsetDateTime.now()
-    val operation1 = randomOperation(cluster = cluster, offsetDateTime = now)
-    val operation2 = randomOperation(cluster = cluster, offsetDateTime = now.minusHours(1))
-    repository.run {
-      save(operation1)
-      save(operation2)
-      save(randomOperation(cluster = randomString()))
-      saveAndFlush(randomOperation())
-    }
+    val operation1 = randomOperation(cluster = cluster, time = now)
+    val operation2 = randomOperation(cluster = cluster, time = now.minusHours(1))
+    val operation3 = randomOperation(cluster = randomString())
+    rem.persist(operation1, operation2, operation3)
 
     // invoke and verify
     dao.findByCluster(cluster).test().expectNext(operation1).expectNext(operation2).verifyComplete()
@@ -48,11 +45,7 @@ class FindByClusterMethodImplTest @Autowired constructor(
   @Test
   fun `find nothing 2`() {
     // init data
-    repository.run {
-      save(randomOperation(cluster = randomString()))
-      save(randomOperation(cluster = randomString()))
-      saveAndFlush(randomOperation())
-    }
+    rem.persist(randomOperation(cluster = randomString()))
 
     // invoke and verify
     dao.findByCluster(randomString()).test().verifyComplete()

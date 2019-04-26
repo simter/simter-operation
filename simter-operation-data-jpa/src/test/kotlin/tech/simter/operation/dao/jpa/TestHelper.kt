@@ -2,9 +2,9 @@ package tech.simter.operation.dao.jpa
 
 import tech.simter.operation.po.*
 import tech.simter.operation.po.Target
+import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
-import java.util.*
 
 /**
  * Provide public method for test.
@@ -15,7 +15,7 @@ import java.util.*
 object TestHelper {
   fun randomOperation(
     cluster: String? = null,
-    offsetDateTime: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+    time: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS),
     attachments: List<Attachment>? = null,
     fields: List<Field>? = null
   ): Operation {
@@ -31,13 +31,9 @@ object TestHelper {
         type = randomString(),
         name = randomString()
       ),
-      time = offsetDateTime,
+      time = time,
       attachments = attachments,
       fields = fields
     )
-  }
-
-  fun randomString(): String {
-    return UUID.randomUUID().toString()
   }
 }
