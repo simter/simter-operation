@@ -47,7 +47,7 @@ class CreateHandlerTest @Autowired constructor(
     val operation = randomOperation()
     val data = Json.createObjectBuilder()
       .add("id", operation.id)
-      .add("time", operation.time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+      .add("ts", operation.ts.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
       .add("type", operation.type)
       .add("title", operation.title)
       .add("operator", Json.createObjectBuilder()

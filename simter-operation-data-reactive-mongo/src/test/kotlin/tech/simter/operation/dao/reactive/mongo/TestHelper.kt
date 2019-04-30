@@ -30,7 +30,7 @@ object TestHelper {
         type = randomString(),
         name = randomString()
       ),
-      time = offsetDateTime
+      ts = offsetDateTime
     )
   }
 

@@ -31,7 +31,7 @@ object TestHelper {
         type = randomString(),
         name = randomString()
       ),
-      time = time,
+      ts = time,
       attachments = attachments,
       fields = fields
     )

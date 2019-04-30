@@ -23,7 +23,7 @@ class OperationDaoImpl @Autowired constructor(
   }
 
   override fun findByCluster(cluster: String): Flux<Operation> {
-    return repository.findByCluster(cluster, Sort(Sort.Direction.DESC, "time"))
+    return repository.findByCluster(cluster, Sort(Sort.Direction.DESC, "ts"))
   }
 
   override fun create(vararg operations: Operation): Mono<Void> {

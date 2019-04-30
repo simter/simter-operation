@@ -27,7 +27,7 @@ data class Operation(
   val id: String = UUID.randomUUID().toString(),
 
   /** The operated date-time */
-  val time: OffsetDateTime = OffsetDateTime.now(),
+  val ts: OffsetDateTime = OffsetDateTime.now(),
   /** The operated type. Such as creation, modification,deletion */
   val type: String,
   /** The operator */

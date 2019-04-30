@@ -23,7 +23,7 @@ internal class OperationBlockDaoImpl @Autowired constructor(
 
   @Transactional(readOnly = true)
   override fun findByCluster(cluster: String): List<Operation> {
-    return repository.findByCluster(cluster, Sort(Sort.Direction.DESC, "time"))
+    return repository.findByCluster(cluster, Sort(Sort.Direction.DESC, "ts"))
   }
 
   @Transactional(readOnly = false)
