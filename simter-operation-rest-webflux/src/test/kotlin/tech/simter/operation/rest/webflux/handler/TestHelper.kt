@@ -24,7 +24,7 @@ object TestHelper {
         type = randomString(),
         name = randomString()
       ),
-      cluster = cluster
+      batch = cluster
     )
   }
 

@@ -19,7 +19,7 @@ object TestHelper {
     offsetDateTime: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
   ): Operation {
     return Operation(
-      cluster = cluster,
+      batch = cluster,
       type = randomString(),
       operator = Operator(
         id = randomString(),

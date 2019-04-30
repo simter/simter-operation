@@ -42,7 +42,7 @@ class ModuleConfiguration @Autowired constructor(
   @ConditionalOnMissingBean(name = ["$PACKAGE.rest.webflux.Routes"])
   fun operationRoutes() = router {
     contextPath.nest {
-      // GET /cluster/{cluster} find Operations by cluster
+      // GET /batch/{batch} find Operations by batch
       FindByClusterHandler.REQUEST_PREDICATE.invoke(findByClusterHandler::handle)
       // POST / create Operation
       CreateHandler.REQUEST_PREDICATE.invoke(createHandler::handle)

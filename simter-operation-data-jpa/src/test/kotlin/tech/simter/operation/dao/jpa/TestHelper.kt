@@ -20,7 +20,7 @@ object TestHelper {
     fields: List<Field>? = null
   ): Operation {
     return Operation(
-      cluster = cluster,
+      batch = cluster,
       type = randomString(),
       operator = Operator(
         id = randomString(),

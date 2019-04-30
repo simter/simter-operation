@@ -11,7 +11,7 @@ import tech.simter.operation.po.Operation
 import tech.simter.operation.service.OperationService
 
 /**
- * The [HandlerFunction] for fins [Operation]s by cluster
+ * The [HandlerFunction] for fins [Operation]s by batch
  *
  * @author zh
  * @author RJ
@@ -22,10 +22,10 @@ class FindByClusterHandler @Autowired constructor(
 ) : HandlerFunction<ServerResponse> {
   override fun handle(request: ServerRequest): Mono<ServerResponse> {
     return ok().contentType(APPLICATION_JSON_UTF8)
-      .body(operationService.findByCluster(request.pathVariable("cluster")))
+      .body(operationService.findByCluster(request.pathVariable("batch")))
   }
 
   companion object {
-    val REQUEST_PREDICATE: RequestPredicate = GET("/cluster/{cluster}")
+    val REQUEST_PREDICATE: RequestPredicate = GET("/batch/{batch}")
   }
 }

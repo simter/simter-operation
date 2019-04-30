@@ -14,7 +14,7 @@ import java.util.*
 object TestHelper {
   fun randomOperation(cluster: String? = null): Operation {
     return Operation(
-      cluster = cluster,
+      batch = cluster,
       type = randomString(),
       operator = Operator(
         id = randomString(),

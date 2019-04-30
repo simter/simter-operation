@@ -30,13 +30,13 @@ class FindByClusterHandlerTest @Autowired constructor(
   fun handle() {
     val client = bindToRouterFunction(route(REQUEST_PREDICATE, handler)).build()
     // mock
-    val cluster = randomString()
-    val operation1 = randomOperation(cluster)
-    val operation2 = randomOperation(cluster)
-    every { service.findByCluster(cluster) } returns Flux.just(operation1, operation2)
+    val batch = randomString()
+    val operation1 = randomOperation(batch)
+    val operation2 = randomOperation(batch)
+    every { service.findByCluster(batch) } returns Flux.just(operation1, operation2)
 
     // invoke
-    val response = client.get().uri("/cluster/$cluster").exchange()
+    val response = client.get().uri("/batch/$batch").exchange()
 
     // verify
     response.expectStatus().isOk
@@ -47,16 +47,16 @@ class FindByClusterHandlerTest @Autowired constructor(
       .jsonPath("$[0].target.id").isEqualTo(operation1.target.id)
       .jsonPath("$[0].target.type").isEqualTo(operation1.target.type)
       .jsonPath("$[0].target.name").isEqualTo(operation1.target.name!!)
-      .jsonPath("$[0].cluster").isEqualTo(operation1.cluster!!)
+      .jsonPath("$[0].batch").isEqualTo(operation1.batch!!)
       .jsonPath("$[1].type").isEqualTo(operation2.type)
       .jsonPath("$[1].operator.id").isEqualTo(operation2.operator.id)
       .jsonPath("$[1].operator.name").isEqualTo(operation2.operator.name)
       .jsonPath("$[1].target.id").isEqualTo(operation2.target.id)
       .jsonPath("$[1].target.type").isEqualTo(operation2.target.type)
       .jsonPath("$[1].target.name").isEqualTo(operation2.target.name!!)
-      .jsonPath("$[1].cluster").isEqualTo(operation2.cluster!!)
+      .jsonPath("$[1].batch").isEqualTo(operation2.batch!!)
     verify(exactly = 1) {
-      service.findByCluster(cluster)
+      service.findByCluster(batch)
     }
   }
 }

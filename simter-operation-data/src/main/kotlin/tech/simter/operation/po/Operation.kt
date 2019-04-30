@@ -40,12 +40,12 @@ data class Operation(
   /** The general subject */
   val title: String = "${target.name} $type",
 
-  /** The optional operated comment */
-  val comment: String? = null,
+  /** The optional operated remark */
+  val remark: String? = null,
   /** The optional operated result. Such as ok, not ok */
   val result: String? = null,
   /** The optional group */
-  val cluster: String? = null,
+  val batch: String? = null,
 
   /** The optional attachments */
   @Convert(converter = AttachmentsConverter::class)
