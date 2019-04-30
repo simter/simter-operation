@@ -1,7 +1,4 @@
-/**
- * Drop table script.
- * @author RJ
- * @author zh
- */
-drop index if exists st_operation_on_type;
+-- Drop table script
+
+drop table if exists st_operation_item;
 drop table if exists st_operation;
