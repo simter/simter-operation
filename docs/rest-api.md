@@ -1,11 +1,18 @@
 # Rest API for simter-operation
 
-The following `{context-path}` could be configured by property `module.rest-context-path.simter-operation`. Its default value is `/operation`.
+The Rest context path  could be configured by property `module.rest-context-path.simter-operation`. 
+Its default value is `/operation`. The below URL is all relative to this context path.
+For example a url `/a?p=v`, its really path should be `{context-path}/a?p=v`.
 
 Provide rest APIs:
 
-1. Create one operation.
-2. Find by cluster.
+| SN | Method | Url                                      | Description
+|----|--------|------------------------------------------|-------------
+| 1  | POST   | /                                        | Create one operation
+| 2  | GET    | /cluster/{cluster}                       | Find all operations of specific cluster
+| 3  | GET    | /target/{targetType}/{targetId}          | Find all operations of specific target
+| 4  | GET    | /field/{targetType}/{targetId}/{fieldId} | Find all operations of specific target field
+| 5  | GET    | /target/{targetType}                     | Find pageable operations of specific target
 
 ## 1. Create one operation
 
