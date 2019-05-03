@@ -112,6 +112,11 @@
       <artifactId>springmockk</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>tech.simter</groupId>
+      <artifactId>simter-util</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <resources>

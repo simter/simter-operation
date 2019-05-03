@@ -61,11 +61,6 @@
       <artifactId>simter-reactive-test</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>tech.simter</groupId>
-      <artifactId>simter-util</artifactId>
-      <scope>test</scope>
-    </dependency>
     <!-- json jsr353 provider-->
     <dependency>
       <groupId>org.glassfish</groupId>
