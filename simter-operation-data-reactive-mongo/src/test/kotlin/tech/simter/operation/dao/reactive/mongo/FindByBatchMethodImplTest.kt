@@ -7,53 +7,55 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.test.test
 import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.dao.reactive.mongo.TestHelper.randomOperation
-import tech.simter.operation.dao.reactive.mongo.TestHelper.randomString
+import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
 /**
- * Test [OperationDaoImpl.findByCluster]
+ * Test [OperationDaoImpl.findByBatch]
  *
  * @author zh
  * @author RJ
  */
 @SpringJUnitConfig(ModuleConfiguration::class)
 @DataMongoTest
-class FindByClusterMethodImplTest @Autowired constructor(
+class FindByBatchMethodImplTest @Autowired constructor(
   private val repository: OperationReactiveRepository,
   private val dao: OperationDao
 ) {
   @Test
   fun `find something`() {
     // init data
-    val cluster = randomString()
+    val batch = randomString()
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
-    val operation1 = randomOperation(cluster = cluster, offsetDateTime = now)
-    val operation2 = randomOperation(cluster = cluster, offsetDateTime = now.minusHours(1))
+    val operation1 = randomOperation(batch = batch, ts = now) // without items
+    val operation2 = randomOperation(batch = batch, ts = now.minusHours(1)) // with items
+      .apply {
+        addItem(TestHelper.randomOperationItem(id = "field1"))
+        addItem(TestHelper.randomOperationItem(id = "field2"))
+      }
+    val operation3 = randomOperation(batch = randomString()) // another batch
     repository
-      .saveAll(listOf(operation1, operation2, randomOperation(cluster = randomString()), randomOperation()))
+      .saveAll(listOf(operation1, operation2, operation3))
       .then().test().verifyComplete()
 
     // invoke and verify
-    dao.findByCluster(cluster).test()
-      .expectNext(operation1)
-      .expectNext(operation2)
-      .verifyComplete()
+    dao.findByBatch(batch).test().expectNext(operation1).expectNext(operation2).verifyComplete()
   }
 
   @Test
   fun `find nothing 1`() {
-    dao.findByCluster(randomString()).test().verifyComplete()
+    dao.findByBatch(randomString()).test().verifyComplete()
   }
 
   @Test
   fun `find nothing 2`() {
     // init data
     repository
-      .saveAll(listOf(randomOperation(cluster = randomString()), randomOperation()))
+      .saveAll(listOf(randomOperation(batch = randomString())))
       .then().test().verifyComplete()
 
     // invoke and verify
-    dao.findByCluster(randomString()).test().verifyComplete()
+    dao.findByBatch(randomString()).test().verifyComplete()
   }
 }

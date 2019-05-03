@@ -1,11 +1,10 @@
 package tech.simter.operation.dao.reactive.mongo
 
 import tech.simter.operation.po.Operation
-import tech.simter.operation.po.Operator
-import tech.simter.operation.po.Target
+import tech.simter.operation.po.OperationItem
+import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
-import java.util.*
 
 /**
  * provide public method of test
@@ -15,26 +14,36 @@ import java.util.*
  */
 object TestHelper {
   fun randomOperation(
-    cluster: String? = null,
-    offsetDateTime: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+    batch: String? = null,
+    targetId: String = randomString(),
+    targetType: String = randomString(),
+    ts: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
   ): Operation {
     return Operation(
-      batch = cluster,
+      batch = batch,
+      ts = ts,
       type = randomString(),
-      operator = Operator(
-        id = randomString(),
-        name = randomString()
-      ),
-      target = Target(
-        id = randomString(),
-        type = randomString(),
-        name = randomString()
-      ),
-      ts = offsetDateTime
+      operatorId = randomString(),
+      operatorName = randomString(),
+      targetId = targetId,
+      targetType = targetType,
+      title = randomString()
     )
   }
 
-  fun randomString(): String {
-    return UUID.randomUUID().toString()
+  fun randomOperationItem(
+    id: String = randomString(),
+    title: String = randomString(),
+    valueType: String = "String",
+    oldValue: String = randomString(),
+    newValue: String = randomString()
+  ): OperationItem {
+    return OperationItem(
+      id = id,
+      title = title,
+      valueType = valueType,
+      oldValue = oldValue,
+      newValue = newValue
+    )
   }
 }

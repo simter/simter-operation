@@ -18,16 +18,20 @@ import tech.simter.operation.po.Operation
 class OperationDaoImpl @Autowired constructor(
   private val repository: OperationReactiveRepository
 ) : OperationDao {
+
+  override fun create(operation: Operation): Mono<Void> {
+    return repository.save(operation).then(Mono.empty())
+  }
+
   override fun get(id: String): Mono<Operation> {
     return repository.findById(id)
   }
 
-  override fun findByCluster(cluster: String): Flux<Operation> {
-    return repository.findByCluster(cluster, Sort(Sort.Direction.DESC, "ts"))
+  override fun findByBatch(batch: String): Flux<Operation> {
+    return repository.findByBatch(batch, Sort(Sort.Direction.DESC, "ts"))
   }
 
-  override fun create(vararg operations: Operation): Mono<Void> {
-    return repository.saveAll(operations.toList())
-      .then(Mono.empty())
+  override fun findByTarget(targetType: String, targetId: String): Flux<Operation> {
+    return repository.findByTargetTypeAndTargetId(targetType, targetId, Sort(Sort.Direction.DESC, "ts"))
   }
 }
