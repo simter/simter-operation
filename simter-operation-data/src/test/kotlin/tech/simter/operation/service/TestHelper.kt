@@ -1,9 +1,7 @@
 package tech.simter.operation.service
 
 import tech.simter.operation.po.Operation
-import tech.simter.operation.po.Operator
-import tech.simter.operation.po.Target
-import java.util.*
+import tech.simter.util.RandomUtils.randomString
 
 /**
  * Provide public method for test.
@@ -12,23 +10,15 @@ import java.util.*
  * @author RJ
  */
 object TestHelper {
-  fun randomOperation(cluster: String? = null): Operation {
+  fun randomOperation(batch: String? = null): Operation {
     return Operation(
-      batch = cluster,
+      batch = batch,
       type = randomString(),
-      operator = Operator(
-        id = randomString(),
-        name = randomString()
-      ),
-      target = Target(
-        id = randomString(),
-        type = randomString(),
-        name = randomString()
-      )
+      operatorId = randomString(),
+      operatorName = randomString(),
+      targetId = randomString(),
+      targetType = randomString(),
+      title = randomString()
     )
-  }
-
-  fun randomString(): String {
-    return UUID.randomUUID().toString()
   }
 }

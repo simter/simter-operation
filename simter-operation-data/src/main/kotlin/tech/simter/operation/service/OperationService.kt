@@ -13,6 +13,13 @@ import tech.simter.operation.po.Operation
  */
 interface OperationService {
   /**
+   * Create one [Operation].
+   *
+   * @return [Mono] signaling when operation created
+   */
+  fun create(operation: Operation): Mono<Void>
+
+  /**
    * Find the specific [id] [Operation] instance.
    *
    * Return [Mono.empty] if not exists.
@@ -20,16 +27,16 @@ interface OperationService {
   fun get(id: String): Mono<Operation>
 
   /**
-   * Find all [Operation]s with the specific [cluster].
+   * Find all [Operation]s with the specific [batch].
    *
-   * Return [Operation]s or a empty flux without data if none found
+   * Return [Operation]s order by [Operation.ts] desc or [Flux.empty] if found nothing
    */
-  fun findByCluster(cluster: String): Flux<Operation>
+  fun findByBatch(batch: String): Flux<Operation>
 
   /**
-   * Create one or some [Operation].
+   * Find all [Operation]s with the specific [targetType] and [targetId].
    *
-   * @return [Mono] signaling when operations has completed
+   * Return [Operation]s order by [Operation.ts] desc or [Flux.empty] if found nothing
    */
-  fun create(vararg operations: Operation): Mono<Void>
+  fun findByTarget(targetType: String, targetId: String): Flux<Operation>
 }

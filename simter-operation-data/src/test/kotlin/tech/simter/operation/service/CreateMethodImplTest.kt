@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.core.publisher.Mono
 import reactor.test.test
+import tech.simter.operation.OPERATION_CREATE
 import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.service.TestHelper.randomOperation
+import tech.simter.reactive.security.ModuleAuthorizer
 
 /**
  * Test [OperationServiceImpl.create].
@@ -17,35 +19,22 @@ import tech.simter.operation.service.TestHelper.randomOperation
  * @author zh
  * @author RJ
  */
-@SpringJUnitConfig(OperationServiceImpl::class)
-@MockkBean(OperationDao::class)
+@SpringJUnitConfig(ModuleConfiguration::class)
+@MockkBean(OperationDao::class, ModuleAuthorizer::class)
 class CreateMethodImplTest @Autowired constructor(
-  private val service: OperationService,
-  private val dao: OperationDao
+  private val moduleAuthorizer: ModuleAuthorizer,
+  private val dao: OperationDao,
+  private val service: OperationService
 ) {
   @Test
   fun `create one`() {
     // mock
     val po = randomOperation()
     every { dao.create(po) } returns Mono.empty()
+    every { moduleAuthorizer.verifyHasPermission(OPERATION_CREATE) } returns Mono.empty()
 
     // invoke and verify
     service.create(po).test().verifyComplete()
-    verify(exactly = 1) {
-      dao.create(po)
-    }
-  }
-
-  @Test
-  fun `create many`() {
-    // mock
-    val pos = List(5) { randomOperation() }.toTypedArray()
-    every { dao.create(*pos) } returns Mono.empty()
-
-    // invoke and verify
-    service.create(*pos).test().verifyComplete()
-    verify(exactly = 1) {
-      dao.create(*pos)
-    }
+    verify(exactly = 1) { dao.create(po) }
   }
 }

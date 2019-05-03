@@ -1,7 +1,7 @@
 -- Create table script
 
 create table st_operation (
-  id            bigint       not null primary key,
+  id            varchar(50)  not null primary key,
   ts            timestamptz  not null,
   type          varchar(100) not null,
   operator_id   varchar(100) not null,
@@ -12,7 +12,7 @@ create table st_operation (
   title         varchar(100) not null,
   result        varchar(100),
   remark        text,
-  has_item      boolean      not null default false
+  items_count   smallint     not null default 0
 );
 create index on st_operation(target_type, target_id);
 create index on st_operation(batch);
@@ -27,10 +27,10 @@ comment on column st_operation.batch is 'belong batch';
 comment on column st_operation.title is 'description title';
 comment on column st_operation.result is 'operation result';
 comment on column st_operation.remark is 'operation remark';
-comment on column st_operation.has_item is 'whether has operation item';
+comment on column st_operation.items_count is 'operation item total count';
 
 create table st_operation_item (
-  pid        bigint       not null references st_operation,
+  pid        varchar(50)  not null references st_operation on delete cascade,
   id         varchar(100) not null,
   title      varchar(100) not null,
   value_type varchar(100) not null,

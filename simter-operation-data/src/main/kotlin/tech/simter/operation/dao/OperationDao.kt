@@ -3,16 +3,20 @@ package tech.simter.operation.dao
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import tech.simter.operation.po.Operation
-import tech.simter.operation.service.OperationService
 
 /**
  * The Dao Interface.
  *
- * This interface should only be use by [OperationService]. It is design to public just for multiple Dao implements.
- *
  * @author RJ
  */
 interface OperationDao {
+  /**
+   * Create one [Operation].
+   *
+   * @return [Mono] signaling when operation created
+   */
+  fun create(operation: Operation): Mono<Void>
+
   /**
    * Find the specific [id] [Operation] instance.
    *
@@ -21,16 +25,16 @@ interface OperationDao {
   fun get(id: String): Mono<Operation>
 
   /**
-   * Find all [Operation]s with the specific [cluster].
+   * Find all [Operation]s with the specific [batch].
    *
-   * Return [Operation]s or a empty flux without data if none found
+   * Return [Operation]s order by [Operation.ts] desc or [Flux.empty] if found nothing
    */
-  fun findByCluster(cluster: String): Flux<Operation>
+  fun findByBatch(batch: String): Flux<Operation>
 
   /**
-   * Create one or some [Operation].
+   * Find all [Operation]s with the specific [targetType] and [targetId].
    *
-   * @return [Mono] signaling when operations has completed
+   * Return [Operation]s order by [Operation.ts] desc or [Flux.empty] if found nothing
    */
-  fun create(vararg operations: Operation): Mono<Void>
+  fun findByTarget(targetType: String, targetId: String): Flux<Operation>
 }
