@@ -2,7 +2,7 @@
 
 create table st_operation (
   id            varchar(50)  not null primary key,
-  ts            timestamptz  not null,
+  ts            timestamp    not null,
   type          varchar(100) not null,
   operator_id   varchar(100) not null,
   operator_name varchar(100) not null,
@@ -30,12 +30,13 @@ comment on column st_operation.remark is 'operation remark';
 comment on column st_operation.items_count is 'operation item total count';
 
 create table st_operation_item (
-  pid        varchar(50)  not null references st_operation on delete cascade,
+  pid        varchar(50)  not null,
   id         varchar(100) not null,
   title      varchar(100) not null,
   value_type varchar(100) not null,
   new_value  text,
   old_value  text,
+  foreign key (pid) references st_operation(id) on delete cascade,
   primary key (pid, id)
 );
 comment on table st_operation_item is 'operation field';

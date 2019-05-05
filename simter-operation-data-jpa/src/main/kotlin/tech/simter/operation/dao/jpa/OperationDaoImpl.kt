@@ -19,17 +19,20 @@ class OperationDaoImpl @Autowired constructor(
   private val blockDao: OperationBlockDao,
   private val wrapper: ReactiveJpaWrapper
 ) : OperationDao {
+  override fun create(operation: Operation): Mono<Void> {
+    return wrapper.fromRunnable { blockDao.create(operation) }
+  }
+
   override fun get(id: String): Mono<Operation> {
     return wrapper.fromCallable { blockDao.get(id) }
       .flatMap { if (it.isPresent) Mono.just(it.get()) else Mono.empty() }
   }
 
-  override fun findByCluster(cluster: String): Flux<Operation> {
-    return wrapper.fromIterable { blockDao.findByCluster(cluster) }
+  override fun findByBatch(batch: String): Flux<Operation> {
+    return wrapper.fromIterable { blockDao.findByBatch(batch) }
   }
 
-  override fun create(vararg operations: Operation): Mono<Void> {
-    blockDao.create(*operations)
-    return Mono.empty()
+  override fun findByTarget(targetType: String, targetId: String): Flux<Operation> {
+    return wrapper.fromIterable { blockDao.findByTarget(targetType, targetId) }
   }
 }

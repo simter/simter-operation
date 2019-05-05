@@ -10,6 +10,11 @@ import java.util.*
  */
 interface OperationBlockDao {
   /**
+   * Create one [Operation].
+   */
+  fun create(operation: Operation)
+
+  /**
    * Find the specific [id] [Operation] instance.
    *
    * Return [Optional.empty] if not exists.
@@ -17,14 +22,16 @@ interface OperationBlockDao {
   fun get(id: String): Optional<Operation>
 
   /**
-   * Find all [Operation]s with the specific [cluster].
+   * Find all [Operation]s with the specific [batch].
    *
    * Return [Operation]s or a empty list
    */
-  fun findByCluster(cluster: String): List<Operation>
+  fun findByBatch(batch: String): List<Operation>
 
   /**
-   * Create one or some [Operation].
+   * Find all [Operation]s with the specific [targetType] and [targetId].
+   *
+   * Return [Operation]s or a empty list
    */
-  fun create(vararg operations: Operation)
+  fun findByTarget(targetType: String, targetId: String): List<Operation>
 }

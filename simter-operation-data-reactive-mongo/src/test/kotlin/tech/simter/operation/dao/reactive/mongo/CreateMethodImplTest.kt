@@ -7,7 +7,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.test.test
 import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.dao.reactive.mongo.TestHelper.randomOperation
-import tech.simter.operation.dao.reactive.mongo.TestHelper.randomString
+import tech.simter.operation.dao.reactive.mongo.TestHelper.randomOperationItem
 
 /**
  * Test [OperationDaoImpl]
@@ -22,9 +22,9 @@ class CreateMethodImplTest @Autowired constructor(
   private val dao: OperationDao
 ) {
   @Test
-  fun `create one`() {
+  fun `success without items`() {
     // init data
-    val po = randomOperation(cluster = randomString())
+    val po = randomOperation()
 
     // invoke and verify
     dao.create(po).test().verifyComplete()
@@ -32,13 +32,15 @@ class CreateMethodImplTest @Autowired constructor(
   }
 
   @Test
-  fun `create many`() {
-    // init data
-    val operations = List(5) { randomOperation(cluster = randomString()) }.toTypedArray()
-
-    dao.create(*operations).test().verifyComplete()
-    operations.forEach {
-      repository.findById(it.id).test().expectNext(it).verifyComplete()
+  fun `success with items`() {
+    // do create
+    val po = randomOperation().apply {
+      addItem(randomOperationItem(id = "field1"))
+      addItem(randomOperationItem(id = "field2"))
     }
+    dao.create(po).test().verifyComplete()
+
+    // verify created
+    repository.findById(po.id).test().expectNext(po).verifyComplete()
   }
 }

@@ -14,5 +14,6 @@ import tech.simter.operation.po.Operation
  * @author zh
  */
 interface OperationJpaRepository : JpaRepository<Operation, String> {
-  fun findByCluster(cluster: String, sort: Sort): List<Operation>
+  fun findByBatch(batch: String, sort: Sort): List<Operation>
+  fun findByTargetTypeAndTargetId(targetType: String, targetId: String, sort: Sort): List<Operation>
 }

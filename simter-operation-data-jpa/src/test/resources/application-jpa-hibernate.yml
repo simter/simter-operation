@@ -3,9 +3,9 @@ spring.jpa:
     hibernate.show_sql: false # true|*false, true for log to console directly
     hibernate.hbm2ddl.auto: @db.jpa-ddl-auto@ # *none|create|create-drop|update|validate
     hibernate.globally_quoted_identifiers: @db.jpa-quote-sql@ # true|*false
-  hibernate.naming:
-    implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
-    physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  #hibernate.naming:
+    #implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+    #physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 # one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
 logging.level:
   #---- hibernate sql ----#

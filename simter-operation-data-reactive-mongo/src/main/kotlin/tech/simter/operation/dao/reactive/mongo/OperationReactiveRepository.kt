@@ -19,5 +19,6 @@ import tech.simter.operation.po.Operation
  * @author zh
  */
 interface OperationReactiveRepository : ReactiveCrudRepository<Operation, String> {
-  fun findByCluster(cluster: String, sort: Sort): Flux<Operation>
+  fun findByBatch(batch: String, sort: Sort): Flux<Operation>
+  fun findByTargetTypeAndTargetId(targetType: String, targetId: String, sort: Sort): Flux<Operation>
 }

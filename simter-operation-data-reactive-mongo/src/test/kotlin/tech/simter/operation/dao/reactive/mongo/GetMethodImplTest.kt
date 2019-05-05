@@ -7,7 +7,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.test.test
 import tech.simter.operation.dao.OperationDao
 import tech.simter.operation.dao.reactive.mongo.TestHelper.randomOperation
-import tech.simter.operation.dao.reactive.mongo.TestHelper.randomString
+import tech.simter.util.RandomUtils.randomString
 
 /**
  * Test [OperationDaoImpl.get].
@@ -21,13 +21,27 @@ class GetMethodImplTest @Autowired constructor(
   private val dao: OperationDao
 ) {
   @Test
-  fun `get existent data`() {
+  fun `get existent data without items`() {
     // init data
     val expected = repository.save(randomOperation()).block()!!
 
     // invoke and verify
     dao.get(expected.id).test().expectNext(expected).verifyComplete()
   }
+
+  @Test
+  fun `get existent data with items`() {
+    // init data
+    // init data
+    val expected = repository.save(randomOperation().apply {
+      addItem(TestHelper.randomOperationItem(id = "field1"))
+      addItem(TestHelper.randomOperationItem(id = "field2"))
+    }).block()!!
+
+    // invoke and verify
+    dao.get(expected.id).test().expectNext(expected).verifyComplete()
+  }
+
 
   @Test
   fun `get nonexistent data`() {
