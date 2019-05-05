@@ -1,21 +1,21 @@
 -- Create table script
 
 create table st_operation (
-  id            varchar(50)  not null primary key,
-  ts            timestamptz  not null,
-  type          varchar(100) not null,
-  operator_id   varchar(100) not null,
-  operator_name varchar(100) not null,
-  target_type   varchar(100) not null,
-  target_id     varchar(100) not null,
+  id            varchar(50)        not null primary key,
+  ts            timestamp          not null,
+  type          varchar(100)       not null,
+  operator_id   varchar(100)       not null,
+  operator_name varchar(100)       not null,
+  target_type   varchar(100)       not null,
+  target_id     varchar(100)       not null,
   batch         varchar(100),
-  title         varchar(100) not null,
+  title         varchar(100)       not null,
   result        varchar(100),
-  remark        text,
-  items_count   smallint     not null default 0
+  remark        longvarchar,
+  items_count   smallint default 0 not null
 );
-create index on st_operation(target_type, target_id);
-create index on st_operation(batch);
+create index st_operation_target_idx on st_operation(target_type, target_id);
+create index st_operation_batch_idx on st_operation(batch);
 comment on table st_operation is 'Operation';
 comment on column st_operation.ts is 'operation timestamp';
 comment on column st_operation.type is 'type: Creation|Modification|Deletion|Confirmation|Approval|Rejection|...';
@@ -34,8 +34,8 @@ create table st_operation_item (
   id         varchar(100) not null,
   title      varchar(100) not null,
   value_type varchar(100) not null,
-  new_value  text,
-  old_value  text,
+  new_value  longvarchar,
+  old_value  longvarchar,
   primary key (pid, id)
 );
 comment on table st_operation_item is 'operation item';

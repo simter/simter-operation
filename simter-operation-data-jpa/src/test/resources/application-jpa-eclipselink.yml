@@ -1,4 +1,5 @@
 spring.jpa.properties:
+  eclipselink.session.customizer: "tech.simter.jpa.eclipselink.ImprovedNamingStrategy"
   eclipselink.weaving: "false"
   #eclipselink.ddl-generation: @db.jpa-ddl-auto@ # none|create-tables|drop-and-create-tables
 
