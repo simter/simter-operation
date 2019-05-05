@@ -38,7 +38,7 @@ create table st_operation_item (
   old_value  text,
   primary key (pid, id)
 );
-comment on table st_operation_item is 'operation field';
+comment on table st_operation_item is 'operation item';
 comment on column st_operation_item.pid is 'belong operation';
 comment on column st_operation_item.id is 'item identifier';
 comment on column st_operation_item.title is 'item title, label or name';
