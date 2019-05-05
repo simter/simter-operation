@@ -3,4 +3,6 @@ logging:
   file: target/test.log
   level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
     root: ERROR
-    tech.simter.operation: WARN
+    tech.simter.operation: ERROR
+
+module.rest-context-path.simter-operation: /

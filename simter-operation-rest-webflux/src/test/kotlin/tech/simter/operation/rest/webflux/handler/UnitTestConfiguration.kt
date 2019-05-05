@@ -3,17 +3,18 @@ package tech.simter.operation.rest.webflux.handler
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
-import org.springframework.web.reactive.config.EnableWebFlux
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.web.reactive.config.EnableWebFlux
 import org.springframework.web.reactive.function.server.RouterFunction
-import org.springframework.web.reactive.function.server.HandlerFunction
 
 /**
- * 本模块的基本单元测试配置。
+ * All unit test config for this module.
  *
- * 此配置会自动根据 spring bean 的配置生成一个 [WebTestClient] 实例，使用者可以直接通过自动注入方式来使用。
- * 由于 [WebTestClient] 实例是需要用到 [RouterFunction] 路由配置的，因此如果单元测试类是
- * 单纯测试 [HandlerFunction] 的情况下，需要在此单元测试类内声明一个相应的路由来测试，如：
+ * This config will auto register a [WebTestClient] instance base on spring bean config,
+ * and could be used for injection.
+ *
+ * Because [WebTestClient] requires [RouterFunction], so need to register a [RouterFunction]
+ * on your unit test class. Such as:
  *
  * ```
  * @SpringJUnitConfig(UnitTestConfiguration::class, MyHandler::class)
@@ -40,9 +41,12 @@ import org.springframework.web.reactive.function.server.HandlerFunction
 @Configuration
 @EnableWebFlux
 @Import(
-  // 启动 Jackson 自动配置：自动配置 ObjectMapper 实例等
+  // active Jackson auto config: auto register an ObjectMapper instance and so on.
   JacksonAutoConfiguration::class,
-  // 详见 simter-reactive-web 模块 README.md 文件的说明：全局注册默认精确到分钟的 java-time 序列化和反序列化配置等
-  tech.simter.reactive.web.webflux.WebFluxConfiguration::class
+  // see also simter-reactive-web/README.md: global register java-time serialization and deserialization
+  // accurate to minutes
+  tech.simter.reactive.web.webflux.WebFluxConfiguration::class,
+  // this module
+  tech.simter.operation.rest.webflux.ModuleConfiguration::class
 )
 class UnitTestConfiguration

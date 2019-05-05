@@ -8,6 +8,7 @@ import javax.persistence.*
  *
  * @author RJ
  */
+@com.fasterxml.jackson.annotation.JsonIgnoreProperties(value = ["parent", "parent\$simter_operation_data"])
 @Entity
 @Table(name = TABLE_OPERATION_ITEM)
 @IdClass(OperationItem.GlobalId::class)
