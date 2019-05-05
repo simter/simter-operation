@@ -32,7 +32,7 @@ data class OperationItem(
 
   @Embeddable
   data class GlobalId(
-    val parent: Operation,
+    val parent: String,
     val id: String
   ) : java.io.Serializable
 }
