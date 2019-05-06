@@ -1,6 +1,13 @@
 # simter-operation-data-jpa
 
-## Unit test
+## JPA Provider
+
+| Name          | Supported |
+|---------------|:---------:|
+| [Hibernate]   |    √     |
+| [Eclipselink] |    √     |
+
+## Unit Test
 
 Run below command to test the compatibility with different JPA implementation on different embedded database:
 
@@ -22,8 +29,6 @@ mvn test -P jpa-hibernate,embedded-h2 \
 && mvn test -P jpa-eclipselink,embedded-postgres \
 && mvn test -P jpa-eclipselink,embedded-mysql
 ```
-
-> Only postgres supported now.
 
 If want to run test on different host database, manual run bellow command:
 
@@ -51,19 +56,19 @@ Use `-D {property-name}={property-value}` to override default value. Such as:
 mvn test -D db.name=testdb
 ```
 
-## Maven Profiles:
+## Maven Profiles
 
 | SN | Name              | Type               | Default | Supported |
-|----|-------------------|--------------------|---------|-----------|
-|  1 | jpa-hibernate     | JPA Implementation | true    | √         |
-|  2 | jpa-eclipselink   | JPA Implementation |         | √         |
-|  3 | embedded-h2       | Embedded Database  | true    |           |
-|  4 | embedded-hsql     | Embedded Database  |         |           |
-|  5 | embedded-derby    | Embedded Database  |         |           |
-|  6 | embedded-postgres | Embedded Database  |         | √         |
-|  7 | embedded-mysql    | Embedded Database  |         |           |
-|  8 | postgres          | Host Database      |         |           |
-|  9 | mysql             | Host Database      |         |           |
+|----|-------------------|--------------------|---------|:---------:|
+|  1 | jpa-hibernate     | JPA Implementation | true    |    √     |
+|  2 | jpa-eclipselink   | JPA Implementation |         |    √     |
+|  3 | embedded-h2       | Embedded Database  | true    |    √     |
+|  4 | embedded-hsql     | Embedded Database  |         |    √     |
+|  5 | embedded-derby    | Embedded Database  |         |    √     |
+|  6 | embedded-postgres | Embedded Database  |         |    √     |
+|  7 | embedded-mysql    | Embedded Database  |         |    √     |
+|  8 | postgres          | Host Database      |         |    √     |
+|  9 | mysql             | Host Database      |         |    √     |
 
 The default profile is `jpa-hibernate` and `embedded-h2`.
 Use `-P {profile-name}` to override default. Such as:
@@ -74,7 +79,7 @@ mvn test -P {profile-name}
 
 > `embedded-postgres` and `embedded-mysql` depend on module [simter-embedded-database-ext].
 
-## YML Files:
+## YML Files
 
 | SN | Name                            | Remark               |
 |----|---------------------------------|----------------------|
