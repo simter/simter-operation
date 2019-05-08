@@ -1,6 +1,5 @@
 package tech.simter.operation.service
 
-import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -21,8 +20,7 @@ import tech.simter.util.RandomUtils.randomString
  * @author zh
  * @author RJ
  */
-@SpringJUnitConfig(ModuleConfiguration::class)
-@MockkBean(OperationDao::class, ModuleAuthorizer::class)
+@SpringJUnitConfig(UnitTestConfiguration::class)
 class FindByBatchMethodImplTest @Autowired constructor(
   private val moduleAuthorizer: ModuleAuthorizer,
   private val dao: OperationDao,
