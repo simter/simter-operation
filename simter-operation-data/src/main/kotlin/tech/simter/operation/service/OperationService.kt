@@ -3,6 +3,7 @@ package tech.simter.operation.service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import tech.simter.operation.po.Operation
+import tech.simter.operation.po.OperationItem
 
 /**
  * The Service Interface.
@@ -18,6 +19,23 @@ interface OperationService {
    * @return [Mono] signaling when operation created
    */
   fun create(operation: Operation): Mono<Void>
+
+  /**
+   * Create one [Operation].
+   *
+   * - auto set [Operation.ts] to current timestamp.
+   * - auto set [Operation.operatorId] and [Operation.operatorName] from context.
+   *
+   * @return [Mono] signaling when operation created
+   */
+  fun create(
+    type: String,
+    targetType: String,
+    targetId: String,
+    title: String,
+    batch: String? = null,
+    items: Set<OperationItem>? = null
+  ): Mono<Void>
 
   /**
    * Find the specific [id] [Operation] instance.
