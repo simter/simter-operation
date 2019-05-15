@@ -6,6 +6,7 @@ import java.time.OffsetDateTime
 import java.util.*
 import javax.persistence.*
 import javax.persistence.CascadeType.ALL
+import javax.persistence.FetchType.EAGER
 import javax.persistence.FetchType.LAZY
 
 /**
@@ -60,7 +61,7 @@ data class Operation(
    *
    * Mostly use to record Object's property changed.
    */
-  @OneToMany(mappedBy = "parent", fetch = LAZY, cascade = [ALL], orphanRemoval = true)
+  @OneToMany(mappedBy = "parent", fetch = EAGER, cascade = [ALL], orphanRemoval = true)
   @OrderBy("id asc")
   var items: Set<OperationItem> = mutableSetOf()
     private set(value) { // mongo need it
