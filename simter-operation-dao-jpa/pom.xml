@@ -61,6 +61,11 @@
       <artifactId>simter-reactive-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <optional>true</optional>
+    </dependency>
     <!-- json jsr353 provider-->
     <dependency>
       <groupId>org.glassfish</groupId>
