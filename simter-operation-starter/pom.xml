@@ -34,7 +34,7 @@
   <dependencies>
     <dependency>
       <groupId>tech.simter.operation</groupId>
-      <artifactId>simter-operation-data</artifactId>
+      <artifactId>simter-operation-core</artifactId>
     </dependency>
     <dependency>
       <groupId>tech.simter.operation</groupId>
@@ -136,7 +136,7 @@
       <dependencies>
         <dependency>
           <groupId>tech.simter.operation</groupId>
-          <artifactId>simter-operation-data-reactive-mongo</artifactId>
+          <artifactId>simter-operation-dao-mongo</artifactId>
           <scope>runtime</scope>
         </dependency>
 
@@ -161,7 +161,7 @@
       <dependencies>
         <dependency>
           <groupId>tech.simter.operation</groupId>
-          <artifactId>simter-operation-data-reactive-mongo</artifactId>
+          <artifactId>simter-operation-dao-mongo</artifactId>
           <scope>runtime</scope>
         </dependency>
       </dependencies>
@@ -178,7 +178,7 @@
       <dependencies>
         <dependency>
           <groupId>tech.simter.operation</groupId>
-          <artifactId>simter-operation-data-jpa</artifactId>
+          <artifactId>simter-operation-dao-jpa</artifactId>
           <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -219,7 +219,7 @@
       <dependencies>
         <dependency>
           <groupId>tech.simter.operation</groupId>
-          <artifactId>simter-operation-data-jpa</artifactId>
+          <artifactId>simter-operation-dao-jpa</artifactId>
           <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -275,7 +275,7 @@
       <dependencies>
         <dependency>
           <groupId>tech.simter.operation</groupId>
-          <artifactId>simter-operation-data-jpa</artifactId>
+          <artifactId>simter-operation-dao-jpa</artifactId>
           <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -316,7 +316,7 @@
       <dependencies>
         <dependency>
           <groupId>tech.simter.operation</groupId>
-          <artifactId>simter-operation-data-jpa</artifactId>
+          <artifactId>simter-operation-dao-jpa</artifactId>
           <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -372,7 +372,7 @@
       <dependencies>
         <dependency>
           <groupId>tech.simter.operation</groupId>
-          <artifactId>simter-operation-data-jpa</artifactId>
+          <artifactId>simter-operation-dao-jpa</artifactId>
           <scope>runtime</scope>
         </dependency>
         <dependency>

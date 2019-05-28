@@ -22,9 +22,9 @@
   <modules>
     <module>simter-operation-bom</module>
     <module>simter-operation-parent</module>
-    <module>simter-operation-data</module>
-    <module>simter-operation-data-jpa</module>
-    <module>simter-operation-data-reactive-mongo</module>
+    <module>simter-operation-core</module>
+    <module>simter-operation-dao-jpa</module>
+    <module>simter-operation-dao-mongo</module>
     <module>simter-operation-rest-webflux</module>
     <module>simter-operation-starter</module>
   </modules>

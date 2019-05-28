@@ -7,9 +7,9 @@
     <version>${revision}</version>
     <relativePath>../simter-operation-parent</relativePath>
   </parent>
-  <artifactId>simter-operation-data</artifactId>
+  <artifactId>simter-operation-core</artifactId>
   <packaging>jar</packaging>
-  <description>Data API</description>
+  <description>Core API</description>
   <developers>
     <developer>
       <name>RJ.Hwang</name>
