@@ -2,7 +2,7 @@ package tech.simter.operation.impl.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import tech.simter.operation.core.Operation
@@ -10,9 +10,10 @@ import tech.simter.operation.core.Operation.Item
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
 import tech.simter.operation.impl.ImmutableOperation
-import tech.simter.operation.support.OPERATION_CREATE
-import tech.simter.operation.support.OPERATION_READ
-import tech.simter.operation.support.PACKAGE
+import tech.simter.operation.impl.ImmutableOperation.ImmutableItem
+import tech.simter.operation.OPERATION_CREATE
+import tech.simter.operation.OPERATION_READ
+import tech.simter.operation.PACKAGE
 import tech.simter.reactive.context.SystemContext
 import tech.simter.reactive.security.ModuleAuthorizer
 import tech.simter.reactive.security.ReactiveSecurityService
@@ -22,9 +23,9 @@ import tech.simter.reactive.security.ReactiveSecurityService
  *
  * @author RJ
  */
-@Component
+@Service
 class OperationServiceImpl @Autowired constructor(
-  @Qualifier("$PACKAGE.service.ModuleAuthorizer")
+  @Qualifier("$PACKAGE.ModuleAuthorizer")
   private val moduleAuthorizer: ModuleAuthorizer,
   private val securityService: ReactiveSecurityService,
   private val dao: OperationDao
@@ -54,7 +55,7 @@ class OperationServiceImpl @Autowired constructor(
           targetId = targetId,
           title = title,
           batch = batch,
-          items = items
+          items = items.map { ImmutableItem.from(it) }.toSet()
         ))
       }
   }

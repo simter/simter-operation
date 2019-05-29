@@ -1,6 +1,7 @@
 package tech.simter.operation.impl.service
 
-import tech.simter.operation.po.Operation
+import tech.simter.operation.core.Operation
+import tech.simter.operation.impl.ImmutableOperation
 import tech.simter.util.RandomUtils.randomString
 
 /**
@@ -11,7 +12,7 @@ import tech.simter.util.RandomUtils.randomString
  */
 object TestHelper {
   fun randomOperation(batch: String? = null): Operation {
-    return Operation(
+    return ImmutableOperation(
       batch = batch,
       type = randomString(),
       operatorId = randomString(),

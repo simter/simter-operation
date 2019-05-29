@@ -9,7 +9,7 @@ create table st_operation (
   target_type   varchar(100) not null,
   target_id     varchar(100) not null,
   batch         varchar(100),
-  title         varchar(100) not null,
+  title         varchar(100),
   result        varchar(100),
   remark        text,
   items_count   smallint     not null default 0
@@ -32,7 +32,7 @@ comment on column st_operation.items_count is 'operation item total count';
 create table st_operation_item (
   pid        varchar(50)  not null references st_operation on delete cascade,
   id         varchar(100) not null,
-  title      varchar(100) not null,
+  title      varchar(100),
   value_type varchar(100) not null,
   new_value  text,
   old_value  text,

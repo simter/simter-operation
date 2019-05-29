@@ -54,7 +54,8 @@ interface Operation {
   interface Item {
     val id: String
     /** item title, label or name */
-    val title: String
+    val title: String?
+      get() = null
     /** value type, eg: String|JsonObject|JsonArray */
     val valueType: String
     /** The json string of old value */

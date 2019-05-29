@@ -8,7 +8,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.test
-import tech.simter.operation.support.OPERATION_READ
+import tech.simter.operation.OPERATION_READ
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
 import tech.simter.operation.impl.service.TestHelper.randomOperation
