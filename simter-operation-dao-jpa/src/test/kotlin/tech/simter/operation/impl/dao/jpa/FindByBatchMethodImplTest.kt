@@ -6,6 +6,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.test.test
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperation
+import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperationItem
 import tech.simter.reactive.test.jpa.ReactiveDataJpaTest
 import tech.simter.reactive.test.jpa.TestEntityManager
 import tech.simter.util.RandomUtils.randomString
@@ -30,11 +31,9 @@ class FindByBatchMethodImplTest @Autowired constructor(
     val batch = randomString()
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
     val operation1 = randomOperation(batch = batch, ts = now) // without items
-    val operation2 = randomOperation(batch = batch, ts = now.minusHours(1)) // with items
-      .apply {
-        addItem(TestHelper.randomOperationItem(id = "field1"))
-        addItem(TestHelper.randomOperationItem(id = "field2"))
-      }
+    val operation2 = randomOperation(batch = batch, ts = now.minusHours(1),
+      items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
+    ) // with items
     val operation3 = randomOperation(batch = randomString()) // another batch
     rem.persist(operation1, operation2, operation3)
 

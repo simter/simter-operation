@@ -73,6 +73,22 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <configuration>
+          <compilerPlugins>
+            <!-- Spring support: https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support -->
+            <plugin>spring</plugin>
+            <!-- JPA support: https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support -->
+            <plugin>jpa</plugin>
+          </compilerPlugins>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   <profiles>
     <!-- jpa implementation -->
     <profile>

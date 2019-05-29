@@ -8,7 +8,7 @@ import reactor.test.test
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperation
 import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperationItem
-import tech.simter.operation.po.Operation
+import tech.simter.operation.impl.dao.jpa.po.OperationPo
 import tech.simter.reactive.test.jpa.ReactiveDataJpaTest
 import tech.simter.reactive.test.jpa.TestEntityManager
 
@@ -31,7 +31,7 @@ class CreateMethodImplTest @Autowired constructor(
     dao.create(po).test().verifyComplete()
 
     // verify created
-    assertEquals(po, rem.find(Operation::class.java, po.id).get())
+    assertEquals(po, rem.find(OperationPo::class.java, po.id).get())
   }
 
   @Test
@@ -44,6 +44,6 @@ class CreateMethodImplTest @Autowired constructor(
     dao.create(po).test().verifyComplete()
 
     // verify created
-    assertEquals(po, rem.find(Operation::class.java, po.id).get())
+    assertEquals(po, rem.find(OperationPo::class.java, po.id).get())
   }
 }

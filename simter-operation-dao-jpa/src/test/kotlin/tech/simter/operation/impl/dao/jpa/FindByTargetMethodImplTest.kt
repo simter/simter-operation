@@ -6,6 +6,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.test.test
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperation
+import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperationItem
 import tech.simter.reactive.test.jpa.ReactiveDataJpaTest
 import tech.simter.reactive.test.jpa.TestEntityManager
 import tech.simter.util.RandomUtils.randomString
@@ -31,11 +32,9 @@ class FindByTargetMethodImplTest @Autowired constructor(
     val targetId = randomString()
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
     val operation1 = randomOperation(targetType = targetType, targetId = targetId, ts = now) // without items
-    val operation2 = randomOperation(targetType = targetType, targetId = targetId, ts = now.plusHours(1)) // with items
-      .apply {
-        addItem(TestHelper.randomOperationItem(id = "field1"))
-        addItem(TestHelper.randomOperationItem(id = "field2"))
-      }
+    val operation2 = randomOperation(targetType = targetType, targetId = targetId, ts = now.plusHours(1),
+      items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
+    ) // with items
     val operation3 = randomOperation(targetType = targetType, targetId = randomString()) // another targetId
     val operation4 = randomOperation(targetType = randomString(), targetId = targetId) // another targetType
     val operation5 = randomOperation(targetType = randomString(), targetId = randomString()) // another target

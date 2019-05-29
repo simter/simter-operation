@@ -21,8 +21,8 @@ internal class OperationBlockDaoImpl @Autowired constructor(
 ) : OperationBlockDao {
   @Transactional(readOnly = false)
   override fun create(operation: Operation) {
-    // do not use 'repository.save(po)' because it will select it first
-    // directly use EntityManager.persist(po)
+    // do not use 'repository.save(po)' because it will select it first.
+    // directly use 'EntityManager.persist(po)'.
     em.persist(operation)
   }
 
@@ -41,6 +41,7 @@ internal class OperationBlockDaoImpl @Autowired constructor(
     return repository.findByBatch(batch, Sort(Sort.Direction.DESC, "ts"))
   }
 
+  @Transactional(readOnly = true)
   override fun findByTarget(targetType: String, targetId: String): List<Operation> {
     return repository.findByTargetTypeAndTargetId(targetType, targetId, Sort(Sort.Direction.DESC, "ts"))
   }

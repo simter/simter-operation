@@ -1,7 +1,7 @@
 package tech.simter.operation.impl.dao.jpa
 
-import tech.simter.operation.po.Operation
-import tech.simter.operation.po.OperationItem
+import tech.simter.operation.impl.dao.jpa.po.OperationItemPo
+import tech.simter.operation.impl.dao.jpa.po.OperationPo
 import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
@@ -17,9 +17,10 @@ object TestHelper {
     batch: String? = null,
     targetId: String = randomString(),
     targetType: String = randomString(),
-    ts: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
-  ): Operation {
-    return Operation(
+    ts: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+    items: Set<OperationItemPo> = emptySet()
+  ): OperationPo {
+    return OperationPo(
       batch = batch,
       ts = ts,
       type = randomString(),
@@ -28,7 +29,7 @@ object TestHelper {
       targetId = targetId,
       targetType = targetType,
       title = randomString()
-    )
+    ).apply { items.forEach { addItem(it) } }
   }
 
   fun randomOperationItem(
@@ -37,8 +38,8 @@ object TestHelper {
     valueType: String = "String",
     oldValue: String = randomString(),
     newValue: String = randomString()
-  ): OperationItem {
-    return OperationItem(
+  ): OperationItemPo {
+    return OperationItemPo(
       id = id,
       title = title,
       valueType = valueType,
