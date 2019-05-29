@@ -15,7 +15,7 @@ import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationItem
  * @author zh
  * @author RJ
  */
-@SpringJUnitConfig(ModuleConfiguration::class)
+@SpringJUnitConfig(UnitTestConfiguration::class)
 @DataMongoTest
 class CreateMethodImplTest @Autowired constructor(
   private val repository: OperationReactiveRepository,
@@ -34,10 +34,9 @@ class CreateMethodImplTest @Autowired constructor(
   @Test
   fun `success with items`() {
     // do create
-    val po = randomOperation().apply {
-      addItem(randomOperationItem(id = "field1"))
-      addItem(randomOperationItem(id = "field2"))
-    }
+    val po = randomOperation(
+      items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
+    )
     dao.create(po).test().verifyComplete()
 
     // verify created

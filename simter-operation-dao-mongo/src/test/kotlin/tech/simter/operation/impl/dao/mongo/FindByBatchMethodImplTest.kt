@@ -17,7 +17,7 @@ import java.time.temporal.ChronoUnit
  * @author zh
  * @author RJ
  */
-@SpringJUnitConfig(ModuleConfiguration::class)
+@SpringJUnitConfig(UnitTestConfiguration::class)
 @DataMongoTest
 class FindByBatchMethodImplTest @Autowired constructor(
   private val repository: OperationReactiveRepository,
@@ -29,11 +29,9 @@ class FindByBatchMethodImplTest @Autowired constructor(
     val batch = randomString()
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
     val operation1 = randomOperation(batch = batch, ts = now) // without items
-    val operation2 = randomOperation(batch = batch, ts = now.minusHours(1)) // with items
-      .apply {
-        addItem(TestHelper.randomOperationItem(id = "field1"))
-        addItem(TestHelper.randomOperationItem(id = "field2"))
-      }
+    val operation2 = randomOperation(batch = batch, ts = now.minusHours(1),
+      items = setOf(TestHelper.randomOperationItem(id = "field1"), TestHelper.randomOperationItem(id = "field2"))
+    ) // with items
     val operation3 = randomOperation(batch = randomString()) // another batch
     repository
       .saveAll(listOf(operation1, operation2, operation3))

@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.ReactiveQueryByExampleExecutor
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.data.repository.reactive.ReactiveSortingRepository
 import reactor.core.publisher.Flux
-import tech.simter.operation.po.Operation
+import tech.simter.operation.impl.dao.mongo.po.OperationPo
 
 /**
  * See interfaces [ReactiveSortingRepository], [ReactiveQueryByExampleExecutor], [ReactiveCrudRepository], [ReactiveMongoOperations].
@@ -18,7 +18,7 @@ import tech.simter.operation.po.Operation
  * @author RJ
  * @author zh
  */
-interface OperationReactiveRepository : ReactiveCrudRepository<Operation, String> {
-  fun findByBatch(batch: String, sort: Sort): Flux<Operation>
-  fun findByTargetTypeAndTargetId(targetType: String, targetId: String, sort: Sort): Flux<Operation>
+interface OperationReactiveRepository : ReactiveCrudRepository<OperationPo, String> {
+  fun findByBatch(batch: String, sort: Sort): Flux<OperationPo>
+  fun findByTargetTypeAndTargetId(targetType: String, targetId: String, sort: Sort): Flux<OperationPo>
 }

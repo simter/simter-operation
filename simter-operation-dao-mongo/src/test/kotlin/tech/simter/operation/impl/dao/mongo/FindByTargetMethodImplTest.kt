@@ -17,7 +17,7 @@ import java.time.temporal.ChronoUnit
  * @author zh
  * @author RJ
  */
-@SpringJUnitConfig(ModuleConfiguration::class)
+@SpringJUnitConfig(UnitTestConfiguration::class)
 @DataMongoTest
 class FindByTargetMethodImplTest @Autowired constructor(
   private val repository: OperationReactiveRepository,
@@ -30,11 +30,10 @@ class FindByTargetMethodImplTest @Autowired constructor(
     val targetId = randomString()
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
     val operation1 = randomOperation(targetType = targetType, targetId = targetId, ts = now) // without items
-    val operation2 = randomOperation(targetType = targetType, targetId = targetId, ts = now.plusHours(1)) // with items
-      .apply {
-        addItem(TestHelper.randomOperationItem(id = "field1"))
-        addItem(TestHelper.randomOperationItem(id = "field2"))
-      }
+    val operation2 = randomOperation(targetType = targetType, targetId = targetId, ts = now.plusHours(1),
+      items = setOf(TestHelper.randomOperationItem(id = "field1"), TestHelper.randomOperationItem(id = "field2"))
+    ) // with items
+
     val operation3 = randomOperation(targetType = targetType, targetId = randomString()) // another targetId
     val operation4 = randomOperation(targetType = randomString(), targetId = targetId) // another targetType
     val operation5 = randomOperation(targetType = randomString(), targetId = randomString()) // another target
