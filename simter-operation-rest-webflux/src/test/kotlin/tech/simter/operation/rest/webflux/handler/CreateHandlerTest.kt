@@ -11,9 +11,9 @@ import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
+import tech.simter.operation.core.OperationService
 import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperation
 import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperationItem
-import tech.simter.operation.core.OperationService
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
@@ -52,10 +52,10 @@ class CreateHandlerTest @Autowired constructor(
   @Test
   fun `success with items`() {
     // mock
-    val operation = randomOperation(ts = OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES)).apply {
-      addItem(randomOperationItem(id = "field1"))
-      addItem(randomOperationItem(id = "field2"))
-    }
+    val operation = randomOperation(
+      ts = OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES),
+      items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
+    )
     every { service.create(operation) } returns Mono.empty()
 
     // invoke

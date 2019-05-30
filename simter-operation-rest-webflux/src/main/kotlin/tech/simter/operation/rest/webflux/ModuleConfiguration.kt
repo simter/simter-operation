@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType.TEXT_PLAIN
 import org.springframework.web.reactive.function.server.router
-import tech.simter.operation.support.PACKAGE
+import tech.simter.operation.PACKAGE
 import tech.simter.operation.rest.webflux.handler.CreateHandler
 import tech.simter.operation.rest.webflux.handler.FindByBatchHandler
 import tech.simter.operation.rest.webflux.handler.FindByTargetHandler
@@ -24,7 +24,7 @@ import tech.simter.operation.rest.webflux.handler.FindByTargetHandler
  * @author zh
  */
 @Configuration("$PACKAGE.rest.webflux.ModuleConfiguration")
-@ComponentScan("$PACKAGE.rest.webflux")
+@ComponentScan
 class ModuleConfiguration @Autowired constructor(
   @Value("\${module.version.simter-operation:UNKNOWN}") private val version: String,
   @Value("\${module.rest-context-path.simter-operation:/operation}") private val contextPath: String,
@@ -51,7 +51,7 @@ class ModuleConfiguration @Autowired constructor(
       // POST / create Operation
       CreateHandler.REQUEST_PREDICATE.invoke(createHandler::handle)
       // GET /
-      GET("/") { ok().contentType(TEXT_PLAIN).syncBody("simter-operation-$version") }
+      GET("/") { ok().contentType(TEXT_PLAIN).syncBody("simter-operation-rest-webflux-$version") }
     }
   }
 }

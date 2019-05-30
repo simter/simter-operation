@@ -10,9 +10,9 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Flux
+import tech.simter.operation.core.OperationService
 import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperation
 import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperationItem
-import tech.simter.operation.core.OperationService
 import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
@@ -38,11 +38,10 @@ class FindByTargetHandlerTest @Autowired constructor(
     val targetId = randomString()
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
     val operation1 = randomOperation(targetType = targetType, targetId = targetId, ts = now) // without items
-    val operation2 = randomOperation(targetType = targetType, targetId = targetId, ts = now.minusHours(1)) // with items
-      .apply {
-        addItem(randomOperationItem(id = "field1"))
-        addItem(randomOperationItem(id = "field2"))
-      }
+    val operation2 = randomOperation(
+      targetType = targetType, targetId = targetId, ts = now.minusHours(1),
+      items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
+    ) // with items
     every { service.findByTarget(targetType, targetId) } returns Flux.just(operation1, operation2)
     val responseBody = mapper.writeValueAsString(listOf(operation1, operation2))
 
