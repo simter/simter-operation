@@ -49,7 +49,7 @@
       <artifactId>jackson-module-kotlin</artifactId>
     </dependency>
 
-    <!-- json jsr353 by jackson-->
+    <!-- json-p jsr353 by jackson-->
     <dependency>
       <groupId>org.glassfish</groupId>
       <artifactId>javax.json</artifactId>
@@ -58,6 +58,18 @@
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr353</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- log -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
       <scope>runtime</scope>
     </dependency>
   </dependencies>
@@ -139,6 +151,11 @@
           <artifactId>simter-operation-dao-mongo</artifactId>
           <scope>runtime</scope>
         </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+          <scope>runtime</scope>
+        </dependency>
 
         <!-- embedded mongodb -->
         <dependency>
@@ -162,6 +179,11 @@
         <dependency>
           <groupId>tech.simter.operation</groupId>
           <artifactId>simter-operation-dao-mongo</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
           <scope>runtime</scope>
         </dependency>
       </dependencies>
