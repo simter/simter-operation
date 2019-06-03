@@ -1,7 +1,8 @@
 package tech.simter.operation.rest.webflux.handler
 
-import tech.simter.operation.po.Operation
-import tech.simter.operation.po.OperationItem
+import tech.simter.operation.core.Operation
+import tech.simter.operation.impl.ImmutableOperation
+import tech.simter.operation.impl.ImmutableOperation.ImmutableItem
 import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
@@ -17,9 +18,10 @@ object TestHelper {
     batch: String? = null,
     targetId: String = randomString(),
     targetType: String = randomString(),
-    ts: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+    ts: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+    items: Set<Operation.Item> = emptySet()
   ): Operation {
-    return Operation(
+    return ImmutableOperation(
       batch = batch,
       ts = ts,
       type = randomString(),
@@ -27,7 +29,8 @@ object TestHelper {
       operatorName = randomString(),
       targetId = targetId,
       targetType = targetType,
-      title = randomString()
+      title = randomString(),
+      items = items.map { ImmutableItem.from(it) }.toSet()
     )
   }
 
@@ -37,8 +40,8 @@ object TestHelper {
     valueType: String = "String",
     oldValue: String = randomString(),
     newValue: String = randomString()
-  ): OperationItem {
-    return OperationItem(
+  ): Operation.Item {
+    return ImmutableItem(
       id = id,
       title = title,
       valueType = valueType,

@@ -8,8 +8,8 @@ import org.springframework.web.reactive.function.server.RequestPredicates.GET
 import org.springframework.web.reactive.function.server.ServerResponse.noContent
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import reactor.core.publisher.Mono
-import tech.simter.operation.po.Operation
-import tech.simter.operation.service.OperationService
+import tech.simter.operation.core.Operation
+import tech.simter.operation.core.OperationService
 
 /**
  * The [HandlerFunction] for find [Operation]s by target

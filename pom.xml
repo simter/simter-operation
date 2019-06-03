@@ -5,7 +5,7 @@
   <parent>
     <groupId>tech.simter</groupId>
     <artifactId>simter-build</artifactId>
-    <version>1.2.0-M5</version>
+    <version>1.2.0-M6</version>
     <!-- lookup parent from repository -->
     <relativePath/>
   </parent>
@@ -17,114 +17,18 @@
   <properties>
     <revision>0.5-SNAPSHOT</revision>
     <simter-operation.version>${revision}</simter-operation.version>
-    <simter-dependencies.version>1.2.0-M5</simter-dependencies.version>
+    <simter-dependencies.version>1.2.0-M6</simter-dependencies.version>
   </properties>
   <modules>
     <module>simter-operation-bom</module>
     <module>simter-operation-parent</module>
-    <module>simter-operation-data</module>
-    <module>simter-operation-data-jpa</module>
-    <module>simter-operation-data-reactive-mongo</module>
+    <module>simter-operation-core</module>
+    <module>simter-operation-dao-jpa</module>
+    <module>simter-operation-dao-mongo</module>
     <module>simter-operation-rest-webflux</module>
     <module>simter-operation-starter</module>
   </modules>
   <build>
-    <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-    <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
-    <pluginManagement>
-      <plugins>
-        <!-- https://kotlinlang.org/docs/reference/compiler-plugins.html#using-in-maven -->
-        <!-- https://kotlinlang.org/docs/reference/using-maven.html#compiling-kotlin-and-java-sources -->
-        <plugin>
-          <groupId>org.jetbrains.kotlin</groupId>
-          <artifactId>kotlin-maven-plugin</artifactId>
-          <version>${kotlin.version}</version>
-          <executions>
-            <execution>
-              <id>compile</id>
-              <!--<phase>process-sources</phase>-->
-              <goals>
-                <goal>compile</goal>
-              </goals>
-              <configuration>
-                <sourceDirs>
-                  <!-- <sourceDir>${project.basedir}/src/main/java</sourceDir> -->
-                  <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
-                  <!--<sourceDir>${project.basedir}/src/main/resources</sourceDir>-->
-                </sourceDirs>
-              </configuration>
-            </execution>
-            <execution>
-              <id>test-compile</id>
-              <!--<phase>process-test-sources</phase>-->
-              <goals>
-                <goal>test-compile</goal>
-              </goals>
-              <configuration>
-                <sourceDirs>
-                  <!-- <sourceDir>${project.basedir}/src/test/java</sourceDir> -->
-                  <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
-                  <!--<sourceDir>${project.basedir}/src/test/resources</sourceDir>-->
-                </sourceDirs>
-              </configuration>
-            </execution>
-          </executions>
-          <configuration>
-            <jvmTarget>${java.version}</jvmTarget>
-            <compilerPlugins>
-              <!-- Spring support: https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support -->
-              <plugin>spring</plugin>
-              <!-- JPA support: https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support -->
-              <plugin>jpa</plugin>
-            </compilerPlugins>
-          </configuration>
-          <dependencies>
-            <!-- https://kotlinlang.org/docs/reference/compiler-plugins.html#all-open-compiler-plugin -->
-            <dependency>
-              <groupId>org.jetbrains.kotlin</groupId>
-              <artifactId>kotlin-maven-allopen</artifactId>
-              <version>${kotlin.version}</version>
-            </dependency>
-            <!-- https://kotlinlang.org/docs/reference/compiler-plugins.html#no-arg-compiler-plugin -->
-            <dependency>
-              <groupId>org.jetbrains.kotlin</groupId>
-              <artifactId>kotlin-maven-noarg</artifactId>
-              <version>${kotlin.version}</version>
-            </dependency>
-          </dependencies>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <executions>
-            <!-- Replacing default-compile as it is treated specially by maven -->
-            <execution>
-              <id>default-compile</id>
-              <phase>none</phase>
-            </execution>
-            <!-- Replacing default-testCompile as it is treated specially by maven -->
-            <execution>
-              <id>default-testCompile</id>
-              <phase>none</phase>
-            </execution>
-            <execution>
-              <id>java-compile</id>
-              <phase>compile</phase>
-              <goals>
-                <goal>compile</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>java-test-compile</id>
-              <phase>test-compile</phase>
-              <goals>
-                <goal>testCompile</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

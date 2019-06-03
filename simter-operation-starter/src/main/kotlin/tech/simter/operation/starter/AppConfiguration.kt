@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.io.ClassPathResource
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.web.cors.reactive.CorsUtils
 import org.springframework.web.reactive.config.*
+import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.router
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
@@ -56,7 +59,7 @@ class AppConfiguration @Autowired constructor(
 
       /** See [Static Resources](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-config-static-resources) */
       override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-        registry.addResourceHandler("/static/**")
+        registry.addResourceHandler("/static/**", "/favicon.ico")
           .addResourceLocations("classpath:/META-INF/resources/static/")
           .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS))
       }
@@ -78,6 +81,10 @@ class AppConfiguration @Autowired constructor(
     "/".nest {
       // root /
       GET("/") { ok().contentType(TEXT_HTML_UTF8).syncBody(rootPage) }
+      // '/favicon.ico'
+      GET("/favicon.ico") {
+        ok().body(BodyInserters.fromResource(ClassPathResource("META-INF/resources/static/favicon.ico")))
+      }
 
       // OPTIONS /*
       OPTIONS("/**") { noContent().build() }

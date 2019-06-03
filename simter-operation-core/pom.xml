@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>tech.simter.operation</groupId>
+    <artifactId>simter-operation-parent</artifactId>
+    <version>${revision}</version>
+    <relativePath>../simter-operation-parent</relativePath>
+  </parent>
+  <artifactId>simter-operation-core</artifactId>
+  <packaging>jar</packaging>
+  <description>Core API</description>
+  <developers>
+    <developer>
+      <name>RJ.Hwang</name>
+      <email>rongjihuang@gmail.com</email>
+    </developer>
+  </developers>
+  <dependencies>
+    <dependency>
+      <groupId>tech.simter.reactive</groupId>
+      <artifactId>simter-reactive-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+</project>
