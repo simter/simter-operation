@@ -29,6 +29,7 @@
     <module>simter-operation-dao-mongo</module>
     <module>simter-operation-dao-r2dbc</module>
     <module>simter-operation-dao-jpa</module>
+    <module>simter-operation-dao-web</module>
     <module>simter-operation-rest-webflux</module>
     <module>simter-operation-starter</module>
   </modules>
