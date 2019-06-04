@@ -10,7 +10,7 @@ import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperation
 import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationItem
 
 /**
- * Test [OperationDaoImpl]
+ * Test [OperationDaoImpl.create]
  *
  * @author zh
  * @author RJ
