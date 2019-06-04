@@ -4,10 +4,10 @@ spring:
   datasource:
     platform: @db.platform@
     url: @db.url@    # for h2
-    name: @db.name@  # for postgres
-    username: @db.username@
     host: @db.host@
     port: @db.port@
+    name: @db.name@  # for postgres
+    username: @db.username@
     password: @db.password@
     continue-on-error: @db.continue-on-error@
     sql-script-encoding: UTF-8
@@ -47,5 +47,5 @@ logging:
     #---- r2dbc ----#
     #io.r2dbc.h2.client.SessionClient: DEBUG # DEBUG to show h2 request and response
     #io.r2dbc.postgresql.client.ReactorNettyClient: DEBUG # DEBUG to show postgres request and response
-    #io.r2dbc.postgresql.client.ReactorNettyClient: OFF # OFF - not show error '由于管理员命令中断联接'
+    io.r2dbc.postgresql.client.ReactorNettyClient: OFF # OFF - not show error '由于管理员命令中断联接'
     org.springframework.data.r2dbc.function.DefaultDatabaseClient: DEBUG # DEBUG to show sql

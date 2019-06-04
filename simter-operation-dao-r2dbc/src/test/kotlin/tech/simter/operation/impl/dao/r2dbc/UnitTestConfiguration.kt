@@ -3,6 +3,7 @@ package tech.simter.operation.impl.dao.r2dbc
 import io.r2dbc.client.R2dbc
 import io.r2dbc.spi.ConnectionFactory
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Import
   tech.simter.operation.impl.dao.r2dbc.ModuleConfiguration::class,
   UnitTestConfiguration.Cfg::class
 )
+@ComponentScan("tech.simter.embeddeddatabase")
 class UnitTestConfiguration {
   @Configuration
   class Cfg {
