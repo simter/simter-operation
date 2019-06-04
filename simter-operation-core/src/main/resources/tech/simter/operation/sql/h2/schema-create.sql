@@ -2,7 +2,7 @@
 
 create table st_operation (
   id            varchar(50)  not null primary key,
-  ts            timestamp    not null,
+  ts            timestamp with time zone not null,
   type          varchar(100) not null,
   operator_id   varchar(100) not null,
   operator_name varchar(100) not null,

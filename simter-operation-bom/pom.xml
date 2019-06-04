@@ -25,12 +25,17 @@
       </dependency>
       <dependency>
         <groupId>tech.simter.operation</groupId>
-        <artifactId>simter-operation-dao-jpa</artifactId>
+        <artifactId>simter-operation-dao-mongo</artifactId>
         <version>${simter-operation.version}</version>
       </dependency>
       <dependency>
         <groupId>tech.simter.operation</groupId>
-        <artifactId>simter-operation-dao-mongo</artifactId>
+        <artifactId>simter-operation-dao-r2dbc</artifactId>
+        <version>${simter-operation.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>tech.simter.operation</groupId>
+        <artifactId>simter-operation-dao-jpa</artifactId>
         <version>${simter-operation.version}</version>
       </dependency>
       <dependency>

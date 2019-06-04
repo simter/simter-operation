@@ -1,45 +1,45 @@
-package tech.simter.operation.impl.dao.mongo
+package tech.simter.operation.impl.dao.r2dbc
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
-import reactor.test.test
+import reactor.kotlin.test.test
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperation
-import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationItem
+import tech.simter.operation.impl.dao.r2dbc.TestHelper.randomOperation
+import tech.simter.operation.impl.dao.r2dbc.TestHelper.randomOperationItem
 
 /**
- * Test [OperationDaoImpl.create]
+ * Test [OperationDaoImplByR2dbcClient.create]
  *
- * @author zh
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @DataMongoTest
 class CreateMethodImplTest @Autowired constructor(
-  private val repository: OperationReactiveRepository,
   private val dao: OperationDao
 ) {
   @Test
   fun `success without items`() {
     // init data
-    val po = randomOperation()
+    val expected = randomOperation()
 
     // invoke and verify
-    dao.create(po).test().verifyComplete()
-    repository.findById(po.id).test().expectNext(po).verifyComplete()
+    dao.create(expected)
+      .then(dao.get(expected.id))
+      .test().expectNext(expected).verifyComplete()
   }
 
   @Test
   fun `success with items`() {
-    // do create
-    val po = randomOperation(
+    // init data
+    val expected = randomOperation(
       items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
     )
-    dao.create(po).test().verifyComplete()
 
-    // verify created
-    repository.findById(po.id).test().expectNext(po).verifyComplete()
+    // invoke and verify
+    dao.create(expected)
+      .then(dao.get(expected.id))
+      .test().expectNext(expected).verifyComplete()
   }
 }

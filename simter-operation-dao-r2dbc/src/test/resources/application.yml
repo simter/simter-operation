@@ -1,0 +1,51 @@
+spring:
+  main.banner-mode: 'off'
+  test.database.replace: none
+  datasource:
+    platform: @db.platform@
+    url: @db.url@    # for h2
+    name: @db.name@  # for postgres
+    username: @db.username@
+    host: @db.host@
+    port: @db.port@
+    password: @db.password@
+    continue-on-error: @db.continue-on-error@
+    sql-script-encoding: UTF-8
+    #concat-sql-script: true # default false, true - save concatenate sql content to file target/{db.platform}.sql
+    initialization-mode: @db.init-mode@ # never|always
+    # available when initialization-mode=embedded|always
+    schema:
+      # drop
+      - classpath:tech/simter/operation/sql/@db.platform@/schema-drop.sql
+      # create
+      - classpath:tech/simter/operation/sql/@db.platform@/schema-create.sql
+    data:
+      - classpath:tech/simter/operation/sql/@db.platform@/data.sql
+simter.embedded-database:
+  disabled-datasource: true # default false, true - not auto instance and register a datasource
+  postgres:
+    port: @db.port@
+    # available 9.5.16-1, 9.6.12-1, 10.7-1, 11.2-1
+    version: @postgres-embedded.version@
+    # default http://get.enterprisedb.com/postgresql/, can set to file:///C://Users//simter//download/
+    download-url: ~
+logging:
+  file: target/test.log
+  # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF -->
+  level:
+    root: ERROR
+    org.springframework: WARN
+    org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG # DEBUG to show executed SQL script
+    org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory: INFO # INFO to show 'Starting embedded database: url=...'
+    org.springframework.boot.jdbc: DEBUG
+
+    #---- simter ----#
+    tech.simter.r2dbc: WARN # WARN - Executing spring.datasource.schema|data scripts to database, INFO - show executed script, DEBUG - show R2dbcProperties
+    tech.simter.embeddeddatabase: WARN # WARN - Starting embedded database: url=..., INFO - Load script
+    tech.simter.operation: WARN
+
+    #---- r2dbc ----#
+    #io.r2dbc.h2.client.SessionClient: DEBUG # DEBUG to show h2 request and response
+    #io.r2dbc.postgresql.client.ReactorNettyClient: DEBUG # DEBUG to show postgres request and response
+    #io.r2dbc.postgresql.client.ReactorNettyClient: OFF # OFF - not show error '由于管理员命令中断联接'
+    org.springframework.data.r2dbc.function.DefaultDatabaseClient: DEBUG # DEBUG to show sql
