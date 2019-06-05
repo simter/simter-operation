@@ -1,7 +1,7 @@
 package tech.simter.operation.rest.webflux.handler
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
 import org.springframework.web.reactive.function.server.RequestPredicates.GET
@@ -25,7 +25,7 @@ class FindByBatchHandler @Autowired constructor(
     val flux = operationService.findByBatch(request.pathVariable("batch"))
     return flux.hasElements()
       .flatMap {
-        if (it) ok().contentType(APPLICATION_JSON_UTF8).body(flux)
+        if (it) ok().contentType(APPLICATION_JSON).body(flux)
         else noContent().build()
       }
   }

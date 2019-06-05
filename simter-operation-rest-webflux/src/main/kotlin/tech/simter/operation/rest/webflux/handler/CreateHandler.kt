@@ -2,7 +2,7 @@ package tech.simter.operation.rest.webflux.handler
 
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
 import org.springframework.web.reactive.function.server.RequestPredicates.POST
@@ -30,6 +30,6 @@ class CreateHandler @Autowired constructor(
   }
 
   companion object {
-    val REQUEST_PREDICATE: RequestPredicate = POST("/").and(contentType(APPLICATION_JSON_UTF8))
+    val REQUEST_PREDICATE: RequestPredicate = POST("/").and(contentType(APPLICATION_JSON))
   }
 }

@@ -7,7 +7,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
-import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
@@ -40,7 +40,7 @@ class CreateHandlerTest @Autowired constructor(
     // invoke
     val requestBody = mapper.writeValueAsString(operation)
     val response = client.post().uri("/")
-      .contentType(APPLICATION_JSON_UTF8)
+      .contentType(APPLICATION_JSON)
       .syncBody(requestBody)
       .exchange()
 
@@ -62,7 +62,7 @@ class CreateHandlerTest @Autowired constructor(
     val requestBody = mapper.writeValueAsString(operation)
     //println("requestBody=$requestBody")
     val response = client.post().uri("/")
-      .contentType(APPLICATION_JSON_UTF8)
+      .contentType(APPLICATION_JSON)
       .syncBody(requestBody)
       .exchange()
 
