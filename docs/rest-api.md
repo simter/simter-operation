@@ -1,16 +1,16 @@
 # Rest API for simter-operation
 
-The rest context path  could be configured by property `module.rest-context-path.simter-operation`. 
+The rest context path  could be configured by property `module.rest-context-path.simter-operation`.
 Its default value is `/operation`. The below URL is all relative to this context path.
 For example a url `/target/User/admin`, its really path should be `{context-path}/target/User/admin`.
 
 Provide rest APIs:
 
-| SN | Method | Url                                      | Description
-|----|--------|------------------------------------------|-------------
-| 1  | POST   | /                                        | Create one operation
-| 2  | GET    | /target/{targetType}/{targetId}          | Find all operations of specific target
-| 3  | GET    | /batch/{batch}                           | Find all operations of specific batch
+| SN | Method | Url                           | Supported | Description
+|----|--------|-------------------------------|:---------:|-------------
+| 1  | POST   | /                             |     √     | Create one operation
+| 2  | GET    | /target/$targetType/$targetId |     √     | Find all operations of specific target
+| 3  | GET    | /batch/$batch                 |     √     | Find all operations of specific batch
 
 ## 1. Create one operation
 
@@ -18,30 +18,30 @@ Provide rest APIs:
 
 ```
 POST /
-Content-Type : application/json;charset=utf-8
+Content-Type : application/json
 
-$postBody
+$operation
 ```
 
-`$postBody`'s json structure:
+`$operation`'s json structure:
 
-| Name             | Type    | Require | Description
-|------------------|---------|---------|-------------
-| type             | String  | true    | operation type, such as "Creation"、"Modification"、"Deletion"
-| operatorId       | String  | true    | the operator's identifier
-| operatorName     | String  | true    | the operator's name, such as "John"
-| targetType       | String  | true    | the target's type, such as "User"
-| targetId         | String  | true    | the target's identifier, such as "admin"
-| title            | String  | true    | a simple subject, such as "Create new user"
-| remark           | String? | false   | detail description for this operation
-| result           | String? | false   | the operation result, such as "passed", "rejected"
-| batch            | String? | false   | a batch identifier for grouped a couple of operations
-| items            | []?     | false   | a couple of detail item of this operation, mostly use to record form fields changed
-| ├ id            | String  | true    | the item's identifier, such as "code"
-| ├ title         | String  | true    | the item's simple subject, such as "bill number"
-| ├ valueType     | String  | true    | the value type, such as "String", "JsonObject", "JsonArray"
-| ├ oldValue      | String? | false   | old value, default null if not provided
-| ├ newValue      | String? | true    | new value
+| Name         | Type    | Require | Description
+|--------------|---------|---------|-------------
+| type         | String  | true    | operation type, such as "Creation"、"Modification"、"Deletion"
+| operatorId   | String  | true    | the operator's identifier
+| operatorName | String  | true    | the operator's name, such as "John"
+| targetType   | String  | true    | the target's type, such as "User"
+| targetId     | String  | true    | the target's identifier, such as "admin"
+| title        | String? | false   | a simple subject, such as "Create new user"
+| remark       | String? | false   | detail description for this operation
+| result       | String? | false   | the operation result, such as "passed", "rejected"
+| batch        | String? | false   | a batch identifier for grouped a couple of operations
+| items        | []?     | false   | a couple of detail item of this operation, mostly use to record form fields changed
+| ├ id         | String  | true    | the item's identifier, such as "code"
+| ├ title      | String? | false   | the item's simple subject, such as "bill number"
+| ├ valueType  | String  | true    | the value type, such as "String", "JsonObject", "JsonArray"
+| ├ oldValue   | String? | false   | old value
+| ├ newValue   | String? | false   | new value
 
 ### Response
 
@@ -63,13 +63,13 @@ GET /target/$targetType/$targetId
 
 ```
 200 OK
-Content-Type : application/json;charset=utf-8
+Content-Type : application/json
 
 [$operation, ...]
 ```
 
 
-`$operation` 's json structure: it has all the `$postBody` property above in「1. Create one operation」, 
+`$operation` 's json structure: it is the same with `$operation` above in「1. Create one operation」,
 but add more below:
 
 | Name             | Type    | Require | Description
@@ -82,7 +82,7 @@ If found nothing, response:
 204 No Content
 ```
 
-## 2. Find by batch
+## 3. Find by batch
 
 Find all operations of specific batch. Order by `Operation.ts` descendant.
 
@@ -96,13 +96,13 @@ GET /batch/$batch
 
 ```
 200 OK
-Content-Type : application/json;charset=utf-8
+Content-Type : application/json
 
 [$operation, ...]
 ```
 
 
-`$operation` 's json structure: it is the same with `$operation` above in「2. Find by target type and id」.
+`$operation` 's json structure: it is the same with `$operation` above in「1. Create one operation」.
 
 If found nothing, response:
 
