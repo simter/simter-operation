@@ -33,27 +33,21 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
     </dependency>
-    <!-- json api -->
     <dependency>
       <groupId>javax.json</groupId>
       <artifactId>javax.json-api</artifactId>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.json.bind</groupId>
-      <artifactId>javax.json.bind-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish</groupId>
-      <artifactId>javax.json</artifactId>
-      <scope>test</scope>
     </dependency>
 
     <!-- test -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webflux</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.json</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -63,10 +57,10 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <excludes>
-            <exclude>none</exclude>
+            <exclude>**/*Test</exclude>
           </excludes>
           <includes>
-            <include>**/ZhiTiHelperTest</include>
+            <include>none</include>
           </includes>
         </configuration>
       </plugin>
