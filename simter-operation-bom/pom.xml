@@ -40,6 +40,11 @@
       </dependency>
       <dependency>
         <groupId>tech.simter.operation</groupId>
+        <artifactId>simter-operation-dao-web</artifactId>
+        <version>${simter-operation.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>tech.simter.operation</groupId>
         <artifactId>simter-operation-rest-webflux</artifactId>
         <version>${simter-operation.version}</version>
       </dependency>
