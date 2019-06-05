@@ -11,6 +11,7 @@ Provide rest APIs:
 | 1  | POST   | /                             |     √     | Create one operation
 | 2  | GET    | /target/$targetType/$targetId |     √     | Find all operations of specific target
 | 3  | GET    | /batch/$batch                 |     √     | Find all operations of specific batch
+| 4  | GET    | /$id                          |           | Get one operation
 
 ## 1. Create one operation
 
@@ -108,4 +109,32 @@ If found nothing, response:
 
 ```
 204 No Content
+```
+
+## 4. Get one operation
+
+Get one operation of specific id.
+
+### Request
+
+```
+GET /$id
+```
+
+### Response
+
+```
+200 OK
+Content-Type : application/json
+
+$operation
+```
+
+
+`$operation` 's json structure: it is the same with `$operation` above in「1. Create one operation」.
+
+If not exists, response:
+
+```
+404 No Found
 ```
