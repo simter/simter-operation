@@ -38,11 +38,11 @@ internal class OperationBlockDaoImpl @Autowired constructor(
 
   @Transactional(readOnly = true)
   override fun findByBatch(batch: String): List<Operation> {
-    return repository.findByBatch(batch, Sort(Sort.Direction.DESC, "ts"))
+    return repository.findByBatch(batch, Sort.by(Sort.Direction.DESC, "ts"))
   }
 
   @Transactional(readOnly = true)
   override fun findByTarget(targetType: String, targetId: String): List<Operation> {
-    return repository.findByTargetTypeAndTargetId(targetType, targetId, Sort(Sort.Direction.DESC, "ts"))
+    return repository.findByTargetTypeAndTargetId(targetType, targetId, Sort.by(Sort.Direction.DESC, "ts"))
   }
 }

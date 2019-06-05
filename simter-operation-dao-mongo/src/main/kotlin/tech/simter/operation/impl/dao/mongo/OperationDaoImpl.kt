@@ -29,12 +29,12 @@ class OperationDaoImpl @Autowired constructor(
   }
 
   override fun findByBatch(batch: String): Flux<Operation> {
-    return repository.findByBatch(batch, Sort(Sort.Direction.DESC, "ts"))
+    return repository.findByBatch(batch, Sort.by(Sort.Direction.DESC, "ts"))
       .map { it as Operation }
   }
 
   override fun findByTarget(targetType: String, targetId: String): Flux<Operation> {
-    return repository.findByTargetTypeAndTargetId(targetType, targetId, Sort(Sort.Direction.DESC, "ts"))
+    return repository.findByTargetTypeAndTargetId(targetType, targetId, Sort.by(Sort.Direction.DESC, "ts"))
       .map { it as Operation }
   }
 }
