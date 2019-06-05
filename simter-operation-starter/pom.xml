@@ -29,8 +29,36 @@
     <db.jpa-implementation>none</db.jpa-implementation>
     <db.jpa-quote-sql>false</db.jpa-quote-sql>
     <db.continue-on-error>false</db.continue-on-error>
+    <db.disabled-datasource>false</db.disabled-datasource>
     <logging.file>target/test.log</logging.file>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <!-- spring -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-framework-bom</artifactId>
+        <version>${spring.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- spring boot -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-bom</artifactId>
+        <version>${reactor.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>tech.simter.operation</groupId>
@@ -200,6 +228,102 @@
         <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>r2dbc-embedded-h2</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.platform>h2</db.platform>
+        <db.init-mode>always</db.init-mode>
+        <db.disabled-datasource>true</db.disabled-datasource>
+        <db.url>./target/testdb</db.url>
+        <spring.version>${spring.milestone.version}</spring.version>
+        <spring-boot.version>${spring-boot.milestone.version}</spring-boot.version>
+        <reactor.version>${reactor.milestone.version}</reactor.version>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>tech.simter.operation</groupId>
+          <artifactId>simter-operation-dao-r2dbc</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>io.r2dbc</groupId>
+          <artifactId>r2dbc-h2</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.h2database</groupId>
+          <artifactId>h2</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>r2dbc-embedded-postgres</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.platform>postgres</db.platform>
+        <!-- default postgres port is 5432, plus 1 to avoid conflict -->
+        <db.port>5433</db.port>
+        <db.init-mode>always</db.init-mode>
+        <db.disabled-datasource>true</db.disabled-datasource>
+        <spring.version>${spring.milestone.version}</spring.version>
+        <spring-boot.version>${spring-boot.milestone.version}</spring-boot.version>
+        <reactor.version>${reactor.milestone.version}</reactor.version>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>tech.simter.operation</groupId>
+          <artifactId>simter-operation-dao-r2dbc</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>io.r2dbc</groupId>
+          <artifactId>r2dbc-postgresql</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- embedded postgres -->
+        <dependency>
+          <groupId>tech.simter</groupId>
+          <artifactId>simter-embedded-database-ext</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>ru.yandex.qatools.embed</groupId>
+          <artifactId>postgresql-embedded</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>r2dbc-postgres</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.platform>postgres</db.platform>
+        <db.port>5432</db.port>
+        <db.init-mode>always</db.init-mode>
+        <db.disabled-datasource>true</db.disabled-datasource>
+        <spring.version>${spring.milestone.version}</spring.version>
+        <spring-boot.version>${spring-boot.milestone.version}</spring-boot.version>
+        <reactor.version>${reactor.milestone.version}</reactor.version>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>tech.simter.operation</groupId>
+          <artifactId>simter-operation-dao-r2dbc</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>io.r2dbc</groupId>
+          <artifactId>r2dbc-postgresql</artifactId>
           <scope>runtime</scope>
         </dependency>
       </dependencies>

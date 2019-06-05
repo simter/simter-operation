@@ -100,7 +100,7 @@ class OperationDaoImplByR2dbcClient @Autowired constructor(
             ).bind("$1", batch)
             mergeItems(query, operations as MutableMap<String, ImmutableOperation>)
           }
-        }.flatMapMany { Flux.fromIterable(it) }
+        }.flatMapMany { list -> Flux.fromIterable(list.sortedByDescending { it.ts }) }
     }
   }
 
@@ -124,7 +124,7 @@ class OperationDaoImplByR2dbcClient @Autowired constructor(
             ).bind("$1", targetType).bind("$2", targetId)
             mergeItems(query, operations as MutableMap<String, ImmutableOperation>)
           }
-        }.flatMapMany { Flux.fromIterable(it) }
+        }.flatMapMany { list -> Flux.fromIterable(list.sortedByDescending { it.ts }) }
     }
   }
 
