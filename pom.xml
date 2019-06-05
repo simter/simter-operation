@@ -18,6 +18,9 @@
     <revision>0.5-SNAPSHOT</revision>
     <simter-operation.version>${revision}</simter-operation.version>
     <simter-dependencies.version>1.2.0-M6</simter-dependencies.version>
+    <spring.version>${spring.milestone.version}</spring.version>
+    <spring-boot.version>${spring-boot.milestone.version}</spring-boot.version>
+    <!--<reactor.version>${reactor.milestone.version}</reactor.version>-->
   </properties>
   <modules>
     <module>simter-operation-bom</module>

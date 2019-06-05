@@ -26,37 +26,7 @@
     <db.url>~</db.url>
     <db.init-mode>never</db.init-mode>
     <db.continue-on-error>false</db.continue-on-error>
-    <spring.version>${spring.milestone.version}</spring.version>
-    <spring-boot.version>${spring-boot.milestone.version}</spring-boot.version>
-    <reactor.version>${reactor.milestone.version}</reactor.version>
   </properties>
-  <dependencyManagement>
-    <dependencies>
-      <!-- spring -->
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-framework-bom</artifactId>
-        <version>${spring.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <!-- spring boot -->
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring-boot.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.projectreactor</groupId>
-        <artifactId>reactor-bom</artifactId>
-        <version>${reactor.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>tech.simter</groupId>

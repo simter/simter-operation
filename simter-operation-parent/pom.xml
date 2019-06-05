@@ -18,27 +18,19 @@
   </developers>
   <dependencyManagement>
     <dependencies>
-      <!-- simter-operation -->
-      <dependency>
-        <groupId>tech.simter.operation</groupId>
-        <artifactId>simter-operation-bom</artifactId>
-        <version>${simter-operation.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <!-- simter base modules -->
-      <dependency>
-        <groupId>tech.simter</groupId>
-        <artifactId>simter-dependencies</artifactId>
-        <version>${simter-dependencies.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
       <!-- junit5 -->
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
         <version>${junit5.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- reactor -->
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-bom</artifactId>
+        <version>${reactor.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -55,6 +47,22 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- simter-operation -->
+      <dependency>
+        <groupId>tech.simter.operation</groupId>
+        <artifactId>simter-operation-bom</artifactId>
+        <version>${simter-operation.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- simter base modules -->
+      <dependency>
+        <groupId>tech.simter</groupId>
+        <artifactId>simter-dependencies</artifactId>
+        <version>${simter-dependencies.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
