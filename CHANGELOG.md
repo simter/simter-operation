@@ -1,5 +1,26 @@
 # simter-operation changelog
 
+## 0.5.0-M3 2019-06-05
+
+- Set json default to use ISO format
+- Use reactor-kotlin-extensions prepare for next reactor version
+- Implements dao-web by WebFlux
+- Remove charset from JSON content type
+- Compatible with spring-data 2.1 and 2.2
+- Add r2dbc-xxx profiles to starter
+- Implement dao by r2dbc-client
+- Config favicon.ico on starter module
+- Upgrade to simter platform 1.2.0-M6
+- Refactor module structure to make core api simplify and clear [#21](https://github.com/simter/simter-operation/issues/21)
+
+## 0.5.0-M2 2019-05-15
+
+- Eager load Operation.items
+- Upgrade to simter platform 1.2.0-M5
+- Delete unnecessary dependency javax.json-api
+- Add convenient create method to service
+- Move MockBean to UnitTestConfiguration
+
 ## 0.5.0-M1 2019-05-06
 
 - Upgrade to simter platform 1.2.0.M4
