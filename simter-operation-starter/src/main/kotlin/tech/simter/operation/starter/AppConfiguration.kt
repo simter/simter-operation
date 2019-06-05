@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
 import org.springframework.web.cors.reactive.CorsUtils
 import org.springframework.web.reactive.config.*
 import org.springframework.web.reactive.function.BodyInserters
@@ -30,7 +29,8 @@ import java.util.concurrent.TimeUnit
 @Configuration("$PACKAGE.starter.AppConfiguration")
 @EnableWebFlux
 class AppConfiguration @Autowired constructor(
-  @Value("\${module.version.simter-operation:UNKNOWN}") private val version: String
+  @Value("\${module.version.simter:UNKNOWN}") private val simterVersion: String,
+  @Value("\${module.version.simter-operation:UNKNOWN}") private val operationVersion: String
 ) {
   /**
    * Register by method [DelegatingWebFluxConfiguration.setConfigurers].
@@ -70,7 +70,10 @@ class AppConfiguration @Autowired constructor(
   private val rootPage: String = """
     <h2>Simter Operation Micro Service</h2>
     <div>Start at : $startTime</div>
-    <div>Version : $version</div>
+    <div>Version : $operationVersion</div>
+    <ul>
+      <li>simter-$simterVersion</li>
+    </ul>
   """.trimIndent()
 
   /**

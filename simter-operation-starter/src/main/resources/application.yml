@@ -1,4 +1,6 @@
-module.version.simter-operation: @project.version@
+module.version:
+  simter: @simter.version@
+  simter-operation: @project.version@
 module.authorization.simter-operation.defaultPermission: "Allow"   # Allow|Deny
 simter.jwt:
   secret-key: @simter.jwt.secret-key@

@@ -151,7 +151,7 @@
       <properties>
         <kotlin.compiler.incremental>false</kotlin.compiler.incremental>
         <db.name>st_operation</db.name>
-        <db.username>st_operation</db.username>
+        <db.username>operation</db.username>
         <db.init-mode>never</db.init-mode>
         <logging.file>${project.artifactId}-${project.version}.log</logging.file>
       </properties>
@@ -282,7 +282,7 @@
       <properties>
         <db.platform>postgres</db.platform>
         <db.port>5432</db.port>
-        <db.init-mode>always</db.init-mode>
+        <db.init-mode>never</db.init-mode>
         <db.disabled-datasource>true</db.disabled-datasource>
       </properties>
       <dependencies>
@@ -400,6 +400,7 @@
         <db.jpa-implementation>hibernate</db.jpa-implementation>
         <db.platform>postgres</db.platform>
         <db.port>5432</db.port>
+        <db.init-mode>never</db.init-mode>
         <db.url><![CDATA[jdbc:postgresql://${db.host}:${db.port}/${db.name}]]> </db.url>
         <db.driver-class>org.postgresql.Driver</db.driver-class>
       </properties>
@@ -497,6 +498,7 @@
         <db.jpa-implementation>hibernate</db.jpa-implementation>
         <db.platform>mysql</db.platform>
         <db.port>3306</db.port>
+        <db.init-mode>never</db.init-mode>
         <db.url><![CDATA[jdbc:mysql://${db.host}:${db.port}/${db.name}]]></db.url>
         <db.driver-class>com.mysql.cj.jdbc.Driver</db.driver-class>
       </properties>
