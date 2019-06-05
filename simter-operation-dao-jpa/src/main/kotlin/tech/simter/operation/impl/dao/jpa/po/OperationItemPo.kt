@@ -5,6 +5,8 @@ import tech.simter.operation.core.Operation
 import javax.persistence.*
 
 /**
+ * The JPA Entity implementation of [Operation.Item].
+ *
  * @author RJ
  */
 @com.fasterxml.jackson.annotation.JsonIgnoreProperties(value = ["parent", "parent\$simter_operation_data"])

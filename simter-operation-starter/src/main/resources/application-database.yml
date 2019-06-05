@@ -48,7 +48,6 @@ logging.level:
   #---- simter ----#
   tech.simter.r2dbc: WARN # WARN - Executing spring.datasource.schema|data scripts to database, INFO - show executed script, DEBUG - show R2dbcProperties
   tech.simter.embeddeddatabase: WARN # WARN - Starting embedded database: url=..., INFO - Load script
-  tech.simter.operation: WARN
 
   #---- r2dbc ----#
   #io.r2dbc.h2.client.SessionClient: DEBUG # DEBUG to show h2 request and response

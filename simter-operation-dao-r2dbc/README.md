@@ -37,10 +37,10 @@ mvn test -D db.name=testdb
 ## Maven Profiles:
 
 | Name              | Default | Supported |
-|-------------------|---------|-----------|
-| embedded-h2       | √       | √         |
-| embedded-postgres |         | √         |
-| postgres          |         | √         |
+|-------------------|:-------:|:---------:|
+| embedded-h2       |    √    |     √     |
+| embedded-postgres |         |     √     |
+| postgres          |         |     √     |
 
 The default profile is `embedded-h2`.
 Use `-P {profile-name}` to override default. Such as:

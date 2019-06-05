@@ -9,6 +9,8 @@ import javax.persistence.CascadeType.ALL
 import javax.persistence.FetchType.EAGER
 
 /**
+ * The JPA Entity implementation of [Operation].
+ *
  * @author RJ
  */
 @Entity
