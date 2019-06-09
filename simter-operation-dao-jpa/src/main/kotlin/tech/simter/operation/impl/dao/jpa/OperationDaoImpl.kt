@@ -1,7 +1,7 @@
 package tech.simter.operation.impl.dao.jpa
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import tech.simter.operation.core.Operation
@@ -14,7 +14,7 @@ import tech.simter.reactive.jpa.ReactiveJpaWrapper
  * @author RJ
  * @author zh
  */
-@Component
+@Repository
 class OperationDaoImpl @Autowired constructor(
   private val blockDao: OperationBlockDao,
   private val wrapper: ReactiveJpaWrapper

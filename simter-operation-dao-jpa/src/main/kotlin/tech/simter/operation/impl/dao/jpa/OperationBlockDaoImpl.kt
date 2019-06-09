@@ -2,7 +2,7 @@ package tech.simter.operation.impl.dao.jpa
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Sort
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import tech.simter.operation.core.Operation
 import tech.simter.operation.impl.dao.jpa.po.OperationPo
@@ -14,7 +14,7 @@ import javax.persistence.EntityManager
  *
  * @author RJ
  */
-@Component
+@Repository
 internal class OperationBlockDaoImpl @Autowired constructor(
   private val em: EntityManager,
   private val repository: OperationJpaRepository

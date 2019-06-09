@@ -7,7 +7,7 @@ import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
 /**
- * provide public method of test
+ * Provide public method of test
  *
  * @author RJ
  */
