@@ -5,15 +5,15 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import tech.simter.operation.OPERATION_CREATE
+import tech.simter.operation.OPERATION_READ
+import tech.simter.operation.PACKAGE
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.Operation.Item
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
 import tech.simter.operation.impl.ImmutableOperation
 import tech.simter.operation.impl.ImmutableOperation.ImmutableItem
-import tech.simter.operation.OPERATION_CREATE
-import tech.simter.operation.OPERATION_READ
-import tech.simter.operation.PACKAGE
 import tech.simter.reactive.context.SystemContext
 import tech.simter.reactive.security.ModuleAuthorizer
 import tech.simter.reactive.security.ReactiveSecurityService
@@ -40,9 +40,11 @@ class OperationServiceImpl @Autowired constructor(
     type: String,
     targetType: String,
     targetId: String,
-    title: String,
+    title: String?,
     batch: String?,
-    items: Set<Item>
+    items: Set<Item>,
+    remark: String?,
+    result: String?
   ): Mono<Void> {
     return securityService.getAuthenticatedUser()
       .map { it.orElseGet { SystemContext.User(id = 0, account = "UNKNOWN", name = "UNKNOWN") } } // get context user info

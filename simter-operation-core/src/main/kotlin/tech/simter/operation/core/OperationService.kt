@@ -31,9 +31,11 @@ interface OperationService {
     type: String,
     targetType: String,
     targetId: String,
-    title: String,
+    title: String? = null,
     batch: String? = null,
-    items: Set<Item> = emptySet()
+    items: Set<Item> = emptySet(),
+    remark: String? = null,
+    result: String? = null
   ): Mono<Void>
 
   /**
