@@ -1,5 +1,11 @@
 # simter-operation changelog
 
+## 0.5.0-M4 2019-06-10
+
+- Add missing interface parameters on OperationService.Create
+- Use `@Repository` instead of `@Component` on dao implementation
+- Polishing docs and README
+
 ## 0.5.0-M3 2019-06-05
 
 - Set json default to use ISO format
