@@ -49,4 +49,27 @@ data class OperationPo(
     }
     return this
   }
+
+  companion object {
+    fun from(operation: Operation): OperationPo {
+      return if (operation is OperationPo) operation
+      else {
+        val po = OperationPo(
+          id = operation.id,
+          ts = operation.ts,
+          type = operation.type,
+          operatorId = operation.operatorId,
+          operatorName = operation.operatorName,
+          targetId = operation.targetId,
+          targetType = operation.targetType,
+          title = operation.title,
+          remark = operation.remark,
+          result = operation.result,
+          batch = operation.batch
+        )
+        operation.items.forEach { po.addItem(OperationItemPo.from(it)) }
+        po
+      }
+    }
+  }
 }
