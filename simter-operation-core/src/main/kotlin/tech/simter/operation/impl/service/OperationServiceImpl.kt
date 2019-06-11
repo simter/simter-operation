@@ -57,7 +57,9 @@ class OperationServiceImpl @Autowired constructor(
           targetId = targetId,
           title = title,
           batch = batch,
-          items = items.map { ImmutableItem.from(it) }.toSet()
+          items = items.map { ImmutableItem.from(it) }.toSet(),
+          remark = remark,
+          result = result
         ))
       }
   }
