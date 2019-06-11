@@ -1,5 +1,11 @@
 # simter-operation changelog
 
+## 0.5.0-M5 2019-06-11
+
+- Fixed error setting JsonIgnoreProperties on jpa po
+- Fixed jpa persistence failed. [#24](https://github.com/simter/simter-operation/issues/24)
+- Fixed missing filed setting
+
 ## 0.5.0-M4 2019-06-10
 
 - Add missing interface parameters on OperationService.Create
