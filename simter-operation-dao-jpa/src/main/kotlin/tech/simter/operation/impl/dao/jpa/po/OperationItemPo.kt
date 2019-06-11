@@ -16,7 +16,7 @@ import javax.persistence.*
 data class OperationItemPo(
   @Id
   override val id: String,
-  override val title: String = id,
+  override val title: String? = id,
   override val valueType: String,
   override val oldValue: String? = null,
   override val newValue: String? = null
@@ -31,4 +31,17 @@ data class OperationItemPo(
     val parent: String,
     val id: String
   ) : java.io.Serializable
+
+  companion object {
+    fun from(item: Operation.Item): OperationItemPo {
+      return if (item is OperationItemPo) item
+      else OperationItemPo(
+        id = item.id,
+        title = item.title,
+        valueType = item.valueType,
+        oldValue = item.oldValue,
+        newValue = item.newValue
+      )
+    }
+  }
 }

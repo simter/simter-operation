@@ -23,7 +23,7 @@ internal class OperationBlockDaoImpl @Autowired constructor(
   override fun create(operation: Operation) {
     // do not use 'repository.save(po)' because it will select it first.
     // directly use 'EntityManager.persist(po)'.
-    em.persist(operation)
+    em.persist(OperationPo.from(operation))
   }
 
   @Suppress("unchecked_cast")
