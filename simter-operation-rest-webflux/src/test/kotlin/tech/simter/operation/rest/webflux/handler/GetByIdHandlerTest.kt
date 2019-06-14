@@ -19,7 +19,6 @@ import java.time.temporal.ChronoUnit
  * Test [GetByIdHandler]
  *
  * @author zf
- * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @MockkBean(OperationService::class)
@@ -29,7 +28,6 @@ class GetByIdHandlerTest @Autowired constructor(
   private val mapper: ObjectMapper,
   private val service: OperationService
 ) {
-
   @Test
   fun `found something`() {
     // mock
@@ -39,19 +37,19 @@ class GetByIdHandlerTest @Autowired constructor(
       ts = now.minusHours(1),
       items = setOf(TestHelper.randomOperationItem(id = "field1"), TestHelper.randomOperationItem(id = "field2"))
     ) // with items
-
     every { service.get(id) } returns Mono.just(operation)
     val responseBody = mapper.writeValueAsString(operation)
 
     // invoke
     val response = client.get().uri("/$id").exchange()
+
     // verify
     response.expectStatus().isOk
       .expectBody()
       .json(responseBody)
-    verify(exactly = 1) {service.get(id)  }
-
+    verify(exactly = 1) { service.get(id) }
   }
+
   @Test
   fun `found nothing`() {
     // mock
@@ -63,6 +61,5 @@ class GetByIdHandlerTest @Autowired constructor(
       .exchange()
       .expectStatus().isNoContent
       .expectBody().isEmpty
-
   }
 }

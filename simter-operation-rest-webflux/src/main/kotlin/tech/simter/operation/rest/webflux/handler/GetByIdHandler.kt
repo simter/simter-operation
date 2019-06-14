@@ -14,7 +14,6 @@ import tech.simter.operation.core.OperationService
  * The [HandlerFunction] for get [Operation] by id
  *
  * @author zf
- * @author RJ
  */
 @Component
 class GetByIdHandler @Autowired constructor(
@@ -23,10 +22,10 @@ class GetByIdHandler @Autowired constructor(
   override fun handle(request: ServerRequest): Mono<ServerResponse> {
     val mono = operationService.get( request.pathVariable("id"))
     return mono.hasElement()
-      .flatMap { if (it) ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(mono)
-      else noContent().build()
+      .flatMap {
+        if (it) ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(mono)
+        else noContent().build()
       }
-
   }
 
   companion object {
