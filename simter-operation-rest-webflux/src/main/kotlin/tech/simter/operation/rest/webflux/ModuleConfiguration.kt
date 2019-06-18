@@ -13,6 +13,7 @@ import tech.simter.operation.PACKAGE
 import tech.simter.operation.rest.webflux.handler.CreateHandler
 import tech.simter.operation.rest.webflux.handler.FindByBatchHandler
 import tech.simter.operation.rest.webflux.handler.FindByTargetHandler
+import tech.simter.operation.rest.webflux.handler.GetByIdHandler
 
 /**
  * All configuration for this module.
@@ -30,7 +31,8 @@ class ModuleConfiguration @Autowired constructor(
   @Value("\${module.rest-context-path.simter-operation:/operation}") private val contextPath: String,
   private val findByBatchHandler: FindByBatchHandler,
   private val findByTargetHandler: FindByTargetHandler,
-  private val createHandler: CreateHandler
+  private val createHandler: CreateHandler,
+  private val getByIdHandler: GetByIdHandler
 ) {
   private val logger = LoggerFactory.getLogger(ModuleConfiguration::class.java)
 
@@ -48,6 +50,8 @@ class ModuleConfiguration @Autowired constructor(
       FindByTargetHandler.REQUEST_PREDICATE.invoke(findByTargetHandler::handle)
       // GET /batch/{batch} find Operations by batch
       FindByBatchHandler.REQUEST_PREDICATE.invoke(findByBatchHandler::handle)
+      //GET /{id} get one operation by id
+      GetByIdHandler.REQUEST_PREDICATE.invoke(getByIdHandler::handle)
       // POST / create Operation
       CreateHandler.REQUEST_PREDICATE.invoke(createHandler::handle)
       // GET /
