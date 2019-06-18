@@ -5,7 +5,7 @@ import tech.simter.operation.impl.ImmutableOperation
 import tech.simter.operation.impl.ImmutableOperation.ImmutableItem
 import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
-import java.time.temporal.ChronoUnit
+import java.time.temporal.ChronoUnit.SECONDS
 
 /**
  * provide public method of test
@@ -18,7 +18,7 @@ object TestHelper {
     batch: String? = null,
     targetId: String = randomString(),
     targetType: String = randomString(),
-    ts: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+    ts: OffsetDateTime = OffsetDateTime.now().truncatedTo(SECONDS),
     items: Set<Operation.Item> = emptySet()
   ): Operation {
     return ImmutableOperation(
