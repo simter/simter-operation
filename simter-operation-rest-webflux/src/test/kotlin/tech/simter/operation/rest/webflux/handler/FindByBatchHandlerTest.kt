@@ -15,7 +15,7 @@ import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperation
 import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperationItem
 import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
-import java.time.temporal.ChronoUnit
+import java.time.temporal.ChronoUnit.SECONDS
 
 /**
  * Test [FindByBatchHandler]
@@ -35,7 +35,7 @@ class FindByBatchHandlerTest @Autowired constructor(
   fun `found something`() {
     // mock
     val batch = randomString()
-    val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
+    val now = OffsetDateTime.now().truncatedTo(SECONDS)
     val operation1 = randomOperation(batch = batch, ts = now) // without items
     val operation2 = randomOperation(
       batch = batch, ts = now.minusHours(1),

@@ -15,7 +15,7 @@ import tech.simter.operation.core.OperationService
 import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperation
 import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperationItem
 import java.time.OffsetDateTime
-import java.time.temporal.ChronoUnit
+import java.time.temporal.ChronoUnit.MINUTES
 
 /**
  * Test [CreateHandler]
@@ -34,7 +34,7 @@ class CreateHandlerTest @Autowired constructor(
   @Test
   fun `success without items`() {
     // mock
-    val operation = randomOperation(ts = OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES))
+    val operation = randomOperation(ts = OffsetDateTime.now().truncatedTo(MINUTES))
     every { service.create(operation) } returns Mono.empty()
 
     // invoke
@@ -53,7 +53,7 @@ class CreateHandlerTest @Autowired constructor(
   fun `success with items`() {
     // mock
     val operation = randomOperation(
-      ts = OffsetDateTime.now().truncatedTo(ChronoUnit.MINUTES),
+      ts = OffsetDateTime.now().truncatedTo(MINUTES),
       items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
     )
     every { service.create(operation) } returns Mono.empty()

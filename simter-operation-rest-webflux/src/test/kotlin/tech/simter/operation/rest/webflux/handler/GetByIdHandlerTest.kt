@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
-import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import tech.simter.operation.core.OperationService
 import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperation
 import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperationItem
@@ -18,15 +18,14 @@ import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit.SECONDS
 
 /**
- * Test [FindByTargetHandler]
+ * Test [GetByIdHandler]
  *
- * @author zh
- * @author RJ
+ * @author zf
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @MockkBean(OperationService::class)
 @WebFluxTest
-class FindByTargetHandlerTest @Autowired constructor(
+class GetByIdHandlerTest @Autowired constructor(
   private val client: WebTestClient,
   private val mapper: ObjectMapper,
   private val service: OperationService
@@ -34,36 +33,33 @@ class FindByTargetHandlerTest @Autowired constructor(
   @Test
   fun `found something`() {
     // mock
-    val targetType = randomString()
-    val targetId = randomString()
+    val id = randomString()
     val now = OffsetDateTime.now().truncatedTo(SECONDS)
-    val operation1 = randomOperation(targetType = targetType, targetId = targetId, ts = now) // without items
-    val operation2 = randomOperation(
-      targetType = targetType, targetId = targetId, ts = now.minusHours(1),
+    val operation = randomOperation(
+      ts = now.minusHours(1),
       items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
     ) // with items
-    every { service.findByTarget(targetType, targetId) } returns Flux.just(operation1, operation2)
-    val responseBody = mapper.writeValueAsString(listOf(operation1, operation2))
+    every { service.get(id) } returns Mono.just(operation)
+    val responseBody = mapper.writeValueAsString(operation)
 
     // invoke
-    val response = client.get().uri("/target/$targetType/$targetId").exchange()
+    val response = client.get().uri("/$id").exchange()
 
     // verify
     response.expectStatus().isOk
       .expectBody()
       .json(responseBody)
-    verify(exactly = 1) { service.findByTarget(targetType, targetId) }
+    verify(exactly = 1) {service.get(id)  }
   }
 
   @Test
   fun `found nothing`() {
     // mock
-    val targetType = randomString()
-    val targetId = randomString()
-    every { service.findByTarget(targetType, targetId) } returns Flux.empty()
+    val id = randomString()
+    every { service.get(id) } returns Mono.empty()
 
     // invoke and verify
-    client.get().uri("/target/$targetType/$targetId")
+    client.get().uri("/$id")
       .exchange()
       .expectStatus().isNoContent
       .expectBody().isEmpty
