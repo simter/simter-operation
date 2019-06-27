@@ -9,7 +9,7 @@
   </parent>
   <artifactId>simter-operation-bom</artifactId>
   <packaging>pom</packaging>
-  <description>Dependencies</description>
+  <description>BOM</description>
   <developers>
     <developer>
       <name>RJ.Hwang</name>
