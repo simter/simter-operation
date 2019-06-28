@@ -9,8 +9,11 @@ import reactor.core.publisher.Mono
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.impl.ImmutableOperation
+import tech.simter.reactive.context.SystemContext
 import tech.simter.reactive.web.Utils.createWebClient
+import tech.simter.reactive.web.webfilter.JwtWebFilter.Companion.JWT_HEADER_NAME
 import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.json.Json
 import javax.json.JsonObjectBuilder
 
@@ -26,37 +29,57 @@ class OperationDaoImplByWebFlux(
   @Value("\${proxy.host:#{null}}") private val proxyHost: String?,
   @Value("\${proxy.port:#{null}}") private val proxyPort: Int?
 ) : OperationDao {
-  //private val logger: Logger = LoggerFactory.getLogger(OperationDaoImplByWebFlux::class.java)
   private val client: WebClient = createWebClient(
     baseUrl = serverAddress,
     proxyHost = proxyHost,
     proxyPort = proxyPort
   )
 
+  // get `Authorization` header value from context
+  private fun getAuthorizationHeader() = SystemContext.getOptional<String>(JWT_HEADER_NAME)
+
+  // set `Authorization` header value to request
+  private fun addAuthorizationHeader(request: WebClient.RequestHeadersSpec<*>, auth: Optional<String>) =
+    auth.ifPresent { request.header(JWT_HEADER_NAME, auth.get()) }
+
   override fun create(operation: Operation): Mono<Void> {
-    return client.post()
-      .contentType(APPLICATION_JSON)
-      .syncBody(toJson(operation).build().toString())
-      .retrieve()
-      .bodyToMono(Void::class.java)
+    return getAuthorizationHeader().flatMap {
+      client.post()
+        .apply { addAuthorizationHeader(this, it) }
+        .contentType(APPLICATION_JSON)
+        .syncBody(toJson(operation).build().toString())
+        .retrieve()
+        .bodyToMono(Void::class.java)
+    }
   }
 
   override fun get(id: String): Mono<Operation> {
-    TODO("not implemented")
+    return getAuthorizationHeader().flatMap {
+      client.get().uri("/$id")
+        .apply { addAuthorizationHeader(this, it) }
+        .retrieve()
+        .bodyToMono(ImmutableOperation::class.java)
+    }
   }
 
   @Suppress("UNCHECKED_CAST")
   override fun findByBatch(batch: String): Flux<Operation> {
-    return client.get().uri("/batch/$batch")
-      .retrieve()
-      .bodyToFlux(ImmutableOperation::class.java) as Flux<Operation>
+    return getAuthorizationHeader().flatMapMany {
+      client.get().uri("/batch/$batch")
+        .apply { addAuthorizationHeader(this, it) }
+        .retrieve()
+        .bodyToFlux(ImmutableOperation::class.java) as Flux<Operation>
+    }
   }
 
   @Suppress("UNCHECKED_CAST")
   override fun findByTarget(targetType: String, targetId: String): Flux<Operation> {
-    return client.get().uri("/target/$targetType/$targetId")
-      .retrieve()
-      .bodyToFlux(ImmutableOperation::class.java) as Flux<Operation>
+    return getAuthorizationHeader().flatMapMany {
+      client.get().uri("/target/$targetType/$targetId")
+        .apply { addAuthorizationHeader(this, it) }
+        .retrieve()
+        .bodyToFlux(ImmutableOperation::class.java) as Flux<Operation>
+    }
   }
 
   private val tsFormatter: DateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
