@@ -1,5 +1,11 @@
 # simter-operation changelog
 
+## 0.5.0 2019-06-28
+
+- Add web dao implementation [#18](https://github.com/simter/simter-operation/issues/18)
+- Implement Authorization header on dao-web module [#23](https://github.com/simter/simter-operation/issues/23)
+- Implement rest-api `GET /$id` [#22](https://github.com/simter/simter-operation/issues/22)
+
 ## 0.5.0-M5 2019-06-11
 
 - Fixed error setting JsonIgnoreProperties on jpa po
