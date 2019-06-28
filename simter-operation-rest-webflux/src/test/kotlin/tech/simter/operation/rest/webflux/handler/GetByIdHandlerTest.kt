@@ -49,7 +49,7 @@ class GetByIdHandlerTest @Autowired constructor(
     response.expectStatus().isOk
       .expectBody()
       .json(responseBody)
-    verify(exactly = 1) {service.get(id)  }
+    verify(exactly = 1) { service.get(id) }
   }
 
   @Test
@@ -61,7 +61,7 @@ class GetByIdHandlerTest @Autowired constructor(
     // invoke and verify
     client.get().uri("/$id")
       .exchange()
-      .expectStatus().isNoContent
+      .expectStatus().isNotFound
       .expectBody().isEmpty
   }
 }
