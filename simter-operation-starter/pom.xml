@@ -32,6 +32,32 @@
     <db.disabled-datasource>false</db.disabled-datasource>
     <logging.file>target/test.log</logging.file>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+        <version>${spring-boot.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webflux</artifactId>
+        <version>${spring-boot.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>tech.simter.operation</groupId>
@@ -535,6 +561,219 @@
         <dependency>
           <groupId>org.hibernate.validator</groupId>
           <artifactId>hibernate-validator</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- mysql jdbc driver -->
+        <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <profile>
+      <id>jpa-eclipselink-embedded-h2</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.jpa-implementation>eclipselink</db.jpa-implementation>
+        <db.platform>h2</db.platform>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>tech.simter.operation</groupId>
+          <artifactId>simter-operation-dao-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- eclipselink -->
+        <dependency>
+          <groupId>org.eclipse.persistence</groupId>
+          <artifactId>org.eclipse.persistence.jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- embedded h2 -->
+        <dependency>
+          <groupId>com.h2database</groupId>
+          <artifactId>h2</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>jpa-eclipselink-embedded-postgres</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.jpa-implementation>eclipselink</db.jpa-implementation>
+        <db.platform>postgres</db.platform>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>tech.simter.operation</groupId>
+          <artifactId>simter-operation-dao-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- eclipselink -->
+        <dependency>
+          <groupId>org.eclipse.persistence</groupId>
+          <artifactId>org.eclipse.persistence.jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- postgres jdbc driver -->
+        <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- embedded postgres -->
+        <dependency>
+          <groupId>tech.simter</groupId>
+          <artifactId>simter-embedded-database-ext</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>ru.yandex.qatools.embed</groupId>
+          <artifactId>postgresql-embedded</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>jpa-eclipselink-postgres</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.jpa-implementation>eclipselink</db.jpa-implementation>
+        <db.platform>postgres</db.platform>
+        <db.port>5432</db.port>
+        <db.init-mode>never</db.init-mode>
+        <db.url><![CDATA[jdbc:postgresql://${db.host}:${db.port}/${db.name}]]> </db.url>
+        <db.driver-class>org.postgresql.Driver</db.driver-class>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>tech.simter.operation</groupId>
+          <artifactId>simter-operation-dao-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- eclipselink -->
+        <dependency>
+          <groupId>org.eclipse.persistence</groupId>
+          <artifactId>org.eclipse.persistence.jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- postgres jdbc driver -->
+        <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>jpa-eclipselink-embedded-mysql</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.jpa-implementation>eclipselink</db.jpa-implementation>
+        <db.platform>mysql</db.platform>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>tech.simter.operation</groupId>
+          <artifactId>simter-operation-dao-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- eclipselink -->
+        <dependency>
+          <groupId>org.eclipse.persistence</groupId>
+          <artifactId>org.eclipse.persistence.jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- mysql jdbc driver -->
+        <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- embedded mysql -->
+        <dependency>
+          <groupId>tech.simter</groupId>
+          <artifactId>simter-embedded-database-ext</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.wix</groupId>
+          <artifactId>wix-embedded-mysql</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>jpa-eclipselink-mysql</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.jpa-implementation>eclipselink</db.jpa-implementation>
+        <db.platform>mysql</db.platform>
+        <db.port>3306</db.port>
+        <db.init-mode>never</db.init-mode>
+        <db.url><![CDATA[jdbc:mysql://${db.host}:${db.port}/${db.name}]]></db.url>
+        <db.driver-class>com.mysql.cj.jdbc.Driver</db.driver-class>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>tech.simter.operation</groupId>
+          <artifactId>simter-operation-dao-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-jpa</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+
+        <!-- eclipselink -->
+        <dependency>
+          <groupId>org.eclipse.persistence</groupId>
+          <artifactId>org.eclipse.persistence.jpa</artifactId>
           <scope>runtime</scope>
         </dependency>
 

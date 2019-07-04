@@ -15,18 +15,23 @@ See [rest-api.md](../docs/rest-api.md).
 
 ## Maven Profiles
 
-| SN  | Name                            | Default | Supported |
-|-----|---------------------------------|---------|:---------:|
-| 1.1 | reactive-embedded-mongodb       | true    |     √     |
-| 1.2 | reactive-mongodb                |         |     √     |
-| 2.1 | jpa-hibernate-embedded-h2       |         |     √     |
-| 2.2 | jpa-hibernate-embedded-postgres |         |     √     |
-| 2.3 | jpa-hibernate-postgres          |         |     √     |
-| 2.4 | jpa-hibernate-embedded-mysql    |         |     √     |
-| 2.5 | jpa-hibernate-mysql             |         |     √     |
-| 3.1 | r2dbc-embedded-h2               |         |     √     |
-| 3.2 | r2dbc-embedded-postgres         |         |     √     |
-| 3.3 | r2dbc-postgres                  |         |     √     |
+| SN  | Name                              | Default | Supported |
+|-----|-----------------------------------|---------|:---------:|
+| 1.1 | reactive-embedded-mongodb         | true    |     √     |
+| 1.2 | reactive-mongodb                  |         |     √     |
+| 2.1 | jpa-hibernate-embedded-h2         |         |     √     |
+| 2.2 | jpa-hibernate-embedded-postgres   |         |     √     |
+| 2.3 | jpa-hibernate-postgres            |         |     √     |
+| 2.4 | jpa-hibernate-embedded-mysql      |         |     √     |
+| 2.5 | jpa-hibernate-mysql               |         |     √     |
+| 3.1 | jpa-eclipselink-embedded-h2       |         |     √     |
+| 3.2 | jpa-eclipselink-embedded-postgres |         |     √     |
+| 3.3 | jpa-eclipselink-postgres          |         |     √     |
+| 3.4 | jpa-eclipselink-embedded-mysql    |         |     √     |
+| 3.5 | jpa-eclipselink-mysql             |         |     √     |
+| 4.1 | r2dbc-embedded-h2                 |         |     √     |
+| 4.2 | r2dbc-embedded-postgres           |         |     √     |
+| 4.3 | r2dbc-postgres                    |         |     √     |
 
 Use `-P {profile-name}` to override the defaults. Such as:
 
