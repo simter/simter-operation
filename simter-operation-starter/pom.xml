@@ -216,6 +216,10 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
+        <spring.version>${spring.milestone.version}</spring.version>
+        <spring-data-releasetrain.version>${spring-data-releasetrain.milestone.version}</spring-data-releasetrain.version>
+        <spring-boot.version>${spring-boot.milestone.version}</spring-boot.version>
+
         <db.platform>h2</db.platform>
         <db.init-mode>always</db.init-mode>
         <db.disabled-datasource>true</db.disabled-datasource>
@@ -244,6 +248,10 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
+        <spring.version>${spring.milestone.version}</spring.version>
+        <spring-data-releasetrain.version>${spring-data-releasetrain.milestone.version}</spring-data-releasetrain.version>
+        <spring-boot.version>${spring-boot.milestone.version}</spring-boot.version>
+
         <db.platform>postgres</db.platform>
         <!-- default postgres port is 5432, plus 1 to avoid conflict -->
         <db.port>5433</db.port>
@@ -280,6 +288,10 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
+        <spring.version>${spring.milestone.version}</spring.version>
+        <spring-data-releasetrain.version>${spring-data-releasetrain.milestone.version}</spring-data-releasetrain.version>
+        <spring-boot.version>${spring-boot.milestone.version}</spring-boot.version>
+
         <db.platform>postgres</db.platform>
         <db.port>5432</db.port>
         <db.init-mode>never</db.init-mode>
