@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -10,12 +11,6 @@
   <artifactId>simter-operation-dao-jpa</artifactId>
   <packaging>jar</packaging>
   <description>Dao Implementation By JPA</description>
-  <developers>
-    <developer>
-      <name>RJ.Hwang</name>
-      <email>rongjihuang@gmail.com</email>
-    </developer>
-  </developers>
   <properties>
     <db.platform>none</db.platform>
     <db.host>localhost</db.host>
@@ -287,4 +282,14 @@
       </dependencies>
     </profile>
   </profiles>
+  <url>https://github.com/simter/simter-operation/tree/master/simter-operation-dao-jpa</url>
+  <scm>
+    <url>https://github.com/simter/simter-operation.git</url>
+  </scm>
+  <developers>
+    <developer>
+      <name>RJ.Hwang</name>
+      <email>rongjihuang@gmail.com</email>
+    </developer>
+  </developers>
 </project>

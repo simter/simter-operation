@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -10,15 +11,9 @@
   <artifactId>simter-operation-parent</artifactId>
   <packaging>pom</packaging>
   <description>Parent</description>
-  <developers>
-    <developer>
-      <name>RJ.Hwang</name>
-      <email>rongjihuang@gmail.com</email>
-    </developer>
-  </developers>
   <dependencyManagement>
     <dependencies>
-      <!-- junit5 -->
+      <!-- bom order  -->
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
@@ -26,7 +21,13 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- reactor -->
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-bom</artifactId>
+        <version>${kotlin.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>io.projectreactor</groupId>
         <artifactId>reactor-bom</artifactId>
@@ -34,7 +35,13 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- spring -->
+      <dependency>
+        <groupId>io.r2dbc</groupId>
+        <artifactId>r2dbc-bom</artifactId>
+        <version>${r2dbc.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-framework-bom</artifactId>
@@ -42,11 +49,29 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- spring boot -->
+      <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-releasetrain</artifactId>
+        <version>${spring-data-releasetrain.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-r2dbc</artifactId>
+        <version>${spring-data-r2dbc.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot.experimental</groupId>
+        <artifactId>spring-boot-dependencies-r2dbc</artifactId>
+        <version>${spring-boot-r2dbc.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -86,11 +111,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-launcher</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <scope>test</scope>
@@ -108,7 +128,7 @@
     <dependency>
       <groupId>io.projectreactor.kotlin</groupId>
       <artifactId>reactor-kotlin-extensions</artifactId>
-      <version>${reactor-kotlin-extensions.version}</version>
+      <version>1.0.0.M1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -157,37 +177,16 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>flatten-maven-plugin</artifactId>
-        <inherited>true</inherited>
-        <executions>
-          <execution>
-            <!-- Tidy up all POMs before they are published -->
-            <id>flatten</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>flatten</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}</outputDirectory>
-              <flattenedPomFilename>flattened-pom.xml</flattenedPomFilename>
-              <updatePomFile>true</updatePomFile>
-              <flattenMode>clean</flattenMode>
-              <pomElements>
-                <parent>resolve</parent>
-                <properties>interpolate</properties>
-                <dependencyManagement>keep</dependencyManagement>
-                <dependencies>keep</dependencies>
-                <pluginManagement>keep</pluginManagement>
-                <name>resolve</name>
-                <description>resolve</description>
-                <profiles>remove</profiles>
-              </pomElements>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
+  <url>https://github.com/simter/simter-operation/tree/master/simter-operation-parent</url>
+  <scm>
+    <url>https://github.com/simter/simter-operation.git</url>
+  </scm>
+  <developers>
+    <developer>
+      <name>RJ.Hwang</name>
+      <email>rongjihuang@gmail.com</email>
+    </developer>
+  </developers>
 </project>
