@@ -10,12 +10,6 @@
   <artifactId>simter-operation-bom</artifactId>
   <packaging>pom</packaging>
   <description>BOM</description>
-  <developers>
-    <developer>
-      <name>RJ.Hwang</name>
-      <email>rongjihuang@gmail.com</email>
-    </developer>
-  </developers>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -50,37 +44,14 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>flatten-maven-plugin</artifactId>
-        <inherited>false</inherited>
-        <executions>
-          <execution>
-            <!-- Flatten and simplify our own POM for install/deploy -->
-            <id>flatten</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>flatten</goal>
-            </goals>
-            <configuration>
-              <flattenMode>clean</flattenMode>
-              <pomElements>
-                <parent>resolve</parent>
-                <name>keep</name>
-                <description>keep</description>
-                <dependencyManagement>keep</dependencyManagement>
-                <dependencies>keep</dependencies>
-                <pluginManagement>keep</pluginManagement>
-                <developers>keep</developers>
-                <properties>interpolate</properties>
-                <profiles>remove</profiles>
-              </pomElements>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+  <url>https://github.com/simter/simter-operation/tree/master/simter-operation-bom</url>
+  <scm>
+    <url>https://github.com/simter/simter-operation.git</url>
+  </scm>
+  <developers>
+    <developer>
+      <name>RJ.Hwang</name>
+      <email>rongjihuang@gmail.com</email>
+    </developer>
+  </developers>
 </project>

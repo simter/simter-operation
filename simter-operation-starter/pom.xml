@@ -786,4 +786,14 @@
       </dependencies>
     </profile>
   </profiles>
+  <url>https://github.com/simter/simter-operation/tree/master/simter-operation-starter</url>
+  <scm>
+    <url>https://github.com/simter/simter-operation.git</url>
+  </scm>
+  <developers>
+    <developer>
+      <name>RJ.Hwang</name>
+      <email>rongjihuang@gmail.com</email>
+    </developer>
+  </developers>
 </project>

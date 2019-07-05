@@ -56,6 +56,12 @@
                 <parent>resolve</parent>
                 <modules>remove</modules>
                 <properties>interpolate</properties>
+                <dependencyManagement>keep</dependencyManagement>
+                <dependencies>keep</dependencies>
+                <pluginManagement>keep</pluginManagement>
+                <name>resolve</name>
+                <description>resolve</description>
+                <profiles>remove</profiles>
               </pomElements>
             </configuration>
           </execution>

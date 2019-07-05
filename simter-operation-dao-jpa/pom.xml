@@ -10,12 +10,6 @@
   <artifactId>simter-operation-dao-jpa</artifactId>
   <packaging>jar</packaging>
   <description>Dao Implementation By JPA</description>
-  <developers>
-    <developer>
-      <name>RJ.Hwang</name>
-      <email>rongjihuang@gmail.com</email>
-    </developer>
-  </developers>
   <properties>
     <db.platform>none</db.platform>
     <db.host>localhost</db.host>
@@ -287,4 +281,14 @@
       </dependencies>
     </profile>
   </profiles>
+  <url>https://github.com/simter/simter-operation/tree/master/simter-operation-dao-jpa</url>
+  <scm>
+    <url>https://github.com/simter/simter-operation.git</url>
+  </scm>
+  <developers>
+    <developer>
+      <name>RJ.Hwang</name>
+      <email>rongjihuang@gmail.com</email>
+    </developer>
+  </developers>
 </project>

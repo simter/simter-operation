@@ -10,12 +10,6 @@
   <artifactId>simter-operation-rest-webflux</artifactId>
   <packaging>jar</packaging>
   <description>Rest API Implementation By WebFlux</description>
-  <developers>
-    <developer>
-      <name>RJ.Hwang</name>
-      <email>rongjihuang@gmail.com</email>
-    </developer>
-  </developers>
   <dependencies>
     <dependency>
       <groupId>tech.simter.reactive</groupId>
@@ -57,4 +51,14 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <url>https://github.com/simter/simter-operation/tree/master/simter-operation-rest-webflux</url>
+  <scm>
+    <url>https://github.com/simter/simter-operation.git</url>
+  </scm>
+  <developers>
+    <developer>
+      <name>RJ.Hwang</name>
+      <email>rongjihuang@gmail.com</email>
+    </developer>
+  </developers>
 </project>

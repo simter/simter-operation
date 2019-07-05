@@ -10,12 +10,6 @@
   <artifactId>simter-operation-dao-web</artifactId>
   <packaging>jar</packaging>
   <description>Dao Implementation By WebFlux</description>
-  <developers>
-    <developer>
-      <name>RJ.Hwang</name>
-      <email>rongjihuang@gmail.com</email>
-    </developer>
-  </developers>
   <dependencies>
     <dependency>
       <groupId>tech.simter.reactive</groupId>
@@ -89,4 +83,14 @@
       </build>
     </profile>
   </profiles>
+  <url>https://github.com/simter/simter-operation/tree/master/simter-operation-dao-web</url>
+  <scm>
+    <url>https://github.com/simter/simter-operation.git</url>
+  </scm>
+  <developers>
+    <developer>
+      <name>RJ.Hwang</name>
+      <email>rongjihuang@gmail.com</email>
+    </developer>
+  </developers>
 </project>
