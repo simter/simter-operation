@@ -17,7 +17,7 @@ See [rest-api.md](../docs/rest-api.md).
 
 | SN  | Name                              | Default | Supported |
 |-----|-----------------------------------|---------|:---------:|
-| 1.1 | reactive-embedded-mongodb         | true    |     √     |
+| 1.1 | reactive-embedded-mongodb         |         |     √     |
 | 1.2 | reactive-mongodb                  |         |     √     |
 | 2.1 | jpa-hibernate-embedded-h2         |         |     √     |
 | 2.2 | jpa-hibernate-embedded-postgres   |         |     √     |
@@ -29,7 +29,7 @@ See [rest-api.md](../docs/rest-api.md).
 | 3.3 | jpa-eclipselink-postgres          |         |     √     |
 | 3.4 | jpa-eclipselink-embedded-mysql    |         |     √     |
 | 3.5 | jpa-eclipselink-mysql             |         |     √     |
-| 4.1 | r2dbc-embedded-h2                 |         |     √     |
+| 4.1 | r2dbc-embedded-h2                 | true    |     √     |
 | 4.2 | r2dbc-embedded-postgres           |         |     √     |
 | 4.3 | r2dbc-postgres                    |         |     √     |
 
