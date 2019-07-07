@@ -1,5 +1,15 @@
 # simter-operation changelog
 
+## 0.6.0 2019-07-05
+
+- Upgrade to simter-1.2.0
+- Use stable spring version on main branch
+- Use milestone spring version for r2dbc
+- Support jpa-eclipselink-x profiles on starter module
+- Fixed EclipseLink config on starter module
+- Polishing pom.xml for deploy to bintray
+- Add pom.xml header line `<?xml version="1.0" encoding="UTF-8"?>`
+
 ## 0.5.0 2019-06-28
 
 - Add web dao implementation [#18](https://github.com/simter/simter-operation/issues/18)
