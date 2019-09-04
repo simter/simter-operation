@@ -1,5 +1,9 @@
 # simter-operation changelog
 
+## 0.6.1 2019-09-04
+
+- Remove unstable dependency reactor-kotlin-extensions-1.0.0.M1
+
 ## 0.6.0 2019-07-05
 
 - Upgrade to simter-1.2.0
