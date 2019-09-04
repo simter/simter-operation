@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import reactor.kotlin.core.publisher.toFlux
-import reactor.kotlin.test.test
+import reactor.test.test
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.impl.ImmutableOperation
 import tech.simter.operation.impl.dao.r2dbc.TestHelper.randomOperation
@@ -48,7 +48,7 @@ class FindByBatchMethodImplTest @Autowired constructor(
   }
 
   private fun saveAll(vararg list: ImmutableOperation): Mono<Void> {
-    return list.toFlux().flatMap { dao.create(it).thenReturn(it) }.then()
+    return Flux.fromArray(list).flatMap { dao.create(it).thenReturn(it) }.then()
   }
 
   @Test

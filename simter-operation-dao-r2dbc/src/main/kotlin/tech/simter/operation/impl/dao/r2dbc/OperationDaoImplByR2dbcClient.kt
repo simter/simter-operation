@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import reactor.kotlin.core.publisher.toFlux
-import reactor.kotlin.core.publisher.toMono
+import reactor.core.publisher.toFlux
+import reactor.core.publisher.toMono
 import tech.simter.operation.TABLE_OPERATION
 import tech.simter.operation.TABLE_OPERATION_ITEM
 import tech.simter.operation.core.Operation
