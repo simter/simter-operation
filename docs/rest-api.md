@@ -6,12 +6,13 @@ For example a url `/target/User/admin`, its really path should be `{context-path
 
 Provide rest APIs:
 
-| SN | Method | Url                           | Supported | Description
-|----|--------|-------------------------------|:---------:|-------------
-| 1  | POST   | /                             |     √    | Create one operation
-| 2  | GET    | /target/$targetType/$targetId |     √    | Find all operations of specific target
-| 3  | GET    | /batch/$batch                 |     √    | Find all operations of specific batch
-| 4  | GET    | /$id                          |           | Get one operation
+| SN | Method | Url                                                   | Supported | Description
+|----|--------|-------------------------------------------------------|:---------:|-------------
+| 1  | POST   | /                                                     |     √    | Create one operation
+| 2  | GET    | /target/$targetType/$targetId                         |     √    | Find all operations of specific target
+| 3  | GET    | /batch/$batch                                         |     √    | Find all operations of specific batch
+| 4  | GET    | /$id                                                  |           | Get one operation
+| 5  | GET    | /?target-type=x&page-no=x&page-size=x&search=x        |           | Find operation data by page
 
 ## 1. Create one operation
 
@@ -137,4 +138,50 @@ If not exists, response:
 
 ```
 404 No Found
+```
+
+## 5. Find operation data by page
+
+**Request**
+
+```
+GET /?target-type=x&page-no=x&page-size=x&search=x
+```
+
+| Name        | Require | Description
+|-------------|---------|-------------
+| target-type | false   | the target's type, such as "User"
+| page-no     | false   | page number, default 1
+| page-size   | false   | page size, default 25
+| search      | false   | fuzzy search value, match with title and operatorName
+
+**Response**
+
+```
+200 OK
+Content-Type : application/json;charset=utf-8
+
+{ count, pageNo, pageSize, rows: [{ROW}, ...] }
+```
+
+> result sort by operationTime desc.
+
+`{ROW}` structure:
+
+| Name                    | Type    | Description
+|-------------------------|---------|-------------
+| id                      | Long    | operation id
+| type                    | String  | operation type, such as "Creation"、"Modification"、"Deletion"
+| operationTime           | String  | operation time, format as `yyyy-MM-dd HH:mm:ss`
+| title                   | String  | operation title
+| operatorName            | String  | operator name
+| targetType              | String  | the target's type, such as "User"
+
+if do not have read permission then response return:  
+
+```
+403 Forbidden
+Content-Type : plain/text;charset=utf-8
+
+permission denied!
 ```
