@@ -8,9 +8,9 @@ Provide rest APIs:
 
 | SN | Method | Url                           | Supported | Description
 |----|--------|-------------------------------|:---------:|-------------
-| 1  | POST   | /                             |     √     | Create one operation
-| 2  | GET    | /target/$targetType/$targetId |     √     | Find all operations of specific target
-| 3  | GET    | /batch/$batch                 |     √     | Find all operations of specific batch
+| 1  | POST   | /                             |     √    | Create one operation
+| 2  | GET    | /target/$targetType/$targetId |     √    | Find all operations of specific target
+| 3  | GET    | /batch/$batch                 |     √    | Find all operations of specific batch
 | 4  | GET    | /$id                          |           | Get one operation
 
 ## 1. Create one operation
