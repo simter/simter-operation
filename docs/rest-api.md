@@ -13,6 +13,7 @@ Provide rest APIs:
 | 3  | GET    | /batch/$batch                                         |     √    | Find all operations of specific batch
 | 4  | GET    | /$id                                                  |           | Get one operation
 | 5  | GET    | /?target-type=x&page-no=x&page-size=x&search=x        |           | Find operation data by page
+| 6  | GET    | /target-type/                                         |           | Find all distinct target type
 
 ## 1. Create one operation
 
@@ -185,3 +186,21 @@ Content-Type : plain/text;charset=utf-8
 
 permission denied!
 ```
+
+## 6. Find all distinct target type
+
+**Request**
+
+```
+GET /target-type
+```
+
+**Response**
+
+```
+200 OK
+Content-Type : application/json;charset=utf-8
+
+["RepairOrder", "RepairItem", ...]
+```
+> result sort by targetType asc.
