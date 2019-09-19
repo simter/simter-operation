@@ -2,6 +2,7 @@ package tech.simter.operation.impl.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -80,5 +81,9 @@ class OperationServiceImpl @Autowired constructor(
     return moduleAuthorizer.verifyHasPermission(OPERATION_READ).thenMany(
       dao.findByTarget(targetType, targetId)
     )
+  }
+
+  override fun find(targetTypes: List<String>?, pageNo: Int, pageSize: Int, search: String?): Mono<Page<Operation>> {
+    TODO("not implemented")
   }
 }
