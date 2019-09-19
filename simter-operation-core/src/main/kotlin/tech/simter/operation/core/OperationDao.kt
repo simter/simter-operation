@@ -1,5 +1,6 @@
 package tech.simter.operation.core
 
+import org.springframework.data.domain.Page
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -36,4 +37,11 @@ interface OperationDao {
    * Return [Operation]s order by [Operation.ts] desc or [Flux.empty] if found nothing
    */
   fun findByTarget(targetType: String, targetId: String): Flux<Operation>
+
+  /**
+   * Find [Page<Operation>] with the specific [targetTypes] and [search].
+   *
+   * Return [Page<Operation>] order by [Operation.ts] desc.
+   */
+  fun find(targetTypes: List<String>? = null, pageNo: Int = 1, pageSize: Int = 25, search: String? = null): Mono<Page<Operation>>
 }
