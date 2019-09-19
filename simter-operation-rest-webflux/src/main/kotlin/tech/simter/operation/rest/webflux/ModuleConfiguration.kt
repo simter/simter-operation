@@ -7,13 +7,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.springframework.data.domain.Page
 import org.springframework.http.MediaType.TEXT_PLAIN
 import org.springframework.web.reactive.function.server.router
 import tech.simter.operation.PACKAGE
-import tech.simter.operation.rest.webflux.handler.CreateHandler
-import tech.simter.operation.rest.webflux.handler.FindByBatchHandler
-import tech.simter.operation.rest.webflux.handler.FindByTargetHandler
-import tech.simter.operation.rest.webflux.handler.GetByIdHandler
+import tech.simter.operation.rest.webflux.handler.*
 
 /**
  * All configuration for this module.
@@ -29,6 +27,7 @@ import tech.simter.operation.rest.webflux.handler.GetByIdHandler
 class ModuleConfiguration @Autowired constructor(
   @Value("\${module.version.simter-operation:UNKNOWN}") private val version: String,
   @Value("\${module.rest-context-path.simter-operation:/operation}") private val contextPath: String,
+  private val findHandler: FindHandler,
   private val findByBatchHandler: FindByBatchHandler,
   private val findByTargetHandler: FindByTargetHandler,
   private val createHandler: CreateHandler,
@@ -46,6 +45,8 @@ class ModuleConfiguration @Autowired constructor(
   @ConditionalOnMissingBean(name = ["$PACKAGE.rest.webflux.Routes"])
   fun operationRoutes() = router {
     contextPath.nest {
+      // GET /?target-type=x&page-no=x&page-size=x&search=x find operation data by page
+      FindHandler.REQUEST_PREDICATE.invoke(findHandler::handle)
       // GET /target/{targetType}/{targetId} find Operations by target
       FindByTargetHandler.REQUEST_PREDICATE.invoke(findByTargetHandler::handle)
       // GET /batch/{batch} find Operations by batch
@@ -59,3 +60,11 @@ class ModuleConfiguration @Autowired constructor(
     }
   }
 }
+
+// Convert [Page] to a platform-specific [Map] structure
+fun <T : Any> Page<T>.convert(): Map<String, Any?> = mapOf(
+  "count" to this.totalElements,
+  "pageNo" to this.pageable.pageNumber + 1,
+  "pageSize" to this.pageable.pageSize,
+  "rows" to this.content
+)
