@@ -151,7 +151,7 @@ GET /?target-type=x&page-no=x&page-size=x&search=x
 
 | Name        | Require | Description
 |-------------|---------|-------------
-| target-type | false   | the target's type, such as "User"
+| target-type | false   | the target's type, support combile multiple types by comma, such as "Type1,Type2"
 | page-no     | false   | page number, default 1
 | page-size   | false   | page size, default 25
 | search      | false   | fuzzy search value, match with title and operatorName
