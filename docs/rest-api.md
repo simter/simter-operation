@@ -6,14 +6,14 @@ For example a url `/target/User/admin`, its really path should be `{context-path
 
 Provide rest APIs:
 
-| SN | Method | Url                                                   | Supported | Description
-|----|--------|-------------------------------------------------------|:---------:|-------------
-| 1  | POST   | /                                                     |     √    | Create one operation
-| 2  | GET    | /target/$targetType/$targetId                         |     √    | Find all operations of specific target
-| 3  | GET    | /batch/$batch                                         |     √    | Find all operations of specific batch
-| 4  | GET    | /$id                                                  |           | Get one operation
-| 5  | GET    | /?target-type=x&page-no=x&page-size=x&search=x        |           | Find operation data by page
-| 6  | GET    | /target-type/                                         |           | Find all distinct target type
+| SN | Method | Url                                            | Supported | Description
+|----|--------|------------------------------------------------|:---------:|-------------
+| 1  | POST   | /                                              |     √     | Create one operation
+| 2  | GET    | /target/$targetType/$targetId                  |     √     | Find all operations of specific target
+| 3  | GET    | /batch/$batch                                  |     √     | Find all operations of specific batch
+| 4  | GET    | /$id                                           |     √     | Get one operation
+| 5  | GET    | /?target-type=x&page-no=x&page-size=x&search=x |     √     | Find pageable operations
+| 6  | GET    | /target-type                                   |     √     | Find all target types
 
 ## 1. Create one operation
 
@@ -71,13 +71,13 @@ Content-Type : application/json
 [$operation, ...]
 ```
 
-
 `$operation` 's json structure: it is the same with `$operation` above in「1. Create one operation」,
 but add more below:
 
 | Name             | Type    | Require | Description
 |------------------|---------|---------|-------------
 | id               | String  | true    | operation's identifier
+| ts               | String  | true    | tThe operated date-time
 
 If found nothing, response:
 
@@ -141,7 +141,7 @@ If not exists, response:
 404 No Found
 ```
 
-## 5. Find operation data by page
+## 5. Find pageable operations
 
 **Request**
 
@@ -165,7 +165,7 @@ Content-Type : application/json;charset=utf-8
 { count, pageNo, pageSize, rows: [{ROW}, ...] }
 ```
 
-> result sort by operationTime desc.
+> `rows` is sorted by operationTime desc.
 
 `{ROW}` structure:
 
@@ -184,10 +184,10 @@ if do not have read permission then response return:
 403 Forbidden
 Content-Type : plain/text;charset=utf-8
 
-permission denied!
+Permission denied!
 ```
 
-## 6. Find all distinct target type
+## 6. Find all target types
 
 **Request**
 
@@ -203,4 +203,4 @@ Content-Type : application/json;charset=utf-8
 
 ["RepairOrder", "RepairItem", ...]
 ```
-> result sort by targetType asc.
+> Sort by target type asc.
