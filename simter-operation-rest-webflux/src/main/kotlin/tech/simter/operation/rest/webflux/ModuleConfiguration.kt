@@ -45,7 +45,7 @@ class ModuleConfiguration @Autowired constructor(
   @ConditionalOnMissingBean(name = ["$PACKAGE.rest.webflux.Routes"])
   fun operationRoutes() = router {
     contextPath.nest {
-      // GET /?target-type=x&page-no=x&page-size=x&search=x find operation data by page
+      // GET /?target-type=x&page-no=x&page-size=x&search=x find pageable operations
       FindHandler.REQUEST_PREDICATE.invoke(findHandler::handle)
       // GET /target/{targetType}/{targetId} find Operations by target
       FindByTargetHandler.REQUEST_PREDICATE.invoke(findByTargetHandler::handle)
