@@ -25,6 +25,10 @@
       <artifactId>spring-boot</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-commons</artifactId>
+    </dependency>
   </dependencies>
   <url>https://github.com/simter/simter-operation/tree/master/simter-operation-core</url>
   <scm>
