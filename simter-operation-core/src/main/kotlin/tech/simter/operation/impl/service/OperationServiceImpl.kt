@@ -84,6 +84,8 @@ class OperationServiceImpl @Autowired constructor(
   }
 
   override fun find(targetTypes: List<String>?, pageNo: Int, pageSize: Int, search: String?): Mono<Page<Operation>> {
-    TODO("not implemented")
+    return moduleAuthorizer.verifyHasPermission(OPERATION_READ).then(
+      Mono.defer { dao.find(targetTypes, pageNo, pageSize, search) }
+    )
   }
 }
