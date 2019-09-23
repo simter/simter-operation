@@ -18,7 +18,8 @@ object TestHelper {
     targetId: String = randomString(),
     targetType: String = randomString(),
     ts: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS),
-    items: Set<OperationItemPo> = emptySet()
+    items: Set<OperationItemPo> = emptySet(),
+    title: String = randomString()
   ): OperationPo {
     return OperationPo(
       batch = batch,
@@ -28,7 +29,7 @@ object TestHelper {
       operatorName = randomString(),
       targetId = targetId,
       targetType = targetType,
-      title = randomString()
+      title = title
     ).apply { items.forEach { addItem(it) } }
   }
 
