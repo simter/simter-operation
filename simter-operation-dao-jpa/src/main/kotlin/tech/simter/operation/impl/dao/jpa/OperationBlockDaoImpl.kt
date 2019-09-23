@@ -116,7 +116,11 @@ internal class OperationBlockDaoImpl @Autowired constructor(
     )
   }
 
+  @Transactional(readOnly = true)
   override fun findTargetTypes(): List<String> {
-    TODO("not implemented")
+    val resultQ = "select distinct target_type from st_operation s order by s.target_type asc"
+    val resultQuery = em.createNativeQuery(resultQ)
+
+    return resultQuery.resultList as List<String>
   }
 }
