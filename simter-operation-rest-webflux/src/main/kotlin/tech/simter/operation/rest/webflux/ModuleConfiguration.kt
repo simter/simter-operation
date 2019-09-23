@@ -27,6 +27,7 @@ import tech.simter.operation.rest.webflux.handler.*
 class ModuleConfiguration @Autowired constructor(
   @Value("\${module.version.simter-operation:UNKNOWN}") private val version: String,
   @Value("\${module.rest-context-path.simter-operation:/operation}") private val contextPath: String,
+  private val findTargetTypesHandler: FindTargetTypesHandler,
   private val findHandler: FindHandler,
   private val findByBatchHandler: FindByBatchHandler,
   private val findByTargetHandler: FindByTargetHandler,
@@ -45,6 +46,8 @@ class ModuleConfiguration @Autowired constructor(
   @ConditionalOnMissingBean(name = ["$PACKAGE.rest.webflux.Routes"])
   fun operationRoutes() = router {
     contextPath.nest {
+      // GET /target-type find all distinct target type
+      FindTargetTypesHandler.REQUEST_PREDICATE.invoke(findTargetTypesHandler::handle)
       // GET /?batch=x&target-type=x&target-id=x&search=x&page-no=x&page-size=x find pageable operations
       FindHandler.REQUEST_PREDICATE.invoke(findHandler::handle)
       // GET /target/{targetType}/{targetId} find Operations by target
