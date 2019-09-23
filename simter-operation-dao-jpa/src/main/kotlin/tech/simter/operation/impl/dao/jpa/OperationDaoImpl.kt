@@ -1,6 +1,7 @@
 package tech.simter.operation.impl.dao.jpa
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -34,5 +35,9 @@ class OperationDaoImpl @Autowired constructor(
 
   override fun findByTarget(targetType: String, targetId: String): Flux<Operation> {
     return wrapper.fromIterable { blockDao.findByTarget(targetType, targetId) }
+  }
+
+  override fun find(targetTypes: List<String>?, pageNo: Int, pageSize: Int, search: String?): Mono<Page<Operation>> {
+    TODO("not implemented")
   }
 }

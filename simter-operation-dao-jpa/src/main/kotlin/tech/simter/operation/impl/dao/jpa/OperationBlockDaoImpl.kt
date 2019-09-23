@@ -1,6 +1,7 @@
 package tech.simter.operation.impl.dao.jpa
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -44,5 +45,11 @@ internal class OperationBlockDaoImpl @Autowired constructor(
   @Transactional(readOnly = true)
   override fun findByTarget(targetType: String, targetId: String): List<Operation> {
     return repository.findByTargetTypeAndTargetId(targetType, targetId, Sort.by(Sort.Direction.DESC, "ts"))
+  }
+
+  @Suppress("unchecked_cast")
+  @Transactional(readOnly = true)
+  override fun find(targetTypes: List<String>?, pageNo: Int, pageSize: Int, search: String?): Page<Operation> {
+    TODO("not implemented")
   }
 }
