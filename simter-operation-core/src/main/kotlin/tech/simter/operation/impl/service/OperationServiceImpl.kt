@@ -97,6 +97,8 @@ class OperationServiceImpl @Autowired constructor(
   }
 
   override fun findTargetTypes(): Flux<String> {
-    TODO("not implemented")
+    return moduleAuthorizer.verifyHasPermission(OPERATION_READ).thenMany(
+      dao.findTargetTypes()
+    )
   }
 }
