@@ -138,7 +138,6 @@
     <dependency>
       <groupId>tech.simter</groupId>
       <artifactId>simter-util</artifactId>
-      <scope>test</scope>
     </dependency>
   </dependencies>
   <build>
