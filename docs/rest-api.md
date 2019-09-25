@@ -6,14 +6,14 @@ For example a url `/target/User/admin`, its really path should be `{context-path
 
 Provide rest APIs:
 
-| SN | Method | Url                                            | Supported | Description
-|----|--------|------------------------------------------------|:---------:|-------------
-| 1  | POST   | /                                              |     √     | Create one operation
-| 2  | GET    | /target/$targetType/$targetId                  |     √     | Find all operations of specific target
-| 3  | GET    | /batch/$batch                                  |     √     | Find all operations of specific batch
-| 4  | GET    | /$id                                           |     √     | Get one operation
-| 5  | GET    | /?target-type=x&page-no=x&page-size=x&search=x |     √     | Find pageable operations
-| 6  | GET    | /target-type                                   |     √     | Find all target types
+| SN | Method | Url                           | Supported | Description
+|----|--------|-------------------------------|:---------:|-------------
+| 1  | POST   | /                             |     √     | Create one operation
+| 2  | GET    | /target/$targetType/$targetId |     √     | Find all operations of specific target
+| 3  | GET    | /batch/$batch                 |     √     | Find all operations of specific batch
+| 4  | GET    | /$id                          |     √     | Get one operation
+| 5  | GET    | /                             |     √     | Find pageable operations
+| 6  | GET    | /target-type                  |     √     | Find all target types
 
 ## 1. Create one operation
 
@@ -77,7 +77,7 @@ but add more below:
 | Name             | Type    | Require | Description
 |------------------|---------|---------|-------------
 | id               | String  | true    | operation's identifier
-| ts               | String  | true    | tThe operated date-time
+| ts               | String  | true    | the operated date-time, ISO format such as `2019-01-01T08:30:10+08:00`
 
 If found nothing, response:
 
@@ -146,15 +146,17 @@ If not exists, response:
 **Request**
 
 ```
-GET /?target-type=x&page-no=x&page-size=x&search=x
+GET /?batch=x?target-type=x?target-id=x&search=x&page-no=x&page-size=x
 ```
 
 | Name        | Require | Description
 |-------------|---------|-------------
-| target-type | false   | the target's type, support combile multiple types by comma, such as "Type1,Type2"
+| batch       | false   | the batch, support multiple values, such as `batch=b1&batch=b2`
+| target-type | false   | the target's type, support multiple values, such as `target-type=t1&target-type=t2`
+| target-id   | false   | the target's id, support multiple values, such as `target-id=1&target-id=2`
+| search      | false   | fuzzy search value, match with title, operatorName, batch and targetType
 | page-no     | false   | page number, default 1
 | page-size   | false   | page size, default 25
-| search      | false   | fuzzy search value, match with title and operatorName
 
 **Response**
 
@@ -169,14 +171,16 @@ Content-Type : application/json
 
 `{ROW}` structure:
 
-| Name                    | Type    | Description
-|-------------------------|---------|-------------
-| id                      | Long    | operation id
-| type                    | String  | operation type, such as "Creation"、"Modification"、"Deletion"
-| operationTime           | String  | operation time, format as `yyyy-MM-dd HH:mm:ss`
-| title                   | String  | operation title
-| operatorName            | String  | operator name
-| targetType              | String  | the target's type, such as "User"
+| Name          | Type    | Description
+|---------------|---------|-------------
+| id            | String  | operation id
+| type          | String  | operation type, such as "Creation"、"Modification"、"Deletion"
+| ts            | String  | operation time, ISO format such as `2019-01-01T08:30:10+08:00`
+| title         | String  | operation title
+| operatorName  | String  | operator name
+| targetType    | String  | the target's type, such as "User"
+| targetId      | String  | the target's id, such as "1"
+| batch         | String  | the batch, such as "Organization"
 
 if do not have read permission then response return:  
 
