@@ -160,7 +160,7 @@ GET /?target-type=x&page-no=x&page-size=x&search=x
 
 ```
 200 OK
-Content-Type : application/json;charset=utf-8
+Content-Type : application/json
 
 { count, pageNo, pageSize, rows: [{ROW}, ...] }
 ```
@@ -182,7 +182,7 @@ if do not have read permission then response return:
 
 ```
 403 Forbidden
-Content-Type : plain/text;charset=utf-8
+Content-Type : plain/text
 
 Permission denied!
 ```
@@ -199,7 +199,7 @@ GET /target-type
 
 ```
 200 OK
-Content-Type : application/json;charset=utf-8
+Content-Type : application/json
 
 ["RepairOrder", "RepairItem", ...]
 ```
