@@ -26,9 +26,11 @@ class FindHandler @Autowired constructor(
 ) : HandlerFunction<ServerResponse> {
   override fun handle(request: ServerRequest): Mono<ServerResponse> {
     var mono = operationService.find(
-      request.queryParam("target-type").map { it.split(",") }.orElse(null),
       request.queryParam("page-no").orElse("1").toInt(),
       request.queryParam("page-size").orElse("25").toInt(),
+      request.queryParams()["batch"] ?: null,
+      request.queryParams()["target-type"] ?: null,
+      request.queryParams()["target-id"] ?: null,
       request.queryParam("search").orElse(null)
     )
 
@@ -45,5 +47,4 @@ class FindHandler @Autowired constructor(
   companion object {
     val REQUEST_PREDICATE: RequestPredicate = GET("/")
   }
-
 }

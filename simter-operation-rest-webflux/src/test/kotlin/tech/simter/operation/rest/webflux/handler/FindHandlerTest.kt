@@ -36,20 +36,29 @@ class FindHandlerTest @Autowired constructor(
   @Test
   fun `find something`() {
     // mock
+    val pageNo = 1
+    val pageSize = 25
+    val batch1 = randomString()
+    val batch2 = randomString()
+    val batches = listOf(batch1, batch2)
     val targetType1 = randomString()
     val targetType2 = randomString()
     val targetTypes = listOf(targetType1,targetType2)
-    val pageNo = 1
-    val pageSize = 25
+    val targetId1 = randomString()
+    val targetId2 = randomString()
+    val targetIds = listOf(targetId1, targetId2)
     val search = randomString()
-    val operation1 = randomOperation(targetType = targetType1)
-    val operation2 = randomOperation(targetType = targetType2)
+    val operation1 = randomOperation(batch = batch1, targetType = targetType1, targetId = targetId1)
+    val operation2 = randomOperation(batch = batch2, targetType = targetType2, targetId = targetId2)
     val operationList = listOf(operation1,operation2)
     val page = PageImpl(operationList, PageRequest.of(pageNo - 1, pageSize), 2)
 
-    every { service.find(targetTypes, pageNo, pageSize, search) } returns Mono.just(page)
+    every { service.find(pageNo, pageSize, batches, targetTypes, targetIds, search) } returns Mono.just(page)
 
-    val response = client.get().uri("/?target-type=${targetTypes.joinToString(",")}&page-no=$pageNo&page-size=$pageSize&search=$search").exchange()
+    val response = client.get().uri("/?batch=$batch1&batch=$batch2&target-type=$targetType1" +
+      "&target-type=$targetType2&target-id=$targetId1&target-id=$targetId2" +
+      "&page-no=$pageNo&page-size=$pageSize&search=$search").exchange()
+
     val responseBody = mapper.writeValueAsString(page.convert())
 
     // invoke
@@ -60,7 +69,7 @@ class FindHandlerTest @Autowired constructor(
       .json(responseBody)
 
     // verify
-    verify { service.find(targetTypes, pageNo, pageSize, search) }
+    verify { service.find(pageNo, pageSize, batches, targetTypes, targetIds, search) }
   }
 
   @Test
@@ -71,7 +80,7 @@ class FindHandlerTest @Autowired constructor(
     val emptyList = listOf<Operation>()
     val page = PageImpl(emptyList, PageRequest.of(pageNo - 1, pageSize), 0)
 
-    every { service.find(null, pageNo, pageSize,null) } returns Mono.just(page)
+    every { service.find(pageNo, pageSize, null, null, null, null) } returns Mono.just(page)
 
     val response = client.get().uri("/?page-no=$pageNo&page-size=$pageSize").exchange()
 
@@ -85,7 +94,7 @@ class FindHandlerTest @Autowired constructor(
       .jsonPath("$.pageSize").isEqualTo(pageSize)
       .jsonPath("$.rows").isEmpty
     // verify
-    verify { service.find(null, pageNo, pageSize, null) }
+    verify { service.find(pageNo, pageSize, null, null, null, null) }
   }
 
   @Test
