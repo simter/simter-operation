@@ -37,7 +37,14 @@ class OperationDaoImpl @Autowired constructor(
     return wrapper.fromIterable { blockDao.findByTarget(targetType, targetId) }
   }
 
-  override fun find(targetTypes: List<String>?, pageNo: Int, pageSize: Int, search: String?): Mono<Page<Operation>> {
-    return wrapper.fromCallable { blockDao.find(targetTypes, pageNo, pageSize, search) }
+  override fun find(
+    pageNo: Int,
+    pageSize: Int,
+    batches: List<String>?,
+    targetTypes: List<String>?,
+    targetIds: List<String>?,
+    search: String?
+  ): Mono<Page<Operation>> {
+    return wrapper.fromCallable { blockDao.find(pageNo, pageSize, batches, targetTypes, targetIds, search) }
   }
 }
