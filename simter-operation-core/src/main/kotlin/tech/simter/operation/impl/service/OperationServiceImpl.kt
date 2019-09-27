@@ -92,7 +92,7 @@ class OperationServiceImpl @Autowired constructor(
     search: String?
   ): Mono<Page<Operation>> {
     return moduleAuthorizer.verifyHasPermission(OPERATION_READ).then(
-      Mono.defer { dao.find(targetTypes, pageNo, pageSize, search) }
+      Mono.defer { dao.find(pageNo, pageSize, batches, targetTypes, targetIds, search) }
     )
   }
 }
