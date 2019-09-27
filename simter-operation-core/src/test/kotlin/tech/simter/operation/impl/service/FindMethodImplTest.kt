@@ -34,20 +34,22 @@ class FindMethodImplTest @Autowired constructor(
   @Test
   fun `find successful`() {
     // mock
-    val targetTypes = listOf<String>()
     val pageNo = 1
     val pageSize = 25
+    val batches = null
+    val targetTypes = listOf<String>()
+    val targetIds = listOf<String>()
     val search = randomString()
     val emptyList = listOf<Operation>()
     val page = PageImpl(emptyList, PageRequest.of(pageNo - 1, pageSize), 0)
     every { moduleAuthorizer.verifyHasPermission(OPERATION_READ) } returns Mono.empty()
-    every { dao.find(targetTypes, pageNo, pageSize, search) } returns Mono.just(page)
+    every { dao.find(pageNo, pageSize, batches, targetTypes, targetIds, search) } returns Mono.just(page)
 
     // invoke and verify
-    service.find(targetTypes, pageNo, pageSize, search).test().expectNext(page).verifyComplete()
+    service.find(pageNo, pageSize, batches, targetTypes, targetIds, search).test().expectNext(page).verifyComplete()
     verify(exactly = 1) {
       moduleAuthorizer.verifyHasPermission(OPERATION_READ)
-      dao.find(targetTypes, pageNo, pageSize, search)
+      dao.find(pageNo, pageSize, batches, targetTypes, targetIds, search)
     }
   }
 
