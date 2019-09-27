@@ -18,5 +18,7 @@ data class OperationViewPo(
   override val ts: OffsetDateTime,
   override val title: String? = null,
   override val operatorName: String,
-  override val targetType: String
+  override val targetType: String,
+  override val targetId: String,
+  override val batch: String? = null
 ): OperationView

@@ -14,4 +14,6 @@ interface OperationView {
   val title: String?
   val operatorName: String
   val targetType: String
+  val targetId: String
+  val batch: String?
 }
