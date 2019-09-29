@@ -83,9 +83,16 @@ class OperationServiceImpl @Autowired constructor(
     )
   }
 
-  override fun find(targetTypes: List<String>?, pageNo: Int, pageSize: Int, search: String?): Mono<Page<Operation>> {
+  override fun find(
+    pageNo: Int,
+    pageSize: Int,
+    batches: List<String>?,
+    targetTypes: List<String>?,
+    targetIds: List<String>?,
+    search: String?
+  ): Mono<Page<Operation>> {
     return moduleAuthorizer.verifyHasPermission(OPERATION_READ).then(
-      Mono.defer { dao.find(targetTypes, pageNo, pageSize, search) }
+      Mono.defer { dao.find(pageNo, pageSize, batches, targetTypes, targetIds, search) }
     )
   }
 }

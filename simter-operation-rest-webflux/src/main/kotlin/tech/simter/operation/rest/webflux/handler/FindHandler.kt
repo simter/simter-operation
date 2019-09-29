@@ -25,14 +25,14 @@ class FindHandler @Autowired constructor(
   private val operationService: OperationService
 ) : HandlerFunction<ServerResponse> {
   override fun handle(request: ServerRequest): Mono<ServerResponse> {
-    var mono = operationService.find(
-      request.queryParam("target-type").map { it.split(",") }.orElse(null),
+    return operationService.find(
       request.queryParam("page-no").orElse("1").toInt(),
       request.queryParam("page-size").orElse("25").toInt(),
+      request.queryParams()["batch"],
+      request.queryParams()["target-type"],
+      request.queryParams()["target-id"],
       request.queryParam("search").orElse(null)
-    )
-
-    return mono.map { it.convert() }
+    ).map { it.convert() }
       // response
       .flatMap { ok().contentType(APPLICATION_JSON).syncBody(it) }
       // error mapping
@@ -45,5 +45,4 @@ class FindHandler @Autowired constructor(
   companion object {
     val REQUEST_PREDICATE: RequestPredicate = GET("/")
   }
-
 }
