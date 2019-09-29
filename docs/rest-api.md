@@ -146,7 +146,7 @@ If not exists, response:
 **Request**
 
 ```
-GET /?batch=x?target-type=x?target-id=x&search=x&page-no=x&page-size=x
+GET /?batch=x&target-type=x&target-id=x&search=x&page-no=x&page-size=x
 ```
 
 | Name        | Require | Description
