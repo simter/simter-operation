@@ -1,6 +1,7 @@
 package tech.simter.operation.impl.dao.web
 
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.domain.Page
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
@@ -80,6 +81,11 @@ class OperationDaoImplByWebFlux(
         .retrieve()
         .bodyToFlux(ImmutableOperation::class.java) as Flux<Operation>
     }
+  }
+
+  @Suppress("UNCHECKED_CAST")
+  override fun find(pageNo: Int, pageSize: Int, batches: List<String>?, targetTypes: List<String>?, targetIds: List<String>?, search: String?): Mono<Page<Operation>> {
+    TODO("not implemented")
   }
 
   private val tsFormatter: DateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME

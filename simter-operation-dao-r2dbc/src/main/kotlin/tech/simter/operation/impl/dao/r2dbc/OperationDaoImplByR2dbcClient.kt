@@ -9,6 +9,7 @@ import io.r2dbc.spi.Row
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
@@ -126,6 +127,10 @@ class OperationDaoImplByR2dbcClient @Autowired constructor(
           }
         }.flatMapMany { list -> Flux.fromIterable(list.sortedByDescending { it.ts }) }
     }
+  }
+
+  override fun find(pageNo: Int, pageSize: Int, batches: List<String>?, targetTypes: List<String>?, targetIds: List<String>?, search: String?): Mono<Page<Operation>> {
+    TODO("not implemented")
   }
 
   private fun mergeItems(query: Query, operations: MutableMap<String, ImmutableOperation>)

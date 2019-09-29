@@ -1,6 +1,7 @@
 package tech.simter.operation.impl.dao.mongo
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
@@ -36,5 +37,9 @@ class OperationDaoImpl @Autowired constructor(
   override fun findByTarget(targetType: String, targetId: String): Flux<Operation> {
     return repository.findByTargetTypeAndTargetId(targetType, targetId, Sort.by(Sort.Direction.DESC, "ts"))
       .map { it as Operation }
+  }
+
+  override fun find(pageNo: Int, pageSize: Int, batches: List<String>?, targetTypes: List<String>?, targetIds: List<String>?, search: String?): Mono<Page<Operation>> {
+    TODO("not implemented")
   }
 }
