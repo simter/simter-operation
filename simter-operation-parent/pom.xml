@@ -104,6 +104,12 @@
       <artifactId>kotlin-reflect</artifactId>
     </dependency>
 
+    <!-- simter-util -->
+    <dependency>
+      <groupId>tech.simter</groupId>
+      <artifactId>simter-util</artifactId>
+    </dependency>
+
     <!-- test -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -134,10 +140,6 @@
       <groupId>com.ninja-squad</groupId>
       <artifactId>springmockk</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>tech.simter</groupId>
-      <artifactId>simter-util</artifactId>
     </dependency>
   </dependencies>
   <build>
