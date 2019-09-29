@@ -62,10 +62,19 @@ internal class OperationBlockDaoImpl @Autowired constructor(
 
   @Suppress("unchecked_cast")
   @Transactional(readOnly = true)
-  override fun find(targetTypes: List<String>?, pageNo: Int, pageSize: Int, search: String?): Page<Operation> {
+  override fun find(
+    pageNo: Int,
+    pageSize: Int,
+    batches: List<String>?,
+    targetTypes: List<String>?,
+    targetIds: List<String>?,
+    search: String?
+  ): Page<Operation> {
     val conditions = mutableListOf<String>()
-    targetTypes?.let { conditions.add("target_type in :targetTypes") }
-    search?.let { conditions.add("title like :search or operator_name like :search") }
+    if (!batches.isNullOrEmpty()) conditions.add("batch in :batches")
+    if (!targetTypes.isNullOrEmpty()) conditions.add("target_type in :targetTypes")
+    if (!targetIds.isNullOrEmpty()) conditions.add("target_id in :targetIds")
+    search?.let { conditions.add("title like :search or operator_name like :search or batch like :search or target_type like :search") }
     val conditionQ = conditions.joinToString(" and ")
     val whereQ = if (conditions.isEmpty()) "" else "where $conditionQ"
     val fromQ = "from st_operation s"
@@ -82,9 +91,17 @@ internal class OperationBlockDaoImpl @Autowired constructor(
       .setMaxResults(tech.simter.data.Page.toValidCapacity(pageSize))
     val countQuery = em.createNativeQuery(countQ)
 
-    targetTypes?.let {
-      rowsQuery.setParameter("targetTypes", it)
-      countQuery.setParameter("targetTypes", it)
+    if (!batches.isNullOrEmpty()) {
+      rowsQuery.setParameter("batches", batches)
+      countQuery.setParameter("batches", batches)
+    }
+    if (!targetTypes.isNullOrEmpty()) {
+      rowsQuery.setParameter("targetTypes", targetTypes)
+      countQuery.setParameter("targetTypes", targetTypes)
+    }
+    if (!targetIds.isNullOrEmpty()) {
+      rowsQuery.setParameter("targetIds", targetIds)
+      countQuery.setParameter("targetIds", targetIds)
     }
     search?.let {
       val searchStr = if (it.contains("%")) it else "%$it%"

@@ -19,14 +19,15 @@ object TestHelper {
     targetType: String = randomString(),
     ts: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS),
     items: Set<OperationItemPo> = emptySet(),
-    title: String = randomString()
+    title: String = randomString(),
+    operatorName: String = randomString()
   ): OperationPo {
     return OperationPo(
       batch = batch,
       ts = ts,
       type = randomString(),
       operatorId = randomString(),
-      operatorName = randomString(),
+      operatorName = operatorName,
       targetId = targetId,
       targetType = targetType,
       title = title
