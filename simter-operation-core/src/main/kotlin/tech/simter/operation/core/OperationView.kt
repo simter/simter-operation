@@ -12,6 +12,8 @@ interface OperationView {
   val type: String
   val ts: OffsetDateTime
   val title: String?
+  val result: String?
+  val remark: String?
   val operatorName: String
   val targetType: String
   val targetId: String

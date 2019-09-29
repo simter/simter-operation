@@ -17,6 +17,8 @@ data class OperationViewPo(
   override val type: String,
   override val ts: OffsetDateTime,
   override val title: String? = null,
+  override val result: String? = null,
+  override val remark: String? = null,
   override val operatorName: String,
   override val targetType: String,
   override val targetId: String,
