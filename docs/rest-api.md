@@ -177,6 +177,8 @@ Content-Type : application/json
 | type          | String  | operation type, such as "Creation"、"Modification"、"Deletion"
 | ts            | String  | operation time, ISO format such as `2019-01-01T08:30:10+08:00`
 | title         | String  | operation title
+| result        | String  | operation result
+| remark        | String  | operation remark
 | operatorName  | String  | operator name
 | targetType    | String  | the target's type, such as "User"
 | targetId      | String  | the target's id, such as "1"
