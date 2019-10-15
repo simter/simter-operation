@@ -74,7 +74,7 @@ internal class OperationBlockDaoImpl @Autowired constructor(
     if (!batches.isNullOrEmpty()) conditions.add("batch in :batches")
     if (!targetTypes.isNullOrEmpty()) conditions.add("target_type in :targetTypes")
     if (!targetIds.isNullOrEmpty()) conditions.add("target_id in :targetIds")
-    search?.let { conditions.add("title like :search or operator_name like :search or batch like :search or target_type like :search") }
+    search?.let { conditions.add("(title like :search or operator_name like :search or batch like :search or target_type like :search)") }
     val conditionQ = conditions.joinToString(" and ")
     val whereQ = if (conditions.isEmpty()) "" else "where $conditionQ"
     val fromQ = "from st_operation s"
