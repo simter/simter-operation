@@ -1,5 +1,10 @@
 # simter-operation changelog
 
+## 0.7.0-M1 2019-11-18
+
+- Upgrade to simter-1.3.0-M5
+- Add new pageable operations data API and its implementation.
+
 ## 0.6.1 2019-09-04
 
 - Remove unstable dependency reactor-kotlin-extensions-1.0.0.M1
