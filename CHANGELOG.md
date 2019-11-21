@@ -1,5 +1,9 @@
 # simter-operation changelog
 
+## 0.7.0-M2 2019-11-21
+
+- Upgrade to simter-1.3.0-M6
+
 ## 0.7.0-M1 2019-11-18
 
 - Upgrade to simter-1.3.0-M5
