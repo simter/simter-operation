@@ -23,6 +23,7 @@
     <db.username>tester</db.username>
     <db.password>password</db.password>
     <db.url>~</db.url>
+    <db.protocol>~</db.protocol>
     <db.driver-class>~</db.driver-class>
     <db.init-mode>always</db.init-mode>
     <db.jpa-ddl-auto>none</db.jpa-ddl-auto>
@@ -250,6 +251,7 @@
         <db.init-mode>always</db.init-mode>
         <db.disabled-datasource>true</db.disabled-datasource>
         <db.url>./target/testdb</db.url>
+        <db.protocol>mem</db.protocol>
       </properties>
       <dependencies>
         <dependency>

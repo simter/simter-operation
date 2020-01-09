@@ -2,10 +2,11 @@ spring.test.database.replace: none
 spring:
   datasource:
     platform: @db.platform@
-    url: @db.url@
+    name: @db.name@
     host: @db.host@
     port: @db.port@
-    name: @db.name@  # for postgres
+    url: @db.url@
+    protocol: @db.protocol@
     username: @db.username@
     password: @db.password@
     continue-on-error: @db.continue-on-error@
