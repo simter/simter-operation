@@ -41,7 +41,7 @@ class CreateHandlerTest @Autowired constructor(
     val requestBody = mapper.writeValueAsString(operation)
     val response = client.post().uri("/")
       .contentType(APPLICATION_JSON)
-      .syncBody(requestBody)
+      .bodyValue(requestBody)
       .exchange()
 
     // verify
@@ -63,7 +63,7 @@ class CreateHandlerTest @Autowired constructor(
     //println("requestBody=$requestBody")
     val response = client.post().uri("/")
       .contentType(APPLICATION_JSON)
-      .syncBody(requestBody)
+      .bodyValue(requestBody)
       .exchange()
 
     // verify

@@ -48,7 +48,7 @@ class OperationDaoImplByWebFlux(
       client.post()
         .apply { addAuthorizationHeader(this, it) }
         .contentType(APPLICATION_JSON)
-        .syncBody(toJson(operation).build().toString())
+        .bodyValue(toJson(operation).build().toString())
         .retrieve()
         .bodyToMono(Void::class.java)
     }

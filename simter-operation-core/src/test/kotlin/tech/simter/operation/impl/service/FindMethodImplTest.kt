@@ -7,17 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import reactor.test.test
+import reactor.kotlin.test.test
 import tech.simter.exception.PermissionDeniedException
 import tech.simter.operation.OPERATION_READ
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
-import tech.simter.operation.impl.service.TestHelper.randomOperation
 import tech.simter.reactive.security.ModuleAuthorizer
-import tech.simter.util.RandomUtils
 import tech.simter.util.RandomUtils.randomString
 
 /**
