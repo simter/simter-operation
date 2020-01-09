@@ -103,6 +103,10 @@
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-reflect</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.projectreactor.kotlin</groupId>
+      <artifactId>reactor-kotlin-extensions</artifactId>
+    </dependency>
 
     <!-- simter-util -->
     <dependency>

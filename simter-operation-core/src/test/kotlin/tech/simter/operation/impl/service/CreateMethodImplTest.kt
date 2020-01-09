@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.core.publisher.Mono
-import reactor.test.test
+import reactor.kotlin.test.test
 import tech.simter.operation.OPERATION_CREATE
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService

@@ -2,13 +2,16 @@ package tech.simter.operation.rest.webflux.handler
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.FORBIDDEN
-import org.springframework.http.MediaType.TEXT_PLAIN
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.http.MediaType.TEXT_PLAIN
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.server.*
+import org.springframework.web.reactive.function.server.HandlerFunction
+import org.springframework.web.reactive.function.server.RequestPredicate
 import org.springframework.web.reactive.function.server.RequestPredicates.GET
-import org.springframework.web.reactive.function.server.ServerResponse.status
+import org.springframework.web.reactive.function.server.ServerRequest
+import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
+import org.springframework.web.reactive.function.server.ServerResponse.status
 import reactor.core.publisher.Mono
 import tech.simter.exception.PermissionDeniedException
 import tech.simter.operation.core.Operation
@@ -34,11 +37,11 @@ class FindHandler @Autowired constructor(
       request.queryParam("search").orElse(null)
     ).map { it.convert() }
       // response
-      .flatMap { ok().contentType(APPLICATION_JSON).syncBody(it) }
+      .flatMap { ok().contentType(APPLICATION_JSON).bodyValue(it) }
       // error mapping
       .onErrorResume(PermissionDeniedException::class.java) {
         if (it.message.isNullOrBlank()) status(FORBIDDEN).build()
-        else status(FORBIDDEN).contentType(TEXT_PLAIN).syncBody(it.message ?: "")
+        else status(FORBIDDEN).contentType(TEXT_PLAIN).bodyValue(it.message ?: "")
       }
   }
 

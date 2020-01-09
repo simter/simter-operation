@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
-import reactor.test.test
+import reactor.kotlin.test.test
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.impl.dao.web.TestHelper.randomOperation
 import tech.simter.operation.impl.dao.web.TestHelper.randomOperationItem

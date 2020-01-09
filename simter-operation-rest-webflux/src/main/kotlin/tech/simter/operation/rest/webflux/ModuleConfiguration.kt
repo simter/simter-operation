@@ -56,7 +56,7 @@ class ModuleConfiguration @Autowired constructor(
       // POST / create Operation
       CreateHandler.REQUEST_PREDICATE.invoke(createHandler::handle)
       // GET /
-      GET("/") { ok().contentType(TEXT_PLAIN).syncBody("simter-operation-rest-webflux-$version") }
+      GET("/") { ok().contentType(TEXT_PLAIN).bodyValue("simter-operation-rest-webflux-$version") }
     }
   }
 }
