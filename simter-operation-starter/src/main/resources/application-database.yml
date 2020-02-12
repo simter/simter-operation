@@ -41,7 +41,7 @@ simter.embedded-database:
   mysql:
     # available 5.7.13~19, 5.7.10, 5.6.31~36, 5.6.21~24, 5.5.50~52, 5.5.40
     version: @mysql-embedded.version@
-    # default http://get.enterprisedb.com/postgresql/, can set to file:///C://Users//simter//download/
+    # default https://dev.mysql.com/get/Downloads/, can set to file:///C://Users//simter//download/
     download-url: ~
 simter.mongodb.enabled-logging-event-listener: ${debug:false}
 # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
