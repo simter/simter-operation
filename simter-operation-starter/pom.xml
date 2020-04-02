@@ -253,6 +253,7 @@
         <dependency>
           <groupId>tech.simter.operation</groupId>
           <artifactId>simter-operation-dao-r2dbc</artifactId>
+          <scope>runtime</scope>
         </dependency>
         <dependency>
           <groupId>io.r2dbc</groupId>
@@ -282,6 +283,7 @@
         <dependency>
           <groupId>tech.simter.operation</groupId>
           <artifactId>simter-operation-dao-r2dbc</artifactId>
+          <scope>runtime</scope>
         </dependency>
         <dependency>
           <groupId>io.r2dbc</groupId>
@@ -317,6 +319,7 @@
         <dependency>
           <groupId>tech.simter.operation</groupId>
           <artifactId>simter-operation-dao-r2dbc</artifactId>
+          <scope>runtime</scope>
         </dependency>
         <dependency>
           <groupId>io.r2dbc</groupId>

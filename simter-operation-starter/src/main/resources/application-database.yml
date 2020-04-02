@@ -42,6 +42,7 @@ spring:
       version: @mongo-embedded.version@
       #storage.database-dir: target/mongodb
 simter.embedded-database:
+  concat-sql-script: false # default false, true - save concatenate sql content to file target/{platform}.sql
   disabled-datasource: @db.disabled-datasource@ # default false, true - not auto instance and register a datasource
   postgres:
     port: @db.port@
@@ -58,30 +59,28 @@ simter.mongodb.enabled-logging-event-listener: ${debug:false}
 # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
 logging.level:
   #---- simter ----#
-  tech.simter.r2dbc: WARN # WARN - Executing spring.datasource.schema|data scripts to database, INFO - show executed script, DEBUG - show R2dbcProperties
-  tech.simter.embeddeddatabase: WARN # WARN - Starting embedded database: url=..., INFO - Load script
+  tech.simter.r2dbc: INFO # WARN - Executing spring.datasource.schema|data scripts to database, INFO - show executed script, DEBUG - show R2dbcProperties
+  tech.simter.embeddeddatabase: INFO # INFO - Starting embedded database: url=..., DEBUG - Load script
 
-  #---- r2dbc ----#
-  #io.r2dbc.h2.client.SessionClient: DEBUG # DEBUG to show h2 request and response
-  #io.r2dbc.postgresql.client.ReactorNettyClient: DEBUG # DEBUG to show postgres request and response
-  io.r2dbc.postgresql.client.ReactorNettyClient: OFF # OFF - not show error '由于管理员命令中断联接'
-  org.springframework.data.r2dbc.function.DefaultDatabaseClient: DEBUG # DEBUG to show sql
+  #---- r2dbc client ----#
+  #org.springframework.data.r2dbc.core.DefaultDatabaseClient: DEBUG # DEBUG to show sql
+  #org.springframework.data.r2dbc.core.NamedParameterExpander: DEBUG # DEBUG to show sql
 
-  #---- spring ----#
+  #---- r2dbc driver----#
+  #io.r2dbc.h2.client.SessionClient: DEBUG # DEBUG to show postgres request and Response
+  #io.r2dbc.postgresql.client.ReactorNettyClient: DEBUG # DEBUG to show postgres request and Response
+
+  #---- jdbc ----#
   org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory: INFO # INFO - Starting embedded database: url='jdbc:h2:mem:...', username='sa'
   #org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG # DEBUG - show executing SQL script file and result
 
-  #---- mongo ----#
-  #org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG # DEBUG to show query
-
-  #---- embedded mongodb ----#
+  #---- embedded database ----#
+  #de.flapdoodle.embed: DEBUG
+  #de.flapdoodle.process.runtime.ProcessControl: DEBUG # DEBUG - Detected pid: 3252
+  #ru.yandex.qatools.embed: DEBUG
+  #ru.yandex.qatools.embed.postgresql.PostgresProcess: INFO # INFO - trying to stop postgresql
+  #com.wix.mysql.EmbeddedMysql: INFO # INFO - Preparing EmbeddedMysql version 'Version 5.7.19'...
   #org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongo: INFO # INFO - show initial and connection
 
-  #---- flapdoodle ----#
-  #de.flapdoodle.process.runtime.ProcessControl: DEBUG # DEBUG - Detected pid: 3252
-
-  #---- embed postgres ----#
-  #ru.yandex.qatools.embed.postgresql.PostgresProcess: INFO # INFO - trying to stop postgresql
-
-  #---- embed mysql ----#
-  #com.wix.mysql.EmbeddedMysql: INFO # INFO - Preparing EmbeddedMysql version 'Version 5.7.19'...
+  #---- mongo ----#
+  #org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG # DEBUG to show query
