@@ -118,6 +118,73 @@
         </dependency>
       </dependencies>
     </profile>
+    <profile>
+      <id>embedded-mysql</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.platform>mysql</db.platform>
+        <db.init-mode>always</db.init-mode>
+        <!-- default mysql port is 3306, plus 1 to avoid conflict -->
+        <db.port>3307</db.port>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>dev.miku</groupId>
+          <artifactId>r2dbc-mysql</artifactId>
+          <scope>test</scope>
+        </dependency>
+
+        <!-- embedded mysql -->
+        <dependency>
+          <groupId>tech.simter</groupId>
+          <artifactId>simter-embedded-database-ext</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.wix</groupId>
+          <artifactId>wix-embedded-mysql</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>mysql</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.platform>mysql</db.platform>
+        <db.init-mode>always</db.init-mode>
+        <db.port>3306</db.port>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>dev.miku</groupId>
+          <artifactId>r2dbc-mysql</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>mssql</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.platform>mssql</db.platform>
+        <db.init-mode>always</db.init-mode>
+        <db.port>1433</db.port>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>io.r2dbc</groupId>
+          <artifactId>r2dbc-mssql</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
   </profiles>
   <url>https://github.com/simter/simter-operation/tree/master/simter-operation-dao-r2dbc</url>
   <scm>
