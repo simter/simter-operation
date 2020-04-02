@@ -8,6 +8,7 @@ spring:
     port: @db.port@
     url: @db.url@
     protocol: @db.protocol@
+    options: @db.options@
     username: @db.username@
     password: @db.password@
     continue-on-error: @db.continue-on-error@

@@ -20,6 +20,8 @@
     <db.password>password</db.password>
     <db.url>~</db.url>
     <db.protocol>~</db.protocol>
+    <db.options>{}</db.options>
+    <db.driver-class>~</db.driver-class>
     <db.init-mode>never</db.init-mode>
     <db.continue-on-error>false</db.continue-on-error>
   </properties>
@@ -50,8 +52,9 @@
       <properties>
         <db.platform>h2</db.platform>
         <db.init-mode>always</db.init-mode>
-        <db.url>./target/testdb</db.url>
         <db.protocol>mem</db.protocol>
+        <!-- see https://github.com/r2dbc/r2dbc-h2/issues/19 -->
+        <db.options>{DB_CLOSE_DELAY: 10}</db.options>
       </properties>
       <dependencies>
         <dependency>

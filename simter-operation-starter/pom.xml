@@ -24,6 +24,7 @@
     <db.password>password</db.password>
     <db.url>~</db.url>
     <db.protocol>~</db.protocol>
+    <db.options>{}</db.options>
     <db.driver-class>~</db.driver-class>
     <db.init-mode>always</db.init-mode>
     <db.jpa-ddl-auto>none</db.jpa-ddl-auto>
@@ -246,8 +247,9 @@
         <db.platform>h2</db.platform>
         <db.init-mode>always</db.init-mode>
         <db.disabled-datasource>true</db.disabled-datasource>
-        <db.url>./target/testdb</db.url>
         <db.protocol>mem</db.protocol>
+        <!-- see https://github.com/r2dbc/r2dbc-h2/issues/19 -->
+        <db.options>{DB_CLOSE_DELAY: -1}</db.options>
       </properties>
       <dependencies>
         <dependency>
@@ -336,6 +338,8 @@
       <properties>
         <db.jpa-implementation>hibernate</db.jpa-implementation>
         <db.platform>h2</db.platform>
+        <db.protocol>mem</db.protocol>
+        <db.options>{DB_CLOSE_DELAY: -1}</db.options>
       </properties>
       <dependencies>
         <dependency>
@@ -574,6 +578,8 @@
       <properties>
         <db.jpa-implementation>eclipselink</db.jpa-implementation>
         <db.platform>h2</db.platform>
+        <db.protocol>mem</db.protocol>
+        <db.options>{DB_CLOSE_DELAY: -1}</db.options>
       </properties>
       <dependencies>
         <dependency>
