@@ -12,10 +12,6 @@
   <packaging>jar</packaging>
   <description>Dao Implementation By R2DBC</description>
   <properties>
-    <spring.version>${spring.milestone.version}</spring.version>
-    <spring-data-releasetrain.version>${spring-data-releasetrain.milestone.version}</spring-data-releasetrain.version>
-    <spring-boot.version>${spring-boot.milestone.version}</spring-boot.version>
-
     <db.platform>none</db.platform>
     <db.host>localhost</db.host>
     <db.port>~</db.port>
