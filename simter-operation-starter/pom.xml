@@ -178,7 +178,7 @@
       </activation>
       <properties>
         <kotlin.compiler.incremental>false</kotlin.compiler.incremental>
-        <db.name>st_operation</db.name>
+        <db.name>operation</db.name>
         <db.username>operation</db.username>
         <db.init-mode>never</db.init-mode>
         <logging.file>${project.artifactId}-${project.version}.log</logging.file>
