@@ -22,6 +22,17 @@ spring:
     data:
       - classpath:tech/simter/operation/sql/@db.platform@/data.sql
     driver-class-name: @db.driver-class@
+    # hikari 数据库连接池配置 https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+    hikari:
+      pool-name: HikariPool4Operation
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      # default 0 means leak detection is disabled, mini value is 2000ms
+      # -- JPA scheduler default value is 60s
+      leak-detection-threshold: 65000
   data:
     mongodb:
       # mongodb://<user>:<password>@<host>:<port>/<db-name>
