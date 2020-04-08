@@ -23,11 +23,12 @@ spring:
     - jpa-@db.jpa-implementation@
   application.name: @project.artifactId@-@project.version@
 server:
-  port: ${port:9014}
+  port: @server.port@
   servlet.context-path: /
   server-header: @project.artifactId@-@project.version@
 logging:
   file: @logging.file@
+  #pattern.dateformat: yyyy-MM-dd HH:mm:ss.SSS,GMT+8:00
   level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
     root: ERROR
     tech.simter.operation: WARN

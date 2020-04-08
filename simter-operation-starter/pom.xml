@@ -33,6 +33,7 @@
     <db.continue-on-error>false</db.continue-on-error>
     <db.disabled-datasource>false</db.disabled-datasource>
     <logging.file>target/test.log</logging.file>
+    <server.port>9014</server.port>
   </properties>
   <dependencyManagement>
     <dependencies>
