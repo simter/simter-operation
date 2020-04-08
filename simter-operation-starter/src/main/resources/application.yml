@@ -1,7 +1,17 @@
-module.version:
-  simter: @simter.version@
-  simter-operation: @project.version@
-module.authorization.simter-operation.defaultPermission: "Allow"   # Allow|Deny
+simter-operation:
+  rest-context-path: @simter-operation.rest-context-path@
+  version: @project.version@
+  # main dependency libraries version
+  dependency-version:
+    simter: @simter.version@
+    kotlin: @kotlin.version@
+    spring-framework: @spring-framework.version@
+    spring-boot: @spring-boot.version@
+  authorization:
+    defaultPermission: "Allow"   # Allow|Deny
+    #operations:
+    #  READ.roles: ["ADMIN"]
+    #  CREATE.roles: ["ADMIN"]
 simter.jwt:
   secret-key: @simter.jwt.secret-key@
   require-authorized: @simter.jwt.require-authorized@
