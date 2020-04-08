@@ -4,5 +4,4 @@ logging:
   level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
     root: ERROR
     tech.simter.operation: ERROR
-
-module.rest-context-path.simter-operation: /
+simter-operation.rest-context-path: /

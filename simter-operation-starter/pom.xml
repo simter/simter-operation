@@ -34,6 +34,7 @@
     <db.disabled-datasource>false</db.disabled-datasource>
     <logging.file>target/test.log</logging.file>
     <server.port>9014</server.port>
+    <simter-operation.rest-context-path>/operation</simter-operation.rest-context-path>
   </properties>
   <dependencyManagement>
     <dependencies>
