@@ -1,5 +1,22 @@
 # simter-operation changelog
 
+## 0.8.0 2020-04-09
+
+- Log main config property on starter with info level
+- Rename property 'module.rest-context-path.simter-operation' to 'simter-operation.rest-context-path'
+- Rename property 'module.server-address.simter-operation' to 'simter-operation.server-address'
+- Add maven property 'server.port'
+- Rename property 'module.authorization.simter-operation' to 'simter-operation.authorization'
+- Package starter finalName with platform type as suffix
+- Add more profiles on dao-r2dbc - embedded-mysql, mysql, mssql
+- Add more profiles on starter - r2dbc-embedded-mysql, r2dbc-mysql, r2dbc-mssql
+- Rename default prod database name st_operation to operation
+- Add db.options property for embedded-h2
+- Minimize HiKari pool config
+- Use stable spring version for r2dbc
+- Add mssql SQL
+- Upgrade to simter-1.3.0-M13
+
 ## 0.7.0 2020-01-09
 
 - Upgrade to simter-1.3.0-M11
