@@ -12,10 +12,6 @@
   <packaging>jar</packaging>
   <description>Dao Implementation By R2DBC</description>
   <properties>
-    <spring.version>${spring.milestone.version}</spring.version>
-    <spring-data-releasetrain.version>${spring-data-releasetrain.milestone.version}</spring-data-releasetrain.version>
-    <spring-boot.version>${spring-boot.milestone.version}</spring-boot.version>
-
     <db.platform>none</db.platform>
     <db.host>localhost</db.host>
     <db.port>~</db.port>
@@ -24,6 +20,8 @@
     <db.password>password</db.password>
     <db.url>~</db.url>
     <db.protocol>~</db.protocol>
+    <db.options>{}</db.options>
+    <db.driver-class>~</db.driver-class>
     <db.init-mode>never</db.init-mode>
     <db.continue-on-error>false</db.continue-on-error>
   </properties>
@@ -54,8 +52,9 @@
       <properties>
         <db.platform>h2</db.platform>
         <db.init-mode>always</db.init-mode>
-        <db.url>./target/testdb</db.url>
         <db.protocol>mem</db.protocol>
+        <!-- see https://github.com/r2dbc/r2dbc-h2/issues/19 -->
+        <db.options>{DB_CLOSE_DELAY: 10}</db.options>
       </properties>
       <dependencies>
         <dependency>
@@ -115,6 +114,73 @@
         <dependency>
           <groupId>io.r2dbc</groupId>
           <artifactId>r2dbc-postgresql</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>embedded-mysql</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.platform>mysql</db.platform>
+        <db.init-mode>always</db.init-mode>
+        <!-- default mysql port is 3306, plus 1 to avoid conflict -->
+        <db.port>3307</db.port>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>dev.miku</groupId>
+          <artifactId>r2dbc-mysql</artifactId>
+          <scope>test</scope>
+        </dependency>
+
+        <!-- embedded mysql -->
+        <dependency>
+          <groupId>tech.simter</groupId>
+          <artifactId>simter-embedded-database-ext</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.wix</groupId>
+          <artifactId>wix-embedded-mysql</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>mysql</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.platform>mysql</db.platform>
+        <db.init-mode>always</db.init-mode>
+        <db.port>3306</db.port>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>dev.miku</groupId>
+          <artifactId>r2dbc-mysql</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>mssql</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <db.platform>mssql</db.platform>
+        <db.init-mode>always</db.init-mode>
+        <db.port>1433</db.port>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>io.r2dbc</groupId>
+          <artifactId>r2dbc-mssql</artifactId>
           <scope>test</scope>
         </dependency>
       </dependencies>

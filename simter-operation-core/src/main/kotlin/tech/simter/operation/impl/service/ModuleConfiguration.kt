@@ -6,11 +6,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import tech.simter.operation.AUTHORIZER_KEY
 import tech.simter.operation.PACKAGE
 import tech.simter.reactive.security.ModuleAuthorizer
 import tech.simter.reactive.security.ReactiveSecurityService
 import tech.simter.reactive.security.properties.ModuleAuthorizeProperties
-import tech.simter.reactive.security.properties.PermissionStrategy.Allow
+import tech.simter.reactive.security.properties.PermissionStrategy
 
 /**
  * All configuration for this module.
@@ -22,18 +23,18 @@ import tech.simter.reactive.security.properties.PermissionStrategy.Allow
 @ComponentScan
 class ModuleConfiguration {
   /**
-   * Starter should config yml key `module.authorization.simter-operation` to support specific role control,
-   * otherwise the [ModuleConfiguration.moduleAuthorizer] would allow anything default.
+   * Starter should config yml key [AUTHORIZER_KEY] to support specific role control,
+   * otherwise the [ModuleConfiguration.moduleAuthorizer] would deny anything default.
    */
-  @Bean("$PACKAGE.ModuleAuthorizeProperties")
-  @ConfigurationProperties(prefix = "module.authorization.simter-operation")
+  @Bean("$AUTHORIZER_KEY.properties")
+  @ConfigurationProperties(prefix = AUTHORIZER_KEY)
   fun moduleAuthorizeProperties(): ModuleAuthorizeProperties {
-    return ModuleAuthorizeProperties(defaultPermission = Allow)
+    return ModuleAuthorizeProperties(defaultPermission = PermissionStrategy.Deny)
   }
 
-  @Bean("$PACKAGE.ModuleAuthorizer")
+  @Bean("$AUTHORIZER_KEY.authorizer")
   fun moduleAuthorizer(
-    @Qualifier("$PACKAGE.ModuleAuthorizeProperties")
+    @Qualifier("$AUTHORIZER_KEY.properties")
     properties: ModuleAuthorizeProperties,
     securityService: ReactiveSecurityService
   ): ModuleAuthorizer {

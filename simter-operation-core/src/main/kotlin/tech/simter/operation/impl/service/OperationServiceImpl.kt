@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import tech.simter.operation.AUTHORIZER_KEY
 import tech.simter.operation.OPERATION_CREATE
 import tech.simter.operation.OPERATION_READ
-import tech.simter.operation.PACKAGE
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.Operation.Item
 import tech.simter.operation.core.OperationDao
@@ -26,7 +26,7 @@ import tech.simter.reactive.security.ReactiveSecurityService
  */
 @Service
 class OperationServiceImpl @Autowired constructor(
-  @Qualifier("$PACKAGE.ModuleAuthorizer")
+  @Qualifier("$AUTHORIZER_KEY.authorizer")
   private val moduleAuthorizer: ModuleAuthorizer,
   private val securityService: ReactiveSecurityService,
   private val dao: OperationDao

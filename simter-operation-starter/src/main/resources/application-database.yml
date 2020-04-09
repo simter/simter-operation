@@ -7,6 +7,7 @@ spring:
     port: @db.port@
     url: @db.url@
     protocol: @db.protocol@
+    options: @db.options@
     username: @db.username@
     password: @db.password@
     continue-on-error: @db.continue-on-error@
@@ -22,6 +23,17 @@ spring:
     data:
       - classpath:tech/simter/operation/sql/@db.platform@/data.sql
     driver-class-name: @db.driver-class@
+    # hikari 数据库连接池配置 https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+    hikari:
+      pool-name: HikariPool4Operation
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      # default 0 means leak detection is disabled, mini value is 2000ms
+      # -- JPA scheduler default value is 60s
+      leak-detection-threshold: 65000
   data:
     mongodb:
       # mongodb://<user>:<password>@<host>:<port>/<db-name>
@@ -31,6 +43,7 @@ spring:
       version: @mongo-embedded.version@
       #storage.database-dir: target/mongodb
 simter.embedded-database:
+  concat-sql-script: false # default false, true - save concatenate sql content to file target/{platform}.sql
   disabled-datasource: @db.disabled-datasource@ # default false, true - not auto instance and register a datasource
   postgres:
     port: @db.port@
@@ -41,36 +54,34 @@ simter.embedded-database:
   mysql:
     # available 5.7.13~19, 5.7.10, 5.6.31~36, 5.6.21~24, 5.5.50~52, 5.5.40
     version: @mysql-embedded.version@
-    # default http://get.enterprisedb.com/postgresql/, can set to file:///C://Users//simter//download/
+    # default https://dev.mysql.com/get/Downloads/, can set to file:///C://Users//simter//download/
     download-url: ~
 simter.mongodb.enabled-logging-event-listener: ${debug:false}
 # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
 logging.level:
   #---- simter ----#
-  tech.simter.r2dbc: WARN # WARN - Executing spring.datasource.schema|data scripts to database, INFO - show executed script, DEBUG - show R2dbcProperties
-  tech.simter.embeddeddatabase: WARN # WARN - Starting embedded database: url=..., INFO - Load script
+  tech.simter.r2dbc: INFO # WARN - Executing spring.datasource.schema|data scripts to database, INFO - show executed script, DEBUG - show R2dbcProperties
+  tech.simter.embeddeddatabase: INFO # INFO - Starting embedded database: url=..., DEBUG - Load script
 
-  #---- r2dbc ----#
-  #io.r2dbc.h2.client.SessionClient: DEBUG # DEBUG to show h2 request and response
-  #io.r2dbc.postgresql.client.ReactorNettyClient: DEBUG # DEBUG to show postgres request and response
-  io.r2dbc.postgresql.client.ReactorNettyClient: OFF # OFF - not show error '由于管理员命令中断联接'
-  org.springframework.data.r2dbc.function.DefaultDatabaseClient: DEBUG # DEBUG to show sql
+  #---- r2dbc client ----#
+  #org.springframework.data.r2dbc.core.DefaultDatabaseClient: DEBUG # DEBUG to show sql
+  #org.springframework.data.r2dbc.core.NamedParameterExpander: DEBUG # DEBUG to show sql
 
-  #---- spring ----#
+  #---- r2dbc driver----#
+  #io.r2dbc.h2.client.SessionClient: DEBUG # DEBUG to show postgres request and Response
+  #io.r2dbc.postgresql.client.ReactorNettyClient: DEBUG # DEBUG to show postgres request and Response
+
+  #---- jdbc ----#
   org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory: INFO # INFO - Starting embedded database: url='jdbc:h2:mem:...', username='sa'
   #org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG # DEBUG - show executing SQL script file and result
 
-  #---- mongo ----#
-  #org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG # DEBUG to show query
-
-  #---- embedded mongodb ----#
+  #---- embedded database ----#
+  #de.flapdoodle.embed: DEBUG
+  #de.flapdoodle.process.runtime.ProcessControl: DEBUG # DEBUG - Detected pid: 3252
+  #ru.yandex.qatools.embed: DEBUG
+  #ru.yandex.qatools.embed.postgresql.PostgresProcess: INFO # INFO - trying to stop postgresql
+  #com.wix.mysql.EmbeddedMysql: INFO # INFO - Preparing EmbeddedMysql version 'Version 5.7.19'...
   #org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongo: INFO # INFO - show initial and connection
 
-  #---- flapdoodle ----#
-  #de.flapdoodle.process.runtime.ProcessControl: DEBUG # DEBUG - Detected pid: 3252
-
-  #---- embed postgres ----#
-  #ru.yandex.qatools.embed.postgresql.PostgresProcess: INFO # INFO - trying to stop postgresql
-
-  #---- embed mysql ----#
-  #com.wix.mysql.EmbeddedMysql: INFO # INFO - Preparing EmbeddedMysql version 'Version 5.7.19'...
+  #---- mongo ----#
+  #org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG # DEBUG to show query

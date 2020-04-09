@@ -25,7 +25,7 @@ import javax.json.JsonObjectBuilder
  */
 @Component
 class OperationDaoImplByWebFlux(
-  @Value("\${module.server-address.simter-operation:http://localhost:9014/operation}")
+  @Value("\${simter-operation.server-address:http://localhost:9014/operation}")
   private val serverAddress: String,
   @Value("\${proxy.host:#{null}}") private val proxyHost: String?,
   @Value("\${proxy.port:#{null}}") private val proxyPort: Int?

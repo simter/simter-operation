@@ -1,5 +1,3 @@
--- Create table script
-
 create table st_operation (
   id            varchar(50)  not null primary key,
   ts            timestamp with time zone not null,

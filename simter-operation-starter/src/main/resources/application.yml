@@ -1,7 +1,17 @@
-module.version:
-  simter: @simter.version@
-  simter-operation: @project.version@
-module.authorization.simter-operation.defaultPermission: "Allow"   # Allow|Deny
+simter-operation:
+  rest-context-path: @simter-operation.rest-context-path@
+  version: @project.version@
+  # main dependency libraries version
+  dependency-version:
+    simter: @simter.version@
+    kotlin: @kotlin.version@
+    spring-framework: @spring-framework.version@
+    spring-boot: @spring-boot.version@
+  authorization:
+    defaultPermission: "Allow"   # Allow|Deny
+    #operations:
+    #  READ.roles: ["ADMIN"]
+    #  CREATE.roles: ["ADMIN"]
 simter.jwt:
   secret-key: @simter.jwt.secret-key@
   require-authorized: @simter.jwt.require-authorized@
@@ -13,14 +23,14 @@ spring:
     - jpa-@db.jpa-implementation@
   application.name: @project.artifactId@-@project.version@
 server:
-  port: ${port:9014}
+  port: @server.port@
   servlet.context-path: /
   server-header: @project.artifactId@-@project.version@
 logging:
   file: @logging.file@
+  #pattern.dateformat: yyyy-MM-dd HH:mm:ss.SSS,GMT+8:00
   level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
     root: ERROR
-    tech.simter.operation: WARN
     tech.simter.operation.starter: INFO # INFO - show active profiles and started time
 
     #---- spring ----#
