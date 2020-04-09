@@ -85,17 +85,27 @@ class AppConfiguration @Autowired constructor(
     }
   }
 
-  private val startTime = OffsetDateTime.now()
   private val rootPage: String = """
-    <h2>Simter Operation Micro Service</h2>
-    <div>Start at : $startTime</div>
-    <div>Version : $simterOperationVersion</div>
-    <ul>
-      <li>simter-$simterVersion</li>
-      <li>kotlin-$kotlinVersion</li>
-      <li>spring-$springFrameworkVersion</li>
-      <li>spring-boot-$springBootVersion</li>
-    </ul>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width">
+      <title>simter-operation</title>
+      <style>html{background-color:#000;color:#fff}</style>
+    </head>
+    <body>
+      <h2>Simter Operation Micro Service</h2>
+      <div>Start at : ${OffsetDateTime.now()}</div>
+      <div>Version : $simterOperationVersion</div>
+      <ul>
+        <li>simter-$simterVersion</li>
+        <li>kotlin-$kotlinVersion</li>
+        <li>spring-$springFrameworkVersion</li>
+        <li>spring-boot-$springBootVersion</li>
+      </ul>
+    </body>
+    </html>
   """.trimIndent()
 
   /**
