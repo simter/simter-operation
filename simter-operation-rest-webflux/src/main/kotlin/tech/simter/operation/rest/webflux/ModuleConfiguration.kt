@@ -1,5 +1,6 @@
 package tech.simter.operation.rest.webflux
 
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -30,6 +31,12 @@ class ModuleConfiguration @Autowired constructor(
   private val createHandler: CreateHandler,
   private val getByIdHandler: GetByIdHandler
 ) {
+  private val logger = LoggerFactory.getLogger(ModuleConfiguration::class.java)
+
+  init {
+    logger.warn("simter-operation.rest-context-path='{}'", contextPath)
+  }
+
   /** Register a `RouterFunction<ServerResponse>` with all routers for this module */
   @Bean("$PACKAGE.rest.webflux.Routes")
   @ConditionalOnMissingBean(name = ["$PACKAGE.rest.webflux.Routes"])

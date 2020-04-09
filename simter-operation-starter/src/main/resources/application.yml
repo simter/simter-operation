@@ -31,7 +31,6 @@ logging:
   #pattern.dateformat: yyyy-MM-dd HH:mm:ss.SSS,GMT+8:00
   level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
     root: ERROR
-    tech.simter.operation: WARN
     tech.simter.operation.starter: INFO # INFO - show active profiles and started time
 
     #---- spring ----#
