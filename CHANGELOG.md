@@ -1,5 +1,9 @@
 # simter-operation changelog
 
+## 0.9.0 2020-04-16
+
+- Upgrade to simter-1.3.0-M14 (kotlin-1.3.70+)
+
 ## 0.8.0 2020-04-09
 
 - Log main config property on starter with info level
