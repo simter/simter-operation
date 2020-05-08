@@ -1,5 +1,9 @@
 # simter-operation changelog
 
+## 0.10.0 2020-05-08
+
+- Upgrade to simter-1.3.0-M15
+
 ## 0.9.0 2020-04-16
 
 - Upgrade to simter-1.3.0-M14 (kotlin-1.3.70+)
