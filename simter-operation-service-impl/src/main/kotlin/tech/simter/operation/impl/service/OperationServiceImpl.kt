@@ -13,8 +13,6 @@ import tech.simter.operation.core.Operation
 import tech.simter.operation.core.Operation.Item
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
-import tech.simter.operation.impl.ImmutableOperation
-import tech.simter.operation.impl.ImmutableOperation.ImmutableItem
 import tech.simter.reactive.context.SystemContext
 import tech.simter.reactive.security.ModuleAuthorizer
 import tech.simter.reactive.security.ReactiveSecurityService
@@ -50,7 +48,7 @@ class OperationServiceImpl @Autowired constructor(
     return securityService.getAuthenticatedUser()
       .map { it.orElseGet { SystemContext.User(id = 0, account = "UNKNOWN", name = "UNKNOWN") } } // get context user info
       .flatMap { user ->
-        this.create(ImmutableOperation(
+        this.create(Operation.of(
           type = type,
           operatorId = user.id.toString(),
           operatorName = user.name,
@@ -58,7 +56,7 @@ class OperationServiceImpl @Autowired constructor(
           targetId = targetId,
           title = title,
           batch = batch,
-          items = items.map { ImmutableItem.from(it) }.toSet(),
+          items = items,
           remark = remark,
           result = result
         ))

@@ -11,9 +11,10 @@ import reactor.kotlin.test.test
 import tech.simter.operation.OPERATION_READ
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
-import tech.simter.operation.impl.service.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperationTargetId
+import tech.simter.operation.test.TestHelper.randomOperationTargetType
 import tech.simter.reactive.security.ModuleAuthorizer
-import tech.simter.util.RandomUtils.randomString
 
 /**
  * Test [OperationServiceImpl.findByTarget].
@@ -29,10 +30,10 @@ class FindByTargetMethodImplTest @Autowired constructor(
   @Test
   fun `found something`() {
     // mock
-    val targetType = randomString()
-    val targetId = randomString()
-    val operation1 = randomOperation(targetType)
-    val operation2 = randomOperation(targetType)
+    val targetType = randomOperationTargetType()
+    val targetId = randomOperationTargetId()
+    val operation1 = randomOperation(targetType = targetType)
+    val operation2 = randomOperation(targetType = targetType)
     every { dao.findByTarget(targetType, targetId) } returns Flux.just(operation1, operation2)
     every { moduleAuthorizer.verifyHasPermission(OPERATION_READ) } returns Mono.empty()
 
@@ -48,8 +49,8 @@ class FindByTargetMethodImplTest @Autowired constructor(
   @Test
   fun `found nothing`() {
     // mock
-    val targetType = randomString()
-    val targetId = randomString()
+    val targetType = randomOperationTargetType()
+    val targetId = randomOperationTargetId()
     every { dao.findByTarget(targetType, targetId) } returns Flux.empty()
     every { moduleAuthorizer.verifyHasPermission(OPERATION_READ) } returns Mono.empty()
 

@@ -10,7 +10,7 @@ import reactor.kotlin.test.test
 import tech.simter.operation.OPERATION_CREATE
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
-import tech.simter.operation.impl.service.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperation
 import tech.simter.reactive.security.ModuleAuthorizer
 
 /**

@@ -69,6 +69,10 @@
     </dependency>
     <dependency>
       <groupId>tech.simter.operation</groupId>
+      <artifactId>simter-operation-service-impl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>tech.simter.operation</groupId>
       <artifactId>simter-operation-rest-webflux</artifactId>
     </dependency>
     <dependency>

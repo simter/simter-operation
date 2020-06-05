@@ -11,9 +11,9 @@ import reactor.kotlin.test.test
 import tech.simter.operation.OPERATION_READ
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
-import tech.simter.operation.impl.service.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperationBatch
 import tech.simter.reactive.security.ModuleAuthorizer
-import tech.simter.util.RandomUtils.randomString
 
 /**
  * Test [OperationServiceImpl.findByBatch].
@@ -30,9 +30,9 @@ class FindByBatchMethodImplTest @Autowired constructor(
   @Test
   fun `found something`() {
     // mock
-    val batch = randomString()
-    val operation1 = randomOperation(batch)
-    val operation2 = randomOperation(batch)
+    val batch = randomOperationBatch()
+    val operation1 = randomOperation(batch = batch)
+    val operation2 = randomOperation(batch = batch)
     every { dao.findByBatch(batch) } returns Flux.just(operation1, operation2)
     every { moduleAuthorizer.verifyHasPermission(OPERATION_READ) } returns Mono.empty()
 
@@ -48,7 +48,7 @@ class FindByBatchMethodImplTest @Autowired constructor(
   @Test
   fun `found nothing`() {
     // mock
-    val batch = randomString()
+    val batch = randomOperationBatch()
     every { dao.findByBatch(batch) } returns Flux.empty()
     every { moduleAuthorizer.verifyHasPermission(OPERATION_READ) } returns Mono.empty()
 

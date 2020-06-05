@@ -1,0 +1,16 @@
+spring.main.banner-mode: 'off'
+simter-kv.authorization:
+  defaultPermission: "Deny"   # Allow, Deny
+  operations:                 # READ, SAVE, DELETE
+    READ:
+      roles: ["READER"]
+      strategy: "Or"          # And, Or
+    DELETE:
+      roles: ["DELETER", "MANAGER"]
+      strategy: "And"
+    SAVE.roles: "MANAGER"
+logging:
+  file: target/test.log
+  level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
+    root: ERROR
+    tech.simter.operation: WARN
