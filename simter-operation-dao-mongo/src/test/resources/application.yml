@@ -2,7 +2,7 @@ spring:
   main.banner-mode: 'off'
   mongodb:
     embedded:
-      version: @mongo-embedded.version@
+      version: @simter.embedded-database.mongo.version@
       storage.database-dir: target/mongodb
 logging:
   file: target/test.log

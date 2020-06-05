@@ -40,7 +40,7 @@ spring:
       uri: @db.url@
   mongodb:
     embedded:
-      version: @mongo-embedded.version@
+      version: @simter.embedded-database.mongo.version@
       #storage.database-dir: target/mongodb
 simter.embedded-database:
   concat-sql-script: false # default false, true - save concatenate sql content to file target/{platform}.sql
@@ -48,12 +48,12 @@ simter.embedded-database:
   postgres:
     port: @db.port@
     # available 9.5.16-1, 9.6.12-1, 10.7-1, 11.2-1
-    version: @postgres-embedded.version@
+    version: @simter.embedded-database.postgres.version@
     # default http://get.enterprisedb.com/postgresql/, can set to file:///C://Users//simter//download/
     download-url: ~
   mysql:
     # available 5.7.13~19, 5.7.10, 5.6.31~36, 5.6.21~24, 5.5.50~52, 5.5.40
-    version: @mysql-embedded.version@
+    version: @simter.embedded-database.mysql.version@
     # default https://dev.mysql.com/get/Downloads/, can set to file:///C://Users//simter//download/
     download-url: ~
 simter.mongodb.enabled-logging-event-listener: ${debug:false}
