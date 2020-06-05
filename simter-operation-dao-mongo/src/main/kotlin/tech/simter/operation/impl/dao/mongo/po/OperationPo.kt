@@ -2,9 +2,8 @@ package tech.simter.operation.impl.dao.mongo.po
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import tech.simter.operation.core.Operation
-import tech.simter.operation.impl.ImmutableOperation.ImmutableItem
 import tech.simter.operation.TABLE_OPERATION
+import tech.simter.operation.core.Operation
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -25,7 +24,7 @@ data class OperationPo(
   override val remark: String? = null,
   override val result: String? = null,
   override val batch: String? = null,
-  override val items: Set<ImmutableItem> = emptySet()
+  override val items: Set<Operation.Item.Impl> = emptySet()
 ) : Operation {
   companion object {
     fun from(operation: Operation): OperationPo {
@@ -41,7 +40,7 @@ data class OperationPo(
         remark = operation.remark,
         result = operation.result,
         batch = operation.batch,
-        items = operation.items.map { ImmutableItem.from(it) }.toSet()
+        items = operation.items.map { Operation.Item.Impl.from(it) }.toSet()
       )
     }
   }

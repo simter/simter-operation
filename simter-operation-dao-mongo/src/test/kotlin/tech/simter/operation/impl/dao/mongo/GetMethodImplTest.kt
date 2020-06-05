@@ -6,8 +6,8 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.kotlin.test.test
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperation
-import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationItem
+import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationItemPo
+import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationPo
 import tech.simter.util.RandomUtils.randomString
 
 /**
@@ -24,7 +24,7 @@ class GetMethodImplTest @Autowired constructor(
   @Test
   fun `get existent data without items`() {
     // init data
-    val expected = repository.save(randomOperation()).block()!!
+    val expected = repository.save(randomOperationPo()).block()!!
 
     // invoke and verify
     dao.get(expected.id).test().expectNext(expected).verifyComplete()
@@ -33,8 +33,8 @@ class GetMethodImplTest @Autowired constructor(
   @Test
   fun `get existent data with items`() {
     // init data
-    val expected = repository.save(randomOperation(
-      items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
+    val expected = repository.save(randomOperationPo(
+      items = setOf(randomOperationItemPo(id = "field1"), randomOperationItemPo(id = "field2"))
     )).block()!!
 
     // invoke and verify

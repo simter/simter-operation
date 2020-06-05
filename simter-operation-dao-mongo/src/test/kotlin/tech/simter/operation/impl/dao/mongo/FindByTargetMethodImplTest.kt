@@ -6,8 +6,11 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.kotlin.test.test
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperation
-import tech.simter.util.RandomUtils.randomString
+import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationItemPo
+import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationPo
+import tech.simter.operation.test.TestHelper.randomOperationBatch
+import tech.simter.operation.test.TestHelper.randomOperationTargetId
+import tech.simter.operation.test.TestHelper.randomOperationTargetType
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
@@ -26,17 +29,17 @@ class FindByTargetMethodImplTest @Autowired constructor(
   @Test
   fun `find something`() {
     // init data
-    val targetType = randomString()
-    val targetId = randomString()
+    val targetType = randomOperationTargetType()
+    val targetId = randomOperationTargetId()
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
-    val operation1 = randomOperation(targetType = targetType, targetId = targetId, ts = now) // without items
-    val operation2 = randomOperation(targetType = targetType, targetId = targetId, ts = now.plusHours(1),
-      items = setOf(TestHelper.randomOperationItem(id = "field1"), TestHelper.randomOperationItem(id = "field2"))
+    val operation1 = randomOperationPo(targetType = targetType, targetId = targetId, ts = now) // without items
+    val operation2 = randomOperationPo(targetType = targetType, targetId = targetId, ts = now.plusHours(1),
+      items = setOf(randomOperationItemPo(id = "field1"), randomOperationItemPo(id = "field2"))
     ) // with items
 
-    val operation3 = randomOperation(targetType = targetType, targetId = randomString()) // another targetId
-    val operation4 = randomOperation(targetType = randomString(), targetId = targetId) // another targetType
-    val operation5 = randomOperation(targetType = randomString(), targetId = randomString()) // another target
+    val operation3 = randomOperationPo(targetType = targetType, targetId = randomOperationTargetId()) // another targetId
+    val operation4 = randomOperationPo(targetType = randomOperationTargetType(), targetId = targetId) // another targetType
+    val operation5 = randomOperationPo(targetType = randomOperationTargetType(), targetId = randomOperationTargetId()) // another target
     repository
       .saveAll(listOf(operation1, operation2, operation3, operation4, operation5))
       .then().test().verifyComplete()
@@ -47,8 +50,8 @@ class FindByTargetMethodImplTest @Autowired constructor(
 
   @Test
   fun `find nothing 1`() {
-    val targetType = randomString()
-    val targetId = randomString()
+    val targetType = randomOperationTargetType()
+    val targetId = randomOperationTargetId()
     dao.findByTarget(targetType, targetId).test().verifyComplete()
   }
 
@@ -56,12 +59,12 @@ class FindByTargetMethodImplTest @Autowired constructor(
   fun `find nothing 2`() {
     // init data
     repository
-      .saveAll(listOf(randomOperation(batch = randomString()), randomOperation()))
+      .saveAll(listOf(randomOperationPo(batch = randomOperationBatch()), randomOperationPo()))
       .then().test().verifyComplete()
 
     // invoke and verify
-    val targetType = randomString()
-    val targetId = randomString()
+    val targetType = randomOperationTargetType()
+    val targetId = randomOperationTargetId()
     dao.findByTarget(targetType, targetId).test().verifyComplete()
   }
 }
