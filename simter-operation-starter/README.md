@@ -1,14 +1,5 @@
 #  Simter Operation Server
 
-## Requirement
-
-- Maven 3.6+
-- Kotlin 1.3+
-- Java 8+
-- Spring Framework 5.2+
-- Spring Boot 2.2+
-- Reactor 3.3+
-
 ## Supported Rest API
 
 See [rest-api.md](../docs/rest-api.md).

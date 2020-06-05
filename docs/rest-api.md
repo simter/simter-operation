@@ -1,8 +1,8 @@
 # Rest API for simter-operation
 
-The rest context path  could be configured by property `module.rest-context-path.simter-operation`.
+The rest context path could be configured by property `simter-operation.rest-context-path`.
 Its default value is `/operation`. The below URL is all relative to this context path.
-For example a url `/target/User/admin`, its really path should be `{context-path}/target/User/admin`.
+For example an url `/target/User/admin`, its really path should be `{context-path}/target/User/admin`.
 
 Provide rest APIs:
 

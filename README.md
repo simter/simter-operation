@@ -22,7 +22,7 @@ Business Operation Log Recorder.
 - Kotlin 1.3+
 - Java 8+
 - Spring Framework 5.2+
-- Spring Boot 2.2+
+- Spring Boot 2.3+
 - Reactor 3.3+
 
 
