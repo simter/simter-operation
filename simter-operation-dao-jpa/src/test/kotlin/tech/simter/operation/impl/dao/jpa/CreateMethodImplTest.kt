@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.kotlin.test.test
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperation
-import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperationItem
+import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperationPo
+import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperationItemPo
 import tech.simter.operation.impl.dao.jpa.po.OperationPo
 import tech.simter.reactive.test.jpa.ReactiveDataJpaTest
 import tech.simter.reactive.test.jpa.TestEntityManager
@@ -27,7 +27,7 @@ class CreateMethodImplTest @Autowired constructor(
   @Test
   fun `success without items`() {
     // do create
-    val po = randomOperation()
+    val po = randomOperationPo()
     dao.create(po).test().verifyComplete()
 
     // verify created
@@ -37,9 +37,9 @@ class CreateMethodImplTest @Autowired constructor(
   @Test
   fun `success with items`() {
     // do create
-    val po = randomOperation().apply {
-      addItem(randomOperationItem(id = "field1"))
-      addItem(randomOperationItem(id = "field2"))
+    val po = randomOperationPo().apply {
+      addItem(randomOperationItemPo(id = "field1"))
+      addItem(randomOperationItemPo(id = "field2"))
     }
     dao.create(po).test().verifyComplete()
 

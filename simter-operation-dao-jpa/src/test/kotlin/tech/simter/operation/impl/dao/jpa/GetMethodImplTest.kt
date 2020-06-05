@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.kotlin.test.test
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperation
+import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperationPo
+import tech.simter.operation.test.TestHelper.randomOperationId
 import tech.simter.reactive.test.jpa.ReactiveDataJpaTest
 import tech.simter.reactive.test.jpa.TestEntityManager
-import tech.simter.util.RandomUtils.randomString
 
 /**
  * Test [OperationDaoImpl.get].
@@ -24,7 +24,7 @@ class GetMethodImplTest @Autowired constructor(
   @Test
   fun `get existent data without items`() {
     // init data
-    val expected = randomOperation()
+    val expected = randomOperationPo()
     rem.persist(expected)
 
     // invoke and verify
@@ -34,9 +34,9 @@ class GetMethodImplTest @Autowired constructor(
   @Test
   fun `get existent data with items`() {
     // init data
-    val expected = randomOperation().apply {
-      addItem(TestHelper.randomOperationItem(id = "field1"))
-      addItem(TestHelper.randomOperationItem(id = "field2"))
+    val expected = randomOperationPo().apply {
+      addItem(TestHelper.randomOperationItemPo(id = "field1"))
+      addItem(TestHelper.randomOperationItemPo(id = "field2"))
     }
     rem.persist(expected)
 
@@ -46,6 +46,6 @@ class GetMethodImplTest @Autowired constructor(
 
   @Test
   fun `get nonexistent data`() {
-    dao.get(randomString()).test().expectComplete().verify()
+    dao.get(randomOperationId()).test().expectComplete().verify()
   }
 }

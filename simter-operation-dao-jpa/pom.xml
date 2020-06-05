@@ -28,6 +28,10 @@
   </properties>
   <dependencies>
     <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-reflect</artifactId>
+    </dependency>
+    <dependency>
       <groupId>javax.persistence</groupId>
       <artifactId>javax.persistence-api</artifactId>
     </dependency>
@@ -52,8 +56,17 @@
       <artifactId>simter-reactive-jpa</artifactId>
     </dependency>
     <dependency>
+      <groupId>tech.simter</groupId>
+      <artifactId>simter-util</artifactId>
+    </dependency>
+    <dependency>
       <groupId>tech.simter.reactive</groupId>
       <artifactId>simter-reactive-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>tech.simter.operation</groupId>
+      <artifactId>simter-operation-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
