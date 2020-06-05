@@ -7,15 +7,16 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kotlin.test.test
+import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.ImmutableOperation
-import tech.simter.operation.impl.dao.r2dbc.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperationItem
 import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
 /**
- * Test [OperationDaoImplByR2dbcClient.findByTarget]
+ * Test [OperationDaoImpl.findByTarget]
  *
  * @author RJ
  */
@@ -33,7 +34,7 @@ class FindByTargetMethodImplTest @Autowired constructor(
     val operation1 = randomOperation(targetType = targetType, targetId = targetId, ts = now) // without items
     val operation2 = randomOperation(
       targetType = targetType, targetId = targetId, ts = now.plusHours(1),
-      items = setOf(TestHelper.randomOperationItem(id = "field1"), TestHelper.randomOperationItem(id = "field2"))
+      items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
     ) // with items
 
     val operation3 = randomOperation(targetType = targetType, targetId = randomString()) // another targetId
@@ -49,7 +50,7 @@ class FindByTargetMethodImplTest @Autowired constructor(
       .verifyComplete()
   }
 
-  private fun saveAll(vararg list: ImmutableOperation): Mono<Void> {
+  private fun saveAll(vararg list: Operation): Mono<Void> {
     return Flux.fromArray(list).flatMap { dao.create(it).thenReturn(it) }.then()
   }
 

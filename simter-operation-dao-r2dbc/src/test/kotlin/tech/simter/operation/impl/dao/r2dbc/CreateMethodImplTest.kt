@@ -6,11 +6,11 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.kotlin.test.test
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.dao.r2dbc.TestHelper.randomOperation
-import tech.simter.operation.impl.dao.r2dbc.TestHelper.randomOperationItem
+import tech.simter.operation.test.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperationItem
 
 /**
- * Test [OperationDaoImplByR2dbcClient.create]
+ * Test [OperationDaoImpl.create]
  *
  * @author RJ
  */

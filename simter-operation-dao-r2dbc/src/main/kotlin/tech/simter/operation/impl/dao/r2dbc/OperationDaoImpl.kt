@@ -20,8 +20,6 @@ import tech.simter.operation.TABLE_OPERATION
 import tech.simter.operation.TABLE_OPERATION_ITEM
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.ImmutableOperation
-import tech.simter.operation.impl.ImmutableOperation.ImmutableItem
 import java.time.OffsetDateTime
 import java.util.*
 import java.util.stream.Collectors
@@ -34,10 +32,10 @@ import java.util.stream.Collectors
  * @author RJ
  */
 @Repository
-class OperationDaoImplByR2dbcClient @Autowired constructor(
+class OperationDaoImpl @Autowired constructor(
   private val r2dbc: R2dbc
 ) : OperationDao {
-  private val logger: Logger = LoggerFactory.getLogger(OperationDaoImplByR2dbcClient::class.java)
+  private val logger: Logger = LoggerFactory.getLogger(OperationDaoImpl::class.java)
   val insertOperationSql = """
     insert into $TABLE_OPERATION(
       id, ts, type, operator_id, operator_name,
@@ -99,7 +97,7 @@ class OperationDaoImplByR2dbcClient @Autowired constructor(
                 where p.batch = $1 order by i.pid, i.id
               """.trimIndent()
             ).bind("$1", batch)
-            mergeItems(query, operations as MutableMap<String, ImmutableOperation>)
+            mergeItems(query, operations as MutableMap<String, Operation.Impl>)
           }
         }.flatMapMany { list -> Flux.fromIterable(list.sortedByDescending { it.ts }) }
     }
@@ -123,7 +121,7 @@ class OperationDaoImplByR2dbcClient @Autowired constructor(
                 where p.target_type = $1 and p.target_id = $2 order by i.pid, i.id
               """.trimIndent()
             ).bind("$1", targetType).bind("$2", targetId)
-            mergeItems(query, operations as MutableMap<String, ImmutableOperation>)
+            mergeItems(query, operations as MutableMap<String, Operation.Impl>)
           }
         }.flatMapMany { list -> Flux.fromIterable(list.sortedByDescending { it.ts }) }
     }
@@ -133,8 +131,8 @@ class OperationDaoImplByR2dbcClient @Autowired constructor(
     TODO("not implemented")
   }
 
-  private fun mergeItems(query: Query, operations: MutableMap<String, ImmutableOperation>)
-    : Mono<MutableCollection<ImmutableOperation>> {
+  private fun mergeItems(query: Query, operations: MutableMap<String, Operation.Impl>)
+    : Mono<MutableCollection<Operation.Impl>> {
     return query
       .mapRow { itemRow ->
         val pid = itemRow.get("pid", String::class.java)!!
@@ -203,11 +201,11 @@ class OperationDaoImplByR2dbcClient @Autowired constructor(
     else update.bind(identifier, value)
   }
 
-  private fun toOperation(operationRow: Row): Mono<ImmutableOperation> {
+  private fun toOperation(operationRow: Row): Mono<Operation.Impl> {
     // need to early decode non-clob data because postgres would release row after call `PostgresqlResult.map`.
     // otherwise r2dbc-postgresql throw `IllegalStateException: Value cannot be retrieved after row has been released`.
     // r2dbc-h2 without this problem.
-    val withoutClob = ImmutableOperation(
+    val withoutClob = Operation.Impl(
       id = operationRow.get("id", String::class.java)!!,
       ts = operationRow.get("ts", OffsetDateTime::class.java)!!,
       type = operationRow.get("type", String::class.java)!!,
@@ -229,11 +227,11 @@ class OperationDaoImplByR2dbcClient @Autowired constructor(
     return remarkClob.map { withoutClob.copy(remark = it.orElse(null)) }
   }
 
-  private fun toOperationItem(itemRow: Row): Mono<ImmutableItem> {
+  private fun toOperationItem(itemRow: Row): Mono<Operation.Item.Impl> {
     // need to early decode non-clob data because postgres would release row after call `PostgresqlResult.map`.
     // otherwise r2dbc-postgresql throw `IllegalStateException: Value cannot be retrieved after row has been released`.
     // r2dbc-h2 without this problem.
-    val withoutClob = ImmutableItem(
+    val withoutClob = Operation.Item.Impl(
       id = itemRow.get("id", String::class.java)!!,
       title = itemRow.get("title", String::class.java),
       valueType = itemRow.get("value_type", String::class.java)!!
