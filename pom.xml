@@ -21,6 +21,7 @@
     <module>simter-operation-bom</module>
     <module>simter-operation-parent</module>
     <module>simter-operation-core</module>
+    <module>simter-operation-test</module>
     <module>simter-operation-dao-mongo</module>
     <module>simter-operation-dao-r2dbc</module>
     <module>simter-operation-dao-jpa</module>
