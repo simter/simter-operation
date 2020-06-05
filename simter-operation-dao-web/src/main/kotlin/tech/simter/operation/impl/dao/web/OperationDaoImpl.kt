@@ -1,17 +1,15 @@
 package tech.simter.operation.impl.dao.web
 
-import org.springframework.beans.factory.annotation.Value
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.Page
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.ImmutableOperation
 import tech.simter.reactive.context.SystemContext
-import tech.simter.reactive.web.Utils.createWebClient
 import tech.simter.reactive.web.webfilter.JwtWebFilter.Companion.JWT_HEADER_NAME
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -23,19 +21,11 @@ import javax.json.JsonObjectBuilder
  *
  * @author RJ
  */
-@Component
-class OperationDaoImplByWebFlux(
-  @Value("\${simter-operation.server-address:http://localhost:9014/operation}")
-  private val serverAddress: String,
-  @Value("\${proxy.host:#{null}}") private val proxyHost: String?,
-  @Value("\${proxy.port:#{null}}") private val proxyPort: Int?
+@Repository
+class OperationDaoImpl(
+  @Qualifier(WEB_CLIENT_KEY)
+  val webClient: WebClient
 ) : OperationDao {
-  private val client: WebClient = createWebClient(
-    baseUrl = serverAddress,
-    proxyHost = proxyHost,
-    proxyPort = proxyPort
-  )
-
   // get `Authorization` header value from context
   private fun getAuthorizationHeader() = SystemContext.getOptional<String>(JWT_HEADER_NAME)
 
@@ -45,7 +35,7 @@ class OperationDaoImplByWebFlux(
 
   override fun create(operation: Operation): Mono<Void> {
     return getAuthorizationHeader().flatMap {
-      client.post()
+      webClient.post()
         .apply { addAuthorizationHeader(this, it) }
         .contentType(APPLICATION_JSON)
         .bodyValue(toJson(operation).build().toString())
@@ -56,30 +46,30 @@ class OperationDaoImplByWebFlux(
 
   override fun get(id: String): Mono<Operation> {
     return getAuthorizationHeader().flatMap {
-      client.get().uri("/$id")
+      webClient.get().uri("/$id")
         .apply { addAuthorizationHeader(this, it) }
         .retrieve()
-        .bodyToMono(ImmutableOperation::class.java)
+        .bodyToMono(Operation.Impl::class.java)
     }
   }
 
   @Suppress("UNCHECKED_CAST")
   override fun findByBatch(batch: String): Flux<Operation> {
     return getAuthorizationHeader().flatMapMany {
-      client.get().uri("/batch/$batch")
+      webClient.get().uri("/batch/$batch")
         .apply { addAuthorizationHeader(this, it) }
         .retrieve()
-        .bodyToFlux(ImmutableOperation::class.java) as Flux<Operation>
+        .bodyToFlux(Operation.Impl::class.java) as Flux<Operation>
     }
   }
 
   @Suppress("UNCHECKED_CAST")
   override fun findByTarget(targetType: String, targetId: String): Flux<Operation> {
     return getAuthorizationHeader().flatMapMany {
-      client.get().uri("/target/$targetType/$targetId")
+      webClient.get().uri("/target/$targetType/$targetId")
         .apply { addAuthorizationHeader(this, it) }
         .retrieve()
-        .bodyToFlux(ImmutableOperation::class.java) as Flux<Operation>
+        .bodyToFlux(Operation.Impl::class.java) as Flux<Operation>
     }
   }
 
