@@ -12,8 +12,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
 import tech.simter.operation.core.OperationService
-import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperation
-import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperationItem
+import tech.simter.operation.test.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperationItem
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit.MINUTES
 
