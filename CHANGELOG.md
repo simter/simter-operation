@@ -1,5 +1,12 @@
 # simter-operation changelog
 
+## 0.11.0 2020-06-05
+
+- Upgrade to simter-2.0.0-M1 - start spring-boot-2.3.0
+- Add module simter-operation-service-impl
+- Add module simter-operation-test
+- Move ImmutableOperation to Operation.Impl
+
 ## 0.10.0 2020-05-08
 
 - Upgrade to simter-1.3.0-M15
