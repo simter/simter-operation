@@ -17,7 +17,7 @@ import tech.simter.exception.PermissionDeniedException
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationService
 import tech.simter.operation.rest.webflux.convert
-import tech.simter.operation.rest.webflux.handler.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperation
 import tech.simter.util.RandomUtils.randomString
 
 /**
@@ -43,14 +43,14 @@ class FindHandlerTest @Autowired constructor(
     val batches = listOf(batch1, batch2)
     val targetType1 = randomString()
     val targetType2 = randomString()
-    val targetTypes = listOf(targetType1,targetType2)
+    val targetTypes = listOf(targetType1, targetType2)
     val targetId1 = randomString()
     val targetId2 = randomString()
     val targetIds = listOf(targetId1, targetId2)
     val search = randomString()
     val operation1 = randomOperation(batch = batch1, targetType = targetType1, targetId = targetId1)
     val operation2 = randomOperation(batch = batch2, targetType = targetType2, targetId = targetId2)
-    val operationList = listOf(operation1,operation2)
+    val operationList = listOf(operation1, operation2)
     val page = PageImpl(operationList, PageRequest.of(pageNo - 1, pageSize), 2)
 
     every { service.find(pageNo, pageSize, batches, targetTypes, targetIds, search) } returns Mono.just(page)

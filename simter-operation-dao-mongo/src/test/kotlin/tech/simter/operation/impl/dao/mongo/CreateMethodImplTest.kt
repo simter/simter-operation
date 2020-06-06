@@ -6,8 +6,8 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.kotlin.test.test
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperation
-import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationItem
+import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationItemPo
+import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationPo
 
 /**
  * Test [OperationDaoImpl.create]
@@ -24,7 +24,7 @@ class CreateMethodImplTest @Autowired constructor(
   @Test
   fun `success without items`() {
     // init data
-    val po = randomOperation()
+    val po = randomOperationPo()
 
     // invoke and verify
     dao.create(po).test().verifyComplete()
@@ -34,8 +34,8 @@ class CreateMethodImplTest @Autowired constructor(
   @Test
   fun `success with items`() {
     // do create
-    val po = randomOperation(
-      items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
+    val po = randomOperationPo(
+      items = setOf(randomOperationItemPo(id = "field1"), randomOperationItemPo(id = "field2"))
     )
     dao.create(po).test().verifyComplete()
 

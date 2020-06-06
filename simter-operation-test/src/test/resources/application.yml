@@ -1,0 +1,27 @@
+# Use proxy to create a WebClient or WebTestClient instance for unit test
+#proxy.host: 127.0.0.1
+#proxy.port: 8888
+
+server-url: @server-url@
+spring.main.banner-mode: 'off'
+logging:
+  file: target/test.log
+  level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
+    root: ERROR
+    tech.simter.operation: WARN
+
+    #---- spring ----#
+    #org.springframework: WARN
+
+    #---- spring-boot ----#
+    #org.springframework.boot: WARN
+    org.springframework.boot.context.embedded: TRACE
+    org.springframework.boot.web.embedded.netty.NettyWebServer: INFO # INFO - show server port
+
+    #---- spring reactive ----#
+    #org.springframework.http.client.reactive: DEBUG
+    #org.springframework.http.server.reactive: DEBUG
+    #org.springframework.web.reactive: DEBUG # debug to show mapped and matches routes
+
+    #---- reactor ----#
+    #reactor.ipc.netty: DEBUG # debug to show request/response

@@ -13,19 +13,6 @@
   <description>Core API</description>
   <dependencies>
     <dependency>
-      <groupId>tech.simter.reactive</groupId>
-      <artifactId>simter-reactive-security</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
     </dependency>

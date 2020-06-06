@@ -1,14 +1,5 @@
 #  Simter Operation Server
 
-## Requirement
-
-- Maven 3.6+
-- Kotlin 1.3+
-- Java 8+
-- Spring Framework 5.2+
-- Spring Boot 2.2+
-- Reactor 3.3+
-
 ## Supported Rest API
 
 See [rest-api.md](../docs/rest-api.md).
@@ -76,10 +67,4 @@ nohup java -jar {package-name}.jar > /dev/null &
 
 ## Run Integration Test
 
-Run test in the real server.
-
-1. Start server. Such as `mvn spring-boot:run`
-2. Run [IntegrationTest.kt]
-
-
-[IntegrationTest.kt]: https://github.com/simter/simter-kv/blob/master/simter-kv-starter/src/test/kotlin/tech/simter/kv/starter/IntegrationTest.kt
+Run test in the real server. See [simter-operation-test/README.md](../simter-operation-test/README.md).

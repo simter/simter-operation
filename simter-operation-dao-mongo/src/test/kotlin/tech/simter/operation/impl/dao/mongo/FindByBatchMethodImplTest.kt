@@ -6,7 +6,9 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.kotlin.test.test
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperation
+import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationItemPo
+import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationPo
+import tech.simter.operation.test.TestHelper.randomOperationBatch
 import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
@@ -26,13 +28,13 @@ class FindByBatchMethodImplTest @Autowired constructor(
   @Test
   fun `find something`() {
     // init data
-    val batch = randomString()
+    val batch = randomOperationBatch()
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
-    val operation1 = randomOperation(batch = batch, ts = now) // without items
-    val operation2 = randomOperation(batch = batch, ts = now.minusHours(1),
-      items = setOf(TestHelper.randomOperationItem(id = "field1"), TestHelper.randomOperationItem(id = "field2"))
+    val operation1 = randomOperationPo(batch = batch, ts = now) // without items
+    val operation2 = randomOperationPo(batch = batch, ts = now.minusHours(1),
+      items = setOf(randomOperationItemPo(id = "field1"), randomOperationItemPo(id = "field2"))
     ) // with items
-    val operation3 = randomOperation(batch = randomString()) // another batch
+    val operation3 = randomOperationPo(batch = randomString()) // another batch
     repository
       .saveAll(listOf(operation1, operation2, operation3))
       .then().test().verifyComplete()
@@ -43,17 +45,17 @@ class FindByBatchMethodImplTest @Autowired constructor(
 
   @Test
   fun `find nothing 1`() {
-    dao.findByBatch(randomString()).test().verifyComplete()
+    dao.findByBatch(randomOperationBatch()).test().verifyComplete()
   }
 
   @Test
   fun `find nothing 2`() {
     // init data
     repository
-      .saveAll(listOf(randomOperation(batch = randomString())))
+      .saveAll(listOf(randomOperationPo(batch = randomOperationBatch())))
       .then().test().verifyComplete()
 
     // invoke and verify
-    dao.findByBatch(randomString()).test().verifyComplete()
+    dao.findByBatch(randomOperationBatch()).test().verifyComplete()
   }
 }

@@ -7,16 +7,16 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kotlin.test.test
+import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.ImmutableOperation
-import tech.simter.operation.impl.dao.r2dbc.TestHelper.randomOperation
-import tech.simter.operation.impl.dao.r2dbc.TestHelper.randomOperationItem
+import tech.simter.operation.test.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperationItem
 import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
 /**
- * Test [OperationDaoImplByR2dbcClient.findByBatch]
+ * Test [OperationDaoImpl.findByBatch]
  *
  * @author zh
  * @author RJ
@@ -47,7 +47,7 @@ class FindByBatchMethodImplTest @Autowired constructor(
       .verifyComplete()
   }
 
-  private fun saveAll(vararg list: ImmutableOperation): Mono<Void> {
+  private fun saveAll(vararg list: Operation): Mono<Void> {
     return Flux.fromArray(list).flatMap { dao.create(it).thenReturn(it) }.then()
   }
 
