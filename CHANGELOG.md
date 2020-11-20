@@ -1,5 +1,10 @@
 # simter-operation changelog
 
+## 1.0.0 - 2020-11-20
+
+- Upgrade to simter-2.0.0 (spring-boot-2.3.6)
+- First stable version.
+
 ## 0.11.0 2020-06-05
 
 - Upgrade to simter-2.0.0-M1 - start spring-boot-2.3.0
