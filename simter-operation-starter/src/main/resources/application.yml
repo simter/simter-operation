@@ -27,7 +27,7 @@ server:
   servlet.context-path: /
   server-header: @project.artifactId@-@project.version@
 logging:
-  file: @logging.file@
+  file.name: @logging.file@
   #pattern.dateformat: yyyy-MM-dd HH:mm:ss.SSS,GMT+8:00
   level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
     root: ERROR

@@ -33,7 +33,7 @@ class AppConfiguration @Autowired constructor(
   @Value("\${simter-operation.rest-context-path}") private val contextPath: String,
   @Value("\${simter.jwt.require-authorized}") private val requireAuthorized: Boolean,
   @Value("\${server.port}") private val serverPort: String,
-  @Value("\${logging.file}") private val loggingFile: String,
+  @Value("\${logging.file.name}") private val loggingFile: String,
   @Value("\${simter-operation.version:UNKNOWN}") private val simterOperationVersion: String,
   @Value("\${simter-operation.dependency-version.simter:UNKNOWN}") private val simterVersion: String,
   @Value("\${simter-operation.dependency-version.kotlin:UNKNOWN}") private val kotlinVersion: String,
