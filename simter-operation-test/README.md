@@ -34,6 +34,12 @@ Want to run the integration test on the real server, just add specific param:
 |------------|----------------|---------------
 | server-url | server address | http://127.0.0.1:9014/operation
 
+Such as:
+
+```shell
+$ mvn clean test -P integration-test -D server-url=http://127.0.0.1:9014/operation
+```
+
 
 [TestHelper.kt]: https://github.com/simter/simter-operation/blob/master/simter-operation-test/src/main/kotlin/tech/simter/operation/test/TestHelper.kt
 [rest-api.md]: https://github.com/simter/simter-operation/blob/master/docs/rest-api.md
