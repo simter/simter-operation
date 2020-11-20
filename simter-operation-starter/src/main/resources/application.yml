@@ -12,16 +12,75 @@ simter-operation:
     #operations:
     #  READ.roles: ["ADMIN"]
     #  CREATE.roles: ["ADMIN"]
-simter.jwt:
-  secret-key: @simter.jwt.secret-key@
-  require-authorized: @simter.jwt.require-authorized@
-  exclude-paths: /static/
+simter:
+  jwt:
+    secret-key: @simter.jwt.secret-key@
+    require-authorized: @simter.jwt.require-authorized@
+    exclude-paths: /static, /scheduler, /favicon.ico
+  embedded-database:
+    concat-sql-script: false # default false, true - save concatenate sql content to file target/{platform}.sql
+    disabled-datasource: @db.disabled-datasource@ # default false, true - not auto instance and register a datasource
+    postgres:
+      port: @db.port@
+      # available 9.5.16-1, 9.6.12-1, 10.7-1, 11.2-1
+      version: @simter.embedded-database.postgres.version@
+      # default http://get.enterprisedb.com/postgresql/, can set to file:///C://Users//simter//download/
+      download-url: ~
+    mysql:
+      # available 5.7.13~19, 5.7.10, 5.6.31~36, 5.6.21~24, 5.5.50~52, 5.5.40
+      version: @simter.embedded-database.mysql.version@
+      # default https://dev.mysql.com/get/Downloads/, can set to file:///C://Users//simter//download/
+      download-url: ~
+  mongodb:
+    enabled-logging-event-listener: ${debug:false}
 spring:
+  test.database.replace: none
   main.banner-mode: 'off'
   profiles.active:
-    - database
     - jpa-@db.jpa-implementation@
   application.name: @project.artifactId@-@project.version@
+  datasource:
+    platform: @db.platform@
+    name: @db.name@
+    host: @db.host@
+    port: @db.port@
+    url: @db.url@
+    protocol: @db.protocol@
+    options: @db.options@
+    username: @db.username@
+    password: @db.password@
+    continue-on-error: @db.continue-on-error@
+    sql-script-encoding: UTF-8
+    #concat-sql-script: true # default false, true - save concatenate sql content to file target/{db.platform}.sql
+    initialization-mode: @db.init-mode@ # never|embedded|always
+    # available when initialization-mode=embedded|always
+    schema:
+      # drop
+      - classpath:tech/simter/operation/sql/@db.platform@/schema-drop.sql
+      # create
+      - classpath:tech/simter/operation/sql/@db.platform@/schema-create.sql
+    data:
+      - classpath:tech/simter/operation/sql/@db.platform@/data.sql
+    driver-class-name: @db.driver-class@
+    # hikari 数据库连接池配置 https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+    hikari:
+      pool-name: HikariPool4Operation
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      # default 0 means leak detection is disabled, mini value is 2000ms
+      # -- JPA scheduler default value is 60s
+      leak-detection-threshold: 65000
+  data:
+    mongodb:
+      # mongodb://<user>:<password>@<host>:<port>/<db-name>
+      uri: @db.url@
+  mongodb:
+    embedded:
+      version: @simter.embedded-database.mongo.version@
+      #storage.database-dir: target/mongodb
 server:
   port: @server.port@
   servlet.context-path: /
@@ -31,6 +90,8 @@ logging:
   #pattern.dateformat: yyyy-MM-dd HH:mm:ss.SSS,GMT+8:00
   level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
     root: ERROR
+    tech.simter.r2dbc: INFO # WARN - Executing spring.datasource.schema|data scripts to database, INFO - show executed script, DEBUG - show R2dbcProperties
+    tech.simter.embeddeddatabase: INFO # INFO - Starting embedded database: url=..., DEBUG - Load script
     tech.simter.operation.starter: INFO # INFO - show active profiles and started time
 
     #---- spring ----#
@@ -41,10 +102,33 @@ logging:
     org.springframework.boot.context.embedded: TRACE
     org.springframework.boot.web.embedded.netty.NettyWebServer: INFO # INFO - show server port
 
-    #---- spring reactive ----#
+    #---- spring reactive web ----#
     #org.springframework.http.client.reactive: DEBUG
     #org.springframework.http.server.reactive: DEBUG
     #org.springframework.web.reactive: DEBUG # debug to show mapped and matches routes
 
     #---- reactor ----#
     #reactor.ipc.netty: DEBUG # debug to show request/response
+
+    #---- r2dbc client ----#
+    #org.springframework.data.r2dbc.core.DefaultDatabaseClient: DEBUG # DEBUG to show sql
+    #org.springframework.data.r2dbc.core.NamedParameterExpander: DEBUG # DEBUG to show sql
+
+    #---- r2dbc driver----#
+    #io.r2dbc.h2.client.SessionClient: DEBUG # DEBUG to show postgres request and Response
+    #io.r2dbc.postgresql.client.ReactorNettyClient: DEBUG # DEBUG to show postgres request and Response
+
+    #---- jdbc ----#
+    org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory: INFO # INFO - Starting embedded database: url='jdbc:h2:mem:...', username='sa'
+    #org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG # DEBUG - show executing SQL script file and result
+
+    #---- embedded database ----#
+    #de.flapdoodle.embed: DEBUG
+    #de.flapdoodle.process.runtime.ProcessControl: DEBUG # DEBUG - Detected pid: 3252
+    #ru.yandex.qatools.embed: DEBUG
+    #ru.yandex.qatools.embed.postgresql.PostgresProcess: INFO # INFO - trying to stop postgresql
+    #com.wix.mysql.EmbeddedMysql: INFO # INFO - Preparing EmbeddedMysql version 'Version 5.7.19'...
+    #org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongo: INFO # INFO - show initial and connection
+
+    #---- mongo ----#
+    #org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG # DEBUG to show query
