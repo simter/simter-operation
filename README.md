@@ -6,7 +6,7 @@ Business Operation Log Recorder.
 
 | Sn | Name                          | Type | Parent                        | Remark
 |----|-------------------------------|------|-------------------------------|--------
-| 1  | [simter-operation]            | pom  | [simter-build]                | Build these modules and define global properties and pluginManagement
+| 1  | [simter-operation]            | pom  | [simter-dependencies]                | Build these modules and define global properties and pluginManagement
 | 2  | simter-operation-bom          | pom  | simter-operation              | Bom
 | 3  | simter-operation-parent       | pom  | simter-operation              | Define global dependencies and plugins
 | 4  | simter-operation-core         | jar  | simter-operation-parent       | Core API: [Operation], [OperationDao] and [OperationService]
@@ -28,7 +28,7 @@ Business Operation Log Recorder.
 - Reactor 3.3+
 
 
-[simter-build]: https://github.com/simter/simter-build
+[simter-dependencies]: https://github.com/simter/simter-dependencies
 [simter-operation]: https://github.com/simter/simter-operation
 [Operation]: https://github.com/simter/simter-operation/blob/master/simter-operation-core/src/main/kotlin/tech/simter/operation/core/Operation.kt
 [OperationDao]: https://github.com/simter/simter-operation/blob/master/simter-operation-core/src/main/kotlin/tech/simter/operation/core/OperationDao.kt

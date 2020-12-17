@@ -31,7 +31,7 @@ simter.embedded-database:
     port: @db.port@
     # available 9.5.16-1, 9.6.12-1, 10.7-1, 11.2-1
     version: @simter.embedded-database.postgres.version@
-    # default https://dev.mysql.com/get/Downloads/, can set to file:///C://Users//simter//download/
+    # default http://get.enterprisedb.com/postgresql/, can set to file:///C://Users//simter//download/
     download-url: ~
   mysql:
     port: @db.port@
