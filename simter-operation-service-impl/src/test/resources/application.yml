@@ -10,7 +10,7 @@ simter-kv.authorization:
       strategy: "And"
     SAVE.roles: "MANAGER"
 logging:
-  file: target/test.log
+  file.name: target/test.log
   level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
     root: ERROR
     tech.simter.operation: WARN

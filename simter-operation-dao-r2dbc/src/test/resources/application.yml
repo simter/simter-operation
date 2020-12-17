@@ -40,7 +40,7 @@ simter.embedded-database:
     # default https://dev.mysql.com/get/Downloads/, can set to file:///C://Users//simter//download/
     download-url: ~
 logging:
-  file: target/test.log
+  file.name: target/test.log
   # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
   level:
     #tech.simter.r2dbc: INFO # INFO - show execute sql and custom r2dbc converters, DEBUG - show R2dbcProperties
