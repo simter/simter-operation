@@ -9,7 +9,7 @@ create table st_operation (
   batch         varchar(100),
   title         varchar(100),
   result        varchar(100),
-  remark        text,
+  remark        varchar(1000),
   items_count   smallint     not null default 0
 );
 create index on st_operation(target_type, target_id);
@@ -32,8 +32,8 @@ create table st_operation_item (
   id         varchar(100) not null,
   title      varchar(100),
   value_type varchar(100) not null,
-  new_value  text,
-  old_value  text,
+  new_value  varchar(1000),
+  old_value  varchar(1000),
   foreign key (pid) references st_operation(id) on delete cascade,
   primary key (pid, id)
 );
