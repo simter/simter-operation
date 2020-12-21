@@ -8,6 +8,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
+import tech.simter.operation.core.OperationView
 import tech.simter.operation.impl.dao.mongo.po.OperationPo
 
 /**
@@ -39,7 +40,14 @@ class OperationDaoImpl @Autowired constructor(
       .map { it as Operation }
   }
 
-  override fun find(pageNo: Int, pageSize: Int, batches: List<String>?, targetTypes: List<String>?, targetIds: List<String>?, search: String?): Mono<Page<Operation>> {
+  override fun find(
+    pageNo: Int,
+    pageSize: Int,
+    batches: List<String>?,
+    targetTypes: List<String>?,
+    targetIds: List<String>?,
+    search: String?
+  ): Mono<Page<OperationView>> {
     TODO("not implemented")
   }
 }

@@ -7,6 +7,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
+import tech.simter.operation.core.OperationView
 import tech.simter.reactive.jpa.ReactiveJpaWrapper
 
 /**
@@ -44,7 +45,7 @@ class OperationDaoImpl @Autowired constructor(
     targetTypes: List<String>?,
     targetIds: List<String>?,
     search: String?
-  ): Mono<Page<Operation>> {
+  ): Mono<Page<OperationView>> {
     return wrapper.fromCallable { blockDao.find(pageNo, pageSize, batches, targetTypes, targetIds, search) }
   }
 }

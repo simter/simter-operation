@@ -127,9 +127,14 @@ class OperationDaoImpl @Autowired constructor(
     }
   }
 
-  override fun find(pageNo: Int, pageSize: Int, batches: List<String>?, targetTypes: List<String>?, targetIds: List<String>?, search: String?): Mono<Page<Operation>> {
-    TODO("not implemented")
-  }
+  override fun find(
+    pageNo: Int,
+    pageSize: Int,
+    batches: List<String>?,
+    targetTypes: List<String>?,
+    targetIds: List<String>?,
+    search: String?
+  ): Mono<Page<OperationView>> {
 
   private fun mergeItems(query: Query, operations: MutableMap<String, Operation.Impl>)
     : Mono<MutableCollection<Operation.Impl>> {

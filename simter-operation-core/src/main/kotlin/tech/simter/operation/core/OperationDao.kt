@@ -39,10 +39,10 @@ interface OperationDao {
   fun findByTarget(targetType: String, targetId: String): Flux<Operation>
 
   /**
-   * Find [Page<Operation>] with the specific [batches], [targetTypes] and [targetIds].
+   * Find [Page<OperationView>] with the specific [batches], [targetTypes] and [targetIds].
    * And fuzzy search with [Operation.title], [Operation.operatorName], [Operation.batch] and [Operation.targetType].
    *
-   * Return [Page<Operation>] order by [Operation.ts] desc.
+   * Return [Page<OperationView>] order by [Operation.ts] desc.
    */
   fun find(
     pageNo: Int = 1,
@@ -51,5 +51,5 @@ interface OperationDao {
     targetTypes: List<String>? = null,
     targetIds: List<String>? = null,
     search: String? = null
-  ): Mono<Page<Operation>>
+  ): Mono<Page<OperationView>>
 }

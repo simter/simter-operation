@@ -1,6 +1,7 @@
 package tech.simter.operation.test
 
 import tech.simter.operation.core.Operation
+import tech.simter.operation.core.OperationView
 import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
@@ -62,6 +63,31 @@ object TestHelper {
       remark = remark,
       result = result,
       items = items
+    )
+  }
+
+  /** Create a random [Operation] instance */
+  fun randomOperationView(
+    ts: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+    batch: String? = null,
+    type: String = randomOperationType(),
+    operatorName: String = randomString(6),
+    targetId: String = randomOperationTargetId(),
+    targetType: String = randomOperationTargetType(),
+    title: String = randomString(),
+    remark: String? = null,
+    result: String? = null
+  ): OperationView {
+    return OperationView.of(
+      ts = ts,
+      batch = batch,
+      type = type,
+      operatorName = operatorName,
+      targetId = targetId,
+      targetType = targetType,
+      title = title,
+      remark = remark,
+      result = result
     )
   }
 

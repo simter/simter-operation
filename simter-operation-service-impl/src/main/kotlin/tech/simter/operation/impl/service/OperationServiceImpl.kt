@@ -14,6 +14,7 @@ import tech.simter.operation.core.Operation
 import tech.simter.operation.core.Operation.Item
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
+import tech.simter.operation.core.OperationView
 import tech.simter.reactive.context.SystemContext
 import tech.simter.reactive.security.ModuleAuthorizer
 import tech.simter.reactive.security.ReactiveSecurityService
@@ -95,7 +96,7 @@ class OperationServiceImpl @Autowired constructor(
     targetTypes: List<String>?,
     targetIds: List<String>?,
     search: String?
-  ): Mono<Page<Operation>> {
+  ): Mono<Page<OperationView>> {
     return moduleAuthorizer.verifyHasPermission(OPERATION_READ).then(
       Mono.defer { dao.find(pageNo, pageSize, batches, targetTypes, targetIds, search) }
     )

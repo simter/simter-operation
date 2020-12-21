@@ -14,10 +14,10 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
 import tech.simter.exception.PermissionDeniedException
-import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationService
+import tech.simter.operation.core.OperationView
 import tech.simter.operation.rest.webflux.convert
-import tech.simter.operation.test.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperationView
 import tech.simter.util.RandomUtils.randomString
 
 /**
@@ -48,8 +48,8 @@ class FindHandlerTest @Autowired constructor(
     val targetId2 = randomString()
     val targetIds = listOf(targetId1, targetId2)
     val search = randomString()
-    val operation1 = randomOperation(batch = batch1, targetType = targetType1, targetId = targetId1)
-    val operation2 = randomOperation(batch = batch2, targetType = targetType2, targetId = targetId2)
+    val operation1 = randomOperationView(batch = batch1, targetType = targetType1, targetId = targetId1)
+    val operation2 = randomOperationView(batch = batch2, targetType = targetType2, targetId = targetId2)
     val operationList = listOf(operation1, operation2)
     val page = PageImpl(operationList, PageRequest.of(pageNo - 1, pageSize), 2)
 
@@ -77,12 +77,13 @@ class FindHandlerTest @Autowired constructor(
     // mock
     val pageNo = 1
     val pageSize = 25
-    val emptyList = listOf<Operation>()
+    val emptyList = listOf<OperationView>()
     val page = PageImpl(emptyList, PageRequest.of(pageNo - 1, pageSize), 0)
 
     every { service.find(pageNo, pageSize, null, null, null, null) } returns Mono.just(page)
 
     val response = client.get().uri("/?page-no=$pageNo&page-size=$pageSize").exchange()
+
 
     // invoke
     response
