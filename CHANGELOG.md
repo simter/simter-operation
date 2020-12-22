@@ -1,5 +1,14 @@
 # simter-operation changelog
 
+## 2.0.0-M1 - 2020-12-22
+
+- Upgrade to simter-3.0.0-M1 (spring-boot-2.4.1)
+- Add `@Transactional` config on `OperationServiceImpl`
+- Use spring-data-r2dbc instead of r2dbc-client
+- Add integration test for find pageable operations
+- Add integration test for find by batch
+- Add integration test for find by target
+
 ## 1.0.0 - 2020-11-20
 
 - Upgrade to simter-2.0.0 (spring-boot-2.3.6)
