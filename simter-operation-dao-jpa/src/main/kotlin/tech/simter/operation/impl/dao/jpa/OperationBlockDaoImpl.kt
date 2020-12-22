@@ -69,7 +69,7 @@ internal class OperationBlockDaoImpl @Autowired constructor(
     targetTypes: List<String>?,
     targetIds: List<String>?,
     search: String?
-  ): Page<Operation> {
+  ): Page<OperationView> {
     val conditions = mutableListOf<String>()
     if (!batches.isNullOrEmpty()) conditions.add("batch in :batches")
     if (!targetTypes.isNullOrEmpty()) conditions.add("target_type in :targetTypes")
@@ -110,7 +110,7 @@ internal class OperationBlockDaoImpl @Autowired constructor(
     }
 
     return PageImpl(
-      rowsQuery.resultList as List<Operation>,
+      rowsQuery.resultList as List<OperationView>,
       PageRequest.of(pageNo - 1, pageSize),
       (countQuery.singleResult as Number).toLong()
     )

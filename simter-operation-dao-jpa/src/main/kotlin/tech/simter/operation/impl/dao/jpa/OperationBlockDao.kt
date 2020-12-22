@@ -2,6 +2,7 @@ package tech.simter.operation.impl.dao.jpa
 
 import org.springframework.data.domain.Page
 import tech.simter.operation.core.Operation
+import tech.simter.operation.core.OperationView
 import java.util.*
 
 /**
@@ -37,10 +38,10 @@ interface OperationBlockDao {
   fun findByTarget(targetType: String, targetId: String): List<Operation>
 
   /**
-   * Find [Page<Operation>] with the specific [batches], [targetTypes] and [targetIds].
+   * Find [Page<OperationView>] with the specific [batches], [targetTypes] and [targetIds].
    * And fuzzy search with [Operation.title], [Operation.operatorName], [Operation.batch] and [Operation.targetType].
    *
-   * Return [Page<Operation>] order by [Operation.ts] desc.
+   * Return [Page<OperationView>] order by [Operation.ts] desc.
    */
   fun find(
     pageNo: Int = 1,
@@ -49,5 +50,5 @@ interface OperationBlockDao {
     targetTypes: List<String>? = null,
     targetIds: List<String>? = null,
     search: String? = null
-  ): Page<Operation>
+  ): Page<OperationView>
 }

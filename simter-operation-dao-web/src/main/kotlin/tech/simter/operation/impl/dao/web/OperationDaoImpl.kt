@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
+import tech.simter.operation.core.OperationView
 import tech.simter.reactive.context.SystemContext
 import tech.simter.reactive.web.webfilter.JwtWebFilter.Companion.JWT_HEADER_NAME
 import java.time.format.DateTimeFormatter
@@ -73,8 +74,14 @@ class OperationDaoImpl(
     }
   }
 
-  @Suppress("UNCHECKED_CAST")
-  override fun find(pageNo: Int, pageSize: Int, batches: List<String>?, targetTypes: List<String>?, targetIds: List<String>?, search: String?): Mono<Page<Operation>> {
+  override fun find(
+    pageNo: Int,
+    pageSize: Int,
+    batches: List<String>?,
+    targetTypes: List<String>?,
+    targetIds: List<String>?,
+    search: String?
+  ): Mono<Page<OperationView>> {
     TODO("not implemented")
   }
 

@@ -11,9 +11,9 @@ import reactor.core.publisher.Mono
 import reactor.kotlin.test.test
 import tech.simter.exception.PermissionDeniedException
 import tech.simter.operation.OPERATION_READ
-import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
+import tech.simter.operation.core.OperationView
 import tech.simter.reactive.security.ModuleAuthorizer
 import tech.simter.util.RandomUtils.randomString
 
@@ -37,7 +37,7 @@ class FindMethodImplTest @Autowired constructor(
     val targetTypes = listOf<String>()
     val targetIds = listOf<String>()
     val search = randomString()
-    val emptyList = listOf<Operation>()
+    val emptyList = listOf<OperationView>()
     val page = PageImpl(emptyList, PageRequest.of(pageNo - 1, pageSize), 0)
     every { moduleAuthorizer.verifyHasPermission(OPERATION_READ) } returns Mono.empty()
     every { dao.find(pageNo, pageSize, batches, targetTypes, targetIds, search) } returns Mono.just(page)
