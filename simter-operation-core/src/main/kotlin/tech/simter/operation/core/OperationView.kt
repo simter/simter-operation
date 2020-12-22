@@ -55,5 +55,21 @@ interface OperationView {
         remark = remark, result = result, batch = batch
       )
     }
+
+    /** Create from an [Operation] instance */
+    fun from(operation: Operation): OperationView {
+      return of(
+        id = operation.id,
+        ts = operation.ts,
+        batch = operation.batch,
+        type = operation.type,
+        operatorName = operation.operatorName,
+        targetId = operation.targetId,
+        targetType = operation.targetType,
+        title = operation.title,
+        remark = operation.remark,
+        result = operation.result
+      )
+    }
   }
 }
