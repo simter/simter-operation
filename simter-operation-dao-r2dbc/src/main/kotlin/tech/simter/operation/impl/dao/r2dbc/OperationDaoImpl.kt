@@ -1,28 +1,29 @@
 package tech.simter.operation.impl.dao.r2dbc
 
-import io.r2dbc.client.Handle
-import io.r2dbc.client.Query
-import io.r2dbc.client.R2dbc
-import io.r2dbc.client.Update
-import io.r2dbc.spi.Clob
 import io.r2dbc.spi.Row
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort.Direction.ASC
+import org.springframework.data.domain.Sort.Direction.DESC
+import org.springframework.data.domain.Sort.by
+import org.springframework.data.r2dbc.core.R2dbcEntityOperations
+import org.springframework.data.relational.core.query.Criteria
+import org.springframework.data.relational.core.query.Criteria.where
+import org.springframework.data.relational.core.query.Query.query
+import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import reactor.kotlin.core.publisher.toFlux
-import reactor.kotlin.core.publisher.toMono
 import tech.simter.operation.TABLE_OPERATION
 import tech.simter.operation.TABLE_OPERATION_ITEM
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
+import tech.simter.operation.core.OperationView
+import tech.simter.r2dbc.kotlin.bindNullable
 import java.time.OffsetDateTime
-import java.util.*
-import java.util.stream.Collectors
 
 /**
  * The implementation of [OperationDao] by spring-data-r2dbc.
@@ -33,98 +34,131 @@ import java.util.stream.Collectors
  */
 @Repository
 class OperationDaoImpl @Autowired constructor(
-  private val r2dbc: R2dbc
+  private val databaseClient: DatabaseClient,
+  private val entityOperations: R2dbcEntityOperations
 ) : OperationDao {
-  private val logger: Logger = LoggerFactory.getLogger(OperationDaoImpl::class.java)
-  val insertOperationSql = """
+  private val insertOperationSql = """
     insert into $TABLE_OPERATION(
       id, ts, type, operator_id, operator_name,
       target_type, target_id, items_count, batch, title,
       result, remark
      ) values (
-      ${'$'}1, ${'$'}2, ${'$'}3, ${'$'}4, ${'$'}5,
-      ${'$'}6, ${'$'}7, ${'$'}8, ${'$'}9, ${'$'}10,
-      ${'$'}11, ${'$'}12
+      :id, :ts, :type, :operatorId, :operatorName,
+      :targetType, :targetId, :itemsCount, :batch, :title,
+      :result, :remark
     )
   """.trimIndent()
-  val insertOperationItemSql = """
-    insert into $TABLE_OPERATION_ITEM(id, pid, title, value_type, old_value, new_value)
-      values (${'$'}1, ${'$'}2, ${'$'}3, ${'$'}4, ${'$'}5, ${'$'}6)
-  """.trimIndent()
+
+  private fun createInsertSql4OperationItem(count: Int): String {
+    val values = (0 until count).joinToString(", \r\n") { "(:pid, :id$it, :title$it, :valueType$it, :oldValue$it, :newValue$it)" }
+    return "insert into $TABLE_OPERATION_ITEM(pid, id, title, value_type, old_value, new_value)\r\n  values $values"
+  }
 
   @Transactional(readOnly = false)
   override fun create(operation: Operation): Mono<Void> {
-    return r2dbc.useTransaction { handle ->
-      logger.debug("operation={}", operation)
-      logger.debug("insertOperationSql={}", insertOperationSql)
-      val result = insertOperation(handle, operation)
-      if (operation.items.isEmpty()) result
-      else result.thenMany(insertOperationItems(handle, operation.id, operation.items))
+    val result = databaseClient
+      // insert to main table for operation
+      .sql(insertOperationSql)
+      .bind("id", operation.id)
+      .bind("ts", operation.ts)
+      .bind("type", operation.type)
+      .bind("operatorId", operation.operatorId)
+      .bind("operatorName", operation.operatorName)
+      .bind("targetType", operation.targetType)
+      .bind("targetId", operation.targetId)
+      .bind("itemsCount", operation.items.size)
+      .bindNullable<String>("title", operation.title)
+      .bindNullable<String>("result", operation.result)
+      .bindNullable<String>("remark", operation.remark)
+      .bindNullable<String>("batch", operation.batch)
+      .then()
+
+    // insert to sub table for items
+    return if (operation.items.isEmpty()) result
+    else {
+      var spec = databaseClient.sql(createInsertSql4OperationItem(operation.items.size))
+        .bind("pid", operation.id)
+      operation.items.forEachIndexed { index, item ->
+        spec = spec
+          .bind("id$index", item.id)
+          .bind("valueType$index", item.valueType)
+          .bindNullable<String>("title$index", item.title)
+          .bindNullable<String>("oldValue$index", item.oldValue)
+          .bindNullable<String>("newValue$index", item.newValue)
+      }
+
+      result.then(spec.then())
     }
   }
 
+  @Transactional(readOnly = true)
   override fun get(id: String): Mono<Operation> {
-    return r2dbc.inTransaction { handle ->
-      handle.createQuery("select * from $TABLE_OPERATION where id = $1")
-        .bind("$1", id)
-        .mapRow { row -> toOperation(row) }
-        .flatMap { it }
-        .flatMap { operation ->
-          handle.createQuery("select * from $TABLE_OPERATION_ITEM where pid = $1 order by id")
-            .bind("$1", id)
-            .mapRow { itemRow -> toOperationItem(itemRow) }
-            .flatMap { it }
-            .collectList()
-            .map { operation.copy(items = it.toSet()) as Operation }
-        }
-    }.next()
+    return entityOperations.select(Operation.Item.Impl::class.java)
+      .from(TABLE_OPERATION_ITEM)
+      .matching(query(where("pid").`is`(id)).sort(by(ASC, "id")))
+      .all()
+      .collectList()
+      .flatMap { items ->
+        databaseClient.sql("""
+          select id, ts, type, operator_id, operator_name, target_type, target_id, 
+            batch, title, result, remark
+          from $TABLE_OPERATION where id = :id""".trimIndent()
+        ).bind("id", id)
+          .map { row: Row -> rowMapper4Operation(row, items) }
+          .one()
+      }
   }
 
+  @Transactional(readOnly = true)
   override fun findByBatch(batch: String): Flux<Operation> {
-    return r2dbc.inTransaction { handle ->
-      handle.createQuery("select * from $TABLE_OPERATION where batch = $1 order by ts desc")
-        .bind("$1", batch)
-        .mapRow { row -> toOperation(row) }
-        .flatMap { it }
-        .collectMap { it.id }
-        .flatMap { operations ->
-          if (operations.isEmpty()) Mono.empty()
-          else {
-            val query = handle.createQuery("""
-              select i.*
-                from $TABLE_OPERATION_ITEM i
-                inner join $TABLE_OPERATION p on p.id = i.pid
-                where p.batch = $1 order by i.pid, i.id
-              """.trimIndent()
-            ).bind("$1", batch)
-            mergeItems(query, operations as MutableMap<String, Operation.Impl>)
-          }
-        }.flatMapMany { list -> Flux.fromIterable(list.sortedByDescending { it.ts }) }
-    }
+    return databaseClient.sql("""
+      select i.*
+      from $TABLE_OPERATION_ITEM i
+      inner join $TABLE_OPERATION o on o.id = i.pid
+      where o.batch = :batch
+      order by i.pid, i.id""".trimIndent()
+    ).bind("batch", batch)
+      .map { row: Row -> rowMapper4OperationItem(row) }
+      .all()
+      .collectMultimap({ it.first }, { it.second })
+      .flatMapMany { items ->
+        databaseClient.sql("""
+          select o.*
+          from $TABLE_OPERATION o
+          where o.batch = :batch
+          order by o.ts desc""".trimIndent()
+        ).bind("batch", batch)
+          .map { row: Row -> rowMapper4Operation(row, items[row.get("id", String::class.java)!!]) }
+          .all()
+      }
   }
 
+  @Transactional(readOnly = true)
   override fun findByTarget(targetType: String, targetId: String): Flux<Operation> {
-    return r2dbc.inTransaction { handle ->
-      handle.createQuery("select * from $TABLE_OPERATION where target_type = $1 and target_id = $2 order by ts desc")
-        .bind("$1", targetType)
-        .bind("$2", targetId)
-        .mapRow { row -> toOperation(row) }
-        .flatMap { it }
-        .collectMap { it.id }
-        .flatMap { operations ->
-          if (operations.isEmpty()) Mono.empty()
-          else {
-            val query = handle.createQuery("""
-              select i.*
-                from $TABLE_OPERATION_ITEM i
-                inner join $TABLE_OPERATION p on p.id = i.pid
-                where p.target_type = $1 and p.target_id = $2 order by i.pid, i.id
-              """.trimIndent()
-            ).bind("$1", targetType).bind("$2", targetId)
-            mergeItems(query, operations as MutableMap<String, Operation.Impl>)
-          }
-        }.flatMapMany { list -> Flux.fromIterable(list.sortedByDescending { it.ts }) }
-    }
+    return databaseClient.sql("""
+      select i.*
+      from $TABLE_OPERATION_ITEM i
+      inner join $TABLE_OPERATION o on o.id = i.pid
+      where o.target_type = :targetType
+      and o.target_id = :targetId
+      order by i.pid, i.id""".trimIndent()
+    ).bind("targetType", targetType)
+      .bind("targetId", targetId)
+      .map { row: Row -> rowMapper4OperationItem(row) }
+      .all()
+      .collectMultimap({ it.first }, { it.second })
+      .flatMapMany { items ->
+        databaseClient.sql("""
+          select o.*
+          from $TABLE_OPERATION o
+          where o.target_type = :targetType
+          and o.target_id = :targetId
+          order by o.ts desc""".trimIndent()
+        ).bind("targetType", targetType)
+          .bind("targetId", targetId)
+          .map { row: Row -> rowMapper4Operation(row, items[row.get("id", String::class.java)!!]) }
+          .all()
+      }
   }
 
   override fun find(
@@ -135,127 +169,73 @@ class OperationDaoImpl @Autowired constructor(
     targetIds: List<String>?,
     search: String?
   ): Mono<Page<OperationView>> {
+    // create common query
+    val query = entityOperations.select(OperationView.Impl::class.java).from(TABLE_OPERATION)
 
-  private fun mergeItems(query: Query, operations: MutableMap<String, Operation.Impl>)
-    : Mono<MutableCollection<Operation.Impl>> {
-    return query
-      .mapRow { itemRow ->
-        val pid = itemRow.get("pid", String::class.java)!!
-        toOperationItem(itemRow).map { Pair(pid, it) }
-      }
-      .flatMap { it }
-      .groupBy({ it.first }, { it.second })
-      .flatMap { group ->
-        val pid = group.key() as String
-        group.collectList().doOnNext {
-          // rebuild with items
-          operations[pid] = operations[pid]!!.copy(items = it.toSet())
-        }
-      }.then(operations.values.toMono())
-  }
-
-  internal fun insertOperationItems(handle: Handle, operationId: String, items: Set<Operation.Item>): Flux<Int> {
-    val insert = handle.createUpdate(insertOperationItemSql)
-    items.forEach { item ->
-      var i = 0
-
-      // $1 to $6
-      insert.bind("\$${++i}", item.id)
-      insert.bind("\$${++i}", operationId)
-      bindValue(insert, "\$${++i}", item.title, String::class.java)
-      insert.bind("\$${++i}", item.valueType)
-      bindValue(insert, "\$${++i}", item.oldValue, String::class.java)
-      bindValue(insert, "\$${++i}", item.newValue, String::class.java)
-
-      // add to batch
-      insert.add()
-    }
-
-    // execute sql
-    return insert.execute()
-  }
-
-  internal fun insertOperation(handle: Handle, operation: Operation): Mono<Int> {
-    val insert = handle.createUpdate(insertOperationSql)
-    var i = 0
-
-    // $1 to $5
-    insert.bind("\$${++i}", operation.id)
-    insert.bind("\$${++i}", operation.ts)
-    insert.bind("\$${++i}", operation.type)
-    insert.bind("\$${++i}", operation.operatorId)
-    insert.bind("\$${++i}", operation.operatorName)
-
-    // $6 to $10
-    insert.bind("\$${++i}", operation.targetType)
-    insert.bind("\$${++i}", operation.targetId)
-    insert.bind("\$${++i}", operation.items.size)
-    bindValue(insert, "\$${++i}", operation.batch, String::class.java)
-    bindValue(insert, "\$${++i}", operation.title, String::class.java)
-
-    // $11 to $12
-    bindValue(insert, "\$${++i}", operation.result, String::class.java)
-    bindValue(insert, "\$${++i}", operation.remark, String::class.java)
-
-    // execute sql
-    return insert.execute().next()
-  }
-
-  private fun bindValue(update: Update, identifier: String, value: Any?, valueType: Class<*>) {
-    if (value == null) update.bindNull(identifier, valueType)
-    else update.bind(identifier, value)
-  }
-
-  private fun toOperation(operationRow: Row): Mono<Operation.Impl> {
-    // need to early decode non-clob data because postgres would release row after call `PostgresqlResult.map`.
-    // otherwise r2dbc-postgresql throw `IllegalStateException: Value cannot be retrieved after row has been released`.
-    // r2dbc-h2 without this problem.
-    val withoutClob = Operation.Impl(
-      id = operationRow.get("id", String::class.java)!!,
-      ts = operationRow.get("ts", OffsetDateTime::class.java)!!,
-      type = operationRow.get("type", String::class.java)!!,
-      operatorId = operationRow.get("operator_id", String::class.java)!!,
-      operatorName = operationRow.get("operator_name", String::class.java)!!,
-      targetId = operationRow.get("target_id", String::class.java)!!,
-      targetType = operationRow.get("target_type", String::class.java)!!,
-      title = operationRow.get("title", String::class.java),
-      result = operationRow.get("result", String::class.java),
-      batch = operationRow.get("batch", String::class.java)
-    )
-
-    // decode clob data
-    val remarkClob = operationRow.get("remark", Clob::class.java)
-      ?.stream()?.toFlux()?.collect(Collectors.joining())?.map { Optional.of(it) }
-      ?: Optional.empty<String>().toMono()
-
-    // combine
-    return remarkClob.map { withoutClob.copy(remark = it.orElse(null)) }
-  }
-
-  private fun toOperationItem(itemRow: Row): Mono<Operation.Item.Impl> {
-    // need to early decode non-clob data because postgres would release row after call `PostgresqlResult.map`.
-    // otherwise r2dbc-postgresql throw `IllegalStateException: Value cannot be retrieved after row has been released`.
-    // r2dbc-h2 without this problem.
-    val withoutClob = Operation.Item.Impl(
-      id = itemRow.get("id", String::class.java)!!,
-      title = itemRow.get("title", String::class.java),
-      valueType = itemRow.get("value_type", String::class.java)!!
-    )
-
-    // decode clob data
-    val oldValueClob = itemRow.get("old_value", Clob::class.java)
-      ?.stream()?.toFlux()?.collect(Collectors.joining())?.map { Optional.of(it) }
-      ?: Optional.empty<String>().toMono()
-    val newValueClob = itemRow.get("new_value", Clob::class.java)
-      ?.stream()?.toFlux()?.collect(Collectors.joining())?.map { Optional.of(it) }
-      ?: Optional.empty<String>().toMono()
-
-    // combine
-    return Mono.zip(oldValueClob, newValueClob).map {
-      withoutClob.copy(
-        oldValue = it.t1.orElse(null),
-        newValue = it.t2.orElse(null)
+    // create query condition
+    var condition = Criteria.empty()
+    if (!batches.isNullOrEmpty()) condition = condition.and("batch").`in`(batches)
+    if (!targetTypes.isNullOrEmpty()) condition = condition.and("targetType").`in`(targetTypes)
+    if (!targetIds.isNullOrEmpty()) condition = condition.and("targetId").`in`(targetIds)
+    search?.let {
+      val searchStr = if (it.contains("%")) it else "%$it%"
+      condition = condition.and(
+        where("title").like(searchStr)
+          .or("batch").like(searchStr)
+          .or("targetType").like(searchStr)
+          .or("operatorName").like(searchStr)
       )
     }
+
+    // do page query
+    return query.matching(query(condition)).count() // query total count
+      .flatMap { totalCount ->
+        val capacity = tech.simter.data.Page.toValidCapacity(pageSize)
+        val sort = by(DESC, "ts")
+        val pageable = PageRequest.of(pageNo - 1, capacity, sort)
+        if (totalCount <= 0) Mono.just(PageImpl(emptyList(), pageable, totalCount))
+        else {
+          // query real rows
+          query.matching(
+            query(condition).sort(sort)
+              .limit(capacity)
+              .offset(tech.simter.data.Page.calculateOffset(pageNo, pageSize).toLong())
+          ).all()
+            .collectList()
+            .map { rows ->
+              PageImpl(rows as List<OperationView>, pageable, totalCount)
+            }
+        }
+      }
+  }
+
+  private fun rowMapper4Operation(row: Row, items: Collection<Operation.Item>?): Operation {
+    return Operation.of(
+      id = row.get("id", String::class.java)!!,
+      ts = row.get("ts", OffsetDateTime::class.java)!!,
+      type = row.get("type", String::class.java)!!,
+      operatorId = row.get("operator_id", String::class.java)!!,
+      operatorName = row.get("operator_name", String::class.java)!!,
+      targetId = row.get("target_id", String::class.java)!!,
+      targetType = row.get("target_type", String::class.java)!!,
+      title = row.get("title", String::class.java),
+      remark = row.get("remark", String::class.java),
+      result = row.get("result", String::class.java),
+      batch = row.get("batch", String::class.java),
+      items = items?.toSet() ?: emptySet()
+    )
+  }
+
+  private fun rowMapper4OperationItem(row: Row): Pair<String, Operation.Item> {
+    return Pair(
+      row.get("pid", String::class.java)!!,
+      Operation.Item.of(
+        id = row.get("id", String::class.java)!!,
+        valueType = row.get("value_type", String::class.java)!!,
+        title = row.get("title", String::class.java),
+        oldValue = row.get("old_value", String::class.java),
+        newValue = row.get("new_value", String::class.java)
+      )
+    )
   }
 }

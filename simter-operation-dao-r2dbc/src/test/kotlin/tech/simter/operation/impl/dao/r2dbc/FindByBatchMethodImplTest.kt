@@ -2,7 +2,7 @@ package tech.simter.operation.impl.dao.r2dbc
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
+import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -22,7 +22,7 @@ import java.time.temporal.ChronoUnit
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
-@DataMongoTest
+@DataR2dbcTest
 class FindByBatchMethodImplTest @Autowired constructor(
   private val dao: OperationDao
 ) {
