@@ -7,10 +7,11 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
 import tech.simter.operation.test.TestHelper.randomOperation
+import tech.simter.operation.test.TestHelper.randomOperationItem
 import tech.simter.operation.test.rest.TestHelper.jsonb
 
 /**
- * Test create.
+ * Test `POST /` to create a operation.
  *
  * @author RJ
  */
@@ -22,7 +23,7 @@ class CreateOperationTest @Autowired constructor(
   @Test
   fun `create one`() {
     // mock
-    val kv = randomOperation()
+    val kv = randomOperation(items = setOf(randomOperationItem()))
     val data = jsonb.toJson(kv)
     //println("----------json=$data")
 

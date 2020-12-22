@@ -12,13 +12,13 @@ import tech.simter.operation.test.rest.TestHelper.createOneOperation
 import tech.simter.operation.test.rest.TestHelper.jsonb
 
 /**
- * Test find by batch.
+ * Test `GET /$id` to load a operation.
  *
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @WebFluxTest
-class FindByIdTest @Autowired constructor(
+class GetByIdTest @Autowired constructor(
   private val client: WebTestClient
 ) {
   @Test
