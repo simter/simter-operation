@@ -39,6 +39,7 @@ object TestHelper {
 
   /** Create a random [Operation] instance */
   fun randomOperation(
+    id: String = UUID.randomUUID().toString(),
     ts: OffsetDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS),
     batch: String? = null,
     type: String = randomOperationType(),
@@ -52,6 +53,7 @@ object TestHelper {
     items: Set<Operation.Item> = emptySet()
   ): Operation {
     return Operation.of(
+      id = id,
       ts = ts,
       batch = batch,
       type = type,
