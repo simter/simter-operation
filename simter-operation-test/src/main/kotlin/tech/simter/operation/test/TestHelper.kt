@@ -5,6 +5,7 @@ import tech.simter.operation.core.OperationView
 import tech.simter.util.RandomUtils.randomString
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
+import java.util.*
 
 /**
  * Some common tools for unit test.
@@ -15,6 +16,11 @@ object TestHelper {
   /** Create a random operation id */
   fun randomOperationId(): String {
     return randomString()
+  }
+
+  /** Create a random operation title */
+  fun randomOperationTitle(prefix: String = "", suffix: String = "", randomLen: Int = 6): String {
+    return prefix + randomString(len = randomLen) + suffix
   }
 
   /** Create a random operation batch */
