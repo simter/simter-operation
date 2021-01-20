@@ -1,7 +1,13 @@
-spring.main.banner-mode: 'off'
+spring:
+  main.banner-mode: 'off'
+  #autoconfigure.exclude: org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
 logging:
   file.name: target/test.log
   level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
     root: ERROR
-    tech.simter.operation: ERROR
+    #tech.simter: INFO
+    #tech.simter.operation: ERROR
+    #org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener: DEBUG
 simter-operation.rest-context-path: /
+#simter.jackson.disabled: true
+#simter.kotlinx-serialization.disabled: true
