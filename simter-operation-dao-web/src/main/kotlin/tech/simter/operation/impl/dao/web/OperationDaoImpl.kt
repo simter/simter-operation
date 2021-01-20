@@ -36,7 +36,7 @@ class OperationDaoImpl(
 
   override fun create(operation: Operation): Mono<Void> {
     return getAuthorizationHeader().flatMap {
-      webClient.post()
+      webClient.post().uri("/")
         .apply { addAuthorizationHeader(this, it) }
         .contentType(APPLICATION_JSON)
         .bodyValue(toJson(operation).build().toString())
