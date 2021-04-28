@@ -53,22 +53,22 @@ class FindMethodImplTest @Autowired constructor(
     // batches is empty
     dao.find(batches = emptyBatches).test()
       .consumeNextWith { page ->
-        assertEquals(0, page.number)
-        assertEquals(25, page.size)
-        assertEquals(3, page.totalElements)
-        assertSamePropertyHasSameValue(page.content[0], operation1)
-        assertSamePropertyHasSameValue(page.content[1], operation2)
-        assertSamePropertyHasSameValue(page.content[2], operation3)
+        assertEquals(0, page.offset)
+        assertEquals(25, page.limit)
+        assertEquals(3, page.total)
+        assertSamePropertyHasSameValue(page.rows[0], operation1)
+        assertSamePropertyHasSameValue(page.rows[1], operation2)
+        assertSamePropertyHasSameValue(page.rows[2], operation3)
       }.verifyComplete()
 
     // batches is not empty
     dao.find(batches = batches).test()
       .consumeNextWith { page ->
-        assertEquals(0, page.number)
-        assertEquals(25, page.size)
-        assertEquals(2, page.totalElements)
-        assertSamePropertyHasSameValue(page.content[0], operation1)
-        assertSamePropertyHasSameValue(page.content[1], operation2)
+        assertEquals(0, page.offset)
+        assertEquals(25, page.limit)
+        assertEquals(2, page.total)
+        assertSamePropertyHasSameValue(page.rows[0], operation1)
+        assertSamePropertyHasSameValue(page.rows[1], operation2)
       }.verifyComplete()
   }
 
@@ -89,22 +89,22 @@ class FindMethodImplTest @Autowired constructor(
     // targetTypes is empty
     dao.find(targetTypes = emptyTargetType).test()
       .consumeNextWith { page ->
-        assertEquals(0, page.number)
-        assertEquals(25, page.size)
-        assertEquals(3, page.totalElements)
-        assertSamePropertyHasSameValue(page.content[0], operation1)
-        assertSamePropertyHasSameValue(page.content[1], operation2)
-        assertSamePropertyHasSameValue(page.content[2], operation3)
+        assertEquals(0, page.offset)
+        assertEquals(25, page.limit)
+        assertEquals(3, page.total)
+        assertSamePropertyHasSameValue(page.rows[0], operation1)
+        assertSamePropertyHasSameValue(page.rows[1], operation2)
+        assertSamePropertyHasSameValue(page.rows[2], operation3)
       }.verifyComplete()
 
     // targetTypes is not empty
     dao.find(targetTypes = targetTypes).test()
       .consumeNextWith { page ->
-        assertEquals(0, page.number)
-        assertEquals(25, page.size)
-        assertEquals(2, page.totalElements)
-        assertSamePropertyHasSameValue(page.content[0], operation1)
-        assertSamePropertyHasSameValue(page.content[1], operation2)
+        assertEquals(0, page.offset)
+        assertEquals(25, page.limit)
+        assertEquals(2, page.total)
+        assertSamePropertyHasSameValue(page.rows[0], operation1)
+        assertSamePropertyHasSameValue(page.rows[1], operation2)
       }.verifyComplete()
   }
 
@@ -125,22 +125,22 @@ class FindMethodImplTest @Autowired constructor(
     // targetIds is empty
     dao.find(targetIds = emptyTargetId).test()
       .consumeNextWith { page ->
-        assertEquals(0, page.number)
-        assertEquals(25, page.size)
-        assertEquals(3, page.totalElements)
-        assertSamePropertyHasSameValue(page.content[0], operation1)
-        assertSamePropertyHasSameValue(page.content[1], operation2)
-        assertSamePropertyHasSameValue(page.content[2], operation3)
+        assertEquals(0, page.offset)
+        assertEquals(25, page.limit)
+        assertEquals(3, page.total)
+        assertSamePropertyHasSameValue(page.rows[0], operation1)
+        assertSamePropertyHasSameValue(page.rows[1], operation2)
+        assertSamePropertyHasSameValue(page.rows[2], operation3)
       }.verifyComplete()
 
     // targetIds is not empty
     dao.find(targetIds = targetIds).test()
       .consumeNextWith { page ->
-        assertEquals(0, page.number)
-        assertEquals(25, page.size)
-        assertEquals(2, page.totalElements)
-        assertSamePropertyHasSameValue(page.content[0], operation1)
-        assertSamePropertyHasSameValue(page.content[1], operation2)
+        assertEquals(0, page.offset)
+        assertEquals(25, page.limit)
+        assertEquals(2, page.total)
+        assertSamePropertyHasSameValue(page.rows[0], operation1)
+        assertSamePropertyHasSameValue(page.rows[1], operation2)
       }.verifyComplete()
   }
 
@@ -158,33 +158,33 @@ class FindMethodImplTest @Autowired constructor(
     // match with title, operatorName
     dao.find(search = "jack").test()
       .consumeNextWith { page ->
-        assertEquals(0, page.number)
-        assertEquals(25, page.size)
-        assertEquals(2, page.totalElements)
-        assertSamePropertyHasSameValue(page.content[0], operation1)
-        assertSamePropertyHasSameValue(page.content[1], operation2)
+        assertEquals(0, page.offset)
+        assertEquals(25, page.limit)
+        assertEquals(2, page.total)
+        assertSamePropertyHasSameValue(page.rows[0], operation1)
+        assertSamePropertyHasSameValue(page.rows[1], operation2)
       }.verifyComplete()
 
     // match with batch, targetType
     dao.find(search = "you").test()
       .consumeNextWith { page ->
-        assertEquals(0, page.number)
-        assertEquals(25, page.size)
-        assertEquals(2, page.totalElements)
-        assertSamePropertyHasSameValue(page.content[0], operation3)
-        assertSamePropertyHasSameValue(page.content[1], operation4)
+        assertEquals(0, page.offset)
+        assertEquals(25, page.limit)
+        assertEquals(2, page.total)
+        assertSamePropertyHasSameValue(page.rows[0], operation3)
+        assertSamePropertyHasSameValue(page.rows[1], operation4)
       }.verifyComplete()
 
     // match with title, operatorName, batch and targetType
     dao.find(search = "and").test()
       .consumeNextWith { page ->
-        assertEquals(0, page.number)
-        assertEquals(25, page.size)
-        assertEquals(4, page.totalElements)
-        assertSamePropertyHasSameValue(page.content[0], operation1)
-        assertSamePropertyHasSameValue(page.content[1], operation2)
-        assertSamePropertyHasSameValue(page.content[2], operation3)
-        assertSamePropertyHasSameValue(page.content[3], operation4)
+        assertEquals(0, page.offset)
+        assertEquals(25, page.limit)
+        assertEquals(4, page.total)
+        assertSamePropertyHasSameValue(page.rows[0], operation1)
+        assertSamePropertyHasSameValue(page.rows[1], operation2)
+        assertSamePropertyHasSameValue(page.rows[2], operation3)
+        assertSamePropertyHasSameValue(page.rows[3], operation4)
       }.verifyComplete()
   }
 
@@ -193,10 +193,10 @@ class FindMethodImplTest @Autowired constructor(
     // invoke and verify
     dao.find().test()
       .consumeNextWith { page ->
-        assertEquals(0, page.number)
-        assertEquals(25, page.size)
-        assertEquals(0, page.totalElements)
-        assertTrue(page.content.isEmpty())
+        assertEquals(0, page.offset)
+        assertEquals(25, page.limit)
+        assertEquals(0, page.total)
+        assertTrue(page.rows.isEmpty())
       }.verifyComplete()
   }
 } 

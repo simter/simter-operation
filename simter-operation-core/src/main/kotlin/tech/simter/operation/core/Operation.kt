@@ -1,5 +1,8 @@
 package tech.simter.operation.core
 
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -74,9 +77,11 @@ interface Operation {
       get() = null
 
     /** An inner immutable [Item] implementation */
+    @Serializable
+    @SerialName("Operation.Item")
     data class Impl(
       override val id: String,
-      override val title: String? = id,
+      override val title: String? = null,
       override val valueType: String,
       override val oldValue: String? = null,
       override val newValue: String? = null
@@ -135,8 +140,11 @@ interface Operation {
   }
 
   /** An inner immutable [Operation] implementation */
+  @Serializable
+  @SerialName("Operation")
   data class Impl(
     override val id: String = UUID.randomUUID().toString(),
+    @Contextual
     override val ts: OffsetDateTime = OffsetDateTime.now(),
     override val type: String,
     override val operatorId: String,
