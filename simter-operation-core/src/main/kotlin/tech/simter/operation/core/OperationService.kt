@@ -1,8 +1,8 @@
 package tech.simter.operation.core
 
-import org.springframework.data.domain.Page
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import tech.simter.kotlin.data.Page
 import tech.simter.operation.core.Operation.Item
 
 /**

@@ -2,9 +2,6 @@ package tech.simter.operation.impl.dao.r2dbc
 
 import io.r2dbc.spi.Row
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort.Direction.ASC
 import org.springframework.data.domain.Sort.Direction.DESC
 import org.springframework.data.domain.Sort.by
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import tech.simter.kotlin.data.Page
 import tech.simter.operation.TABLE_OPERATION
 import tech.simter.operation.TABLE_OPERATION_ITEM
 import tech.simter.operation.core.Operation
@@ -190,20 +188,27 @@ class OperationDaoImpl @Autowired constructor(
     // do page query
     return query.matching(query(condition)).count() // query total count
       .flatMap { totalCount ->
-        val capacity = tech.simter.data.Page.toValidCapacity(pageSize)
+        val offset = Page.calculateOffset(pageNo, pageSize)
         val sort = by(DESC, "ts")
-        val pageable = PageRequest.of(pageNo - 1, capacity, sort)
-        if (totalCount <= 0) Mono.just(PageImpl(emptyList(), pageable, totalCount))
+        if (totalCount <= 0) Mono.just(Page.of(
+          limit = pageSize,
+          offset = offset,
+          total = 0,
+          rows = emptyList()
+        ))
         else {
           // query real rows
           query.matching(
-            query(condition).sort(sort)
-              .limit(capacity)
-              .offset(tech.simter.data.Page.calculateOffset(pageNo, pageSize).toLong())
+            query(condition).sort(sort).limit(pageSize).offset(offset)
           ).all()
             .collectList()
             .map { rows ->
-              PageImpl(rows as List<OperationView>, pageable, totalCount)
+              Page.of(
+                limit = pageSize,
+                offset = offset,
+                total = totalCount,
+                rows = rows as List<OperationView>
+              )
             }
         }
       }

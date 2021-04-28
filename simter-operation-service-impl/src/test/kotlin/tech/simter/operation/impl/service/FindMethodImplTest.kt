@@ -4,12 +4,11 @@ import io.mockk.every
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.core.publisher.Mono
 import reactor.kotlin.test.test
 import tech.simter.exception.PermissionDeniedException
+import tech.simter.kotlin.data.Page
 import tech.simter.operation.OPERATION_READ
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
@@ -38,12 +37,13 @@ class FindMethodImplTest @Autowired constructor(
     val targetIds = listOf<String>()
     val search = randomString()
     val emptyList = listOf<OperationView>()
-    val page = PageImpl(emptyList, PageRequest.of(pageNo - 1, pageSize), 0)
+    val page = Page.of(pageSize, Page.calculateOffset(pageNo, pageSize), 0, emptyList)
     every { moduleAuthorizer.verifyHasPermission(OPERATION_READ) } returns Mono.empty()
     every { dao.find(pageNo, pageSize, batches, targetTypes, targetIds, search) } returns Mono.just(page)
 
     // invoke and verify
-    service.find(pageNo, pageSize, batches, targetTypes, targetIds, search).test().expectNext(page).verifyComplete()
+    service.find(pageNo, pageSize, batches, targetTypes, targetIds, search)
+      .test().expectNext(page).verifyComplete()
     verify(exactly = 1) {
       moduleAuthorizer.verifyHasPermission(OPERATION_READ)
       dao.find(pageNo, pageSize, batches, targetTypes, targetIds, search)
