@@ -21,11 +21,11 @@ Business Operation Log Recorder.
 ## Requirement
 
 - Maven 3.6+
-- Kotlin 1.3+
+- Kotlin 1.4+
 - Java 8+
-- Spring Framework 5.2+
-- Spring Boot 2.3+
-- Reactor 3.3+
+- Spring Framework 5.3+
+- Spring Boot 2.4+
+- Reactor 3.4+
 
 
 [simter-dependencies]: https://github.com/simter/simter-dependencies
