@@ -1,22 +1,21 @@
 package tech.simter.operation.rest.webflux.handler
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
 import tech.simter.exception.PermissionDeniedException
+import tech.simter.kotlin.data.Page
 import tech.simter.operation.core.OperationService
 import tech.simter.operation.core.OperationView
-import tech.simter.operation.rest.webflux.convert
 import tech.simter.operation.test.TestHelper.randomOperationView
 import tech.simter.util.RandomUtils.randomString
 
@@ -24,13 +23,14 @@ import tech.simter.util.RandomUtils.randomString
  * Test [FindHandler]
  *
  * @author xz
+ * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @MockkBean(OperationService::class)
 @WebFluxTest
 class FindHandlerTest @Autowired constructor(
+  private val json: Json,
   private val client: WebTestClient,
-  private val mapper: ObjectMapper,
   private val service: OperationService
 ) {
   @Test
@@ -51,7 +51,7 @@ class FindHandlerTest @Autowired constructor(
     val operation1 = randomOperationView(batch = batch1, targetType = targetType1, targetId = targetId1)
     val operation2 = randomOperationView(batch = batch2, targetType = targetType2, targetId = targetId2)
     val operationList = listOf(operation1, operation2)
-    val page = PageImpl(operationList, PageRequest.of(pageNo - 1, pageSize), 2)
+    val page = Page.of(rows = operationList, total = 2, limit = pageSize, offset = 0)
 
     every { service.find(pageNo, pageSize, batches, targetTypes, targetIds, search) } returns Mono.just(page)
 
@@ -59,7 +59,7 @@ class FindHandlerTest @Autowired constructor(
       "&target-type=$targetType2&target-id=$targetId1&target-id=$targetId2" +
       "&page-no=$pageNo&page-size=$pageSize&search=$search").exchange()
 
-    val responseBody = mapper.writeValueAsString(page.convert())
+    val responseBody = json.encodeToString(Page.toMap(page, json))
 
     // invoke
     response
@@ -78,19 +78,18 @@ class FindHandlerTest @Autowired constructor(
     val pageNo = 1
     val pageSize = 25
     val emptyList = listOf<OperationView>()
-    val page = PageImpl(emptyList, PageRequest.of(pageNo - 1, pageSize), 0)
+    val page = Page.of(rows = emptyList, total = 0, limit = pageSize, offset = 0)
 
     every { service.find(pageNo, pageSize, null, null, null, null) } returns Mono.just(page)
 
     val response = client.get().uri("/?page-no=$pageNo&page-size=$pageSize").exchange()
-
 
     // invoke
     response
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
       .expectBody()
-      .jsonPath("$.count").isEqualTo(0)
+      .jsonPath("$.total").isEqualTo(0)
       .jsonPath("$.pageNo").isEqualTo(pageNo)
       .jsonPath("$.pageSize").isEqualTo(pageSize)
       .jsonPath("$.rows").isEmpty

@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.domain.Page
 import org.springframework.web.reactive.function.server.router
 import tech.simter.operation.PACKAGE
 import tech.simter.operation.rest.webflux.handler.*
@@ -55,11 +54,3 @@ class ModuleConfiguration @Autowired constructor(
     }
   }
 }
-
-// Convert [Page] to a platform-specific [Map] structure
-fun <T : Any> Page<T>.convert(): Map<String, Any?> = mapOf(
-  "count" to this.totalElements,
-  "pageNo" to this.pageable.pageNumber + 1,
-  "pageSize" to this.pageable.pageSize,
-  "rows" to this.content
-)

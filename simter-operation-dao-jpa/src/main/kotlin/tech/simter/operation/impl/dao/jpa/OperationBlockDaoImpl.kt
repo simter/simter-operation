@@ -1,12 +1,10 @@
 package tech.simter.operation.impl.dao.jpa
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
+import tech.simter.kotlin.data.Page
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationView
 import tech.simter.operation.impl.dao.jpa.po.OperationPo
@@ -86,9 +84,10 @@ internal class OperationBlockDaoImpl @Autowired constructor(
         order by s.ts desc
         """.trimIndent()
 
+    val offset = Page.calculateOffset(pageNo, pageSize)
     val rowsQuery = em.createNativeQuery(rowQ, OperationViewPo::class.java)
-      .setFirstResult(tech.simter.data.Page.calculateOffset(pageNo, pageSize))
-      .setMaxResults(tech.simter.data.Page.toValidCapacity(pageSize))
+      .setFirstResult(offset.toInt())
+      .setMaxResults(pageSize)
     val countQuery = em.createNativeQuery(countQ)
 
     if (!batches.isNullOrEmpty()) {
@@ -109,10 +108,11 @@ internal class OperationBlockDaoImpl @Autowired constructor(
       countQuery.setParameter("search", searchStr.trim())
     }
 
-    return PageImpl(
-      rowsQuery.resultList as List<OperationView>,
-      PageRequest.of(pageNo - 1, pageSize),
-      (countQuery.singleResult as Number).toLong()
+    return Page.of(
+      limit = pageSize,
+      offset = offset,
+      total = (countQuery.singleResult as Number).toLong(),
+      rows = rowsQuery.resultList as List<OperationView>
     )
   }
 }

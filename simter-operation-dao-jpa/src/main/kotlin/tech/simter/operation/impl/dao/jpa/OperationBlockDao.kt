@@ -1,6 +1,6 @@
 package tech.simter.operation.impl.dao.jpa
 
-import org.springframework.data.domain.Page
+import tech.simter.kotlin.data.Page
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationView
 import java.util.*

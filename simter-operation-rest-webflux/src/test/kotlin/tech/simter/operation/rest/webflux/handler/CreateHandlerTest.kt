@@ -1,9 +1,10 @@
 package tech.simter.operation.rest.webflux.handler
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
@@ -27,8 +28,8 @@ import java.time.temporal.ChronoUnit.MINUTES
 @MockkBean(OperationService::class)
 @WebFluxTest
 class CreateHandlerTest @Autowired constructor(
+  private val json: Json,
   private val client: WebTestClient,
-  private val mapper: ObjectMapper,
   private val service: OperationService
 ) {
   @Test
@@ -38,7 +39,7 @@ class CreateHandlerTest @Autowired constructor(
     every { service.create(operation) } returns Mono.empty()
 
     // invoke
-    val requestBody = mapper.writeValueAsString(operation)
+    val requestBody = json.encodeToString(operation)
     val response = client.post().uri("/")
       .contentType(APPLICATION_JSON)
       .bodyValue(requestBody)
@@ -59,7 +60,7 @@ class CreateHandlerTest @Autowired constructor(
     every { service.create(operation) } returns Mono.empty()
 
     // invoke
-    val requestBody = mapper.writeValueAsString(operation)
+    val requestBody = json.encodeToString(operation)
     //println("requestBody=$requestBody")
     val response = client.post().uri("/")
       .contentType(APPLICATION_JSON)

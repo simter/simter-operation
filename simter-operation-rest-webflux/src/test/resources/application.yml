@@ -9,5 +9,9 @@ logging:
     #tech.simter.operation: ERROR
     #org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener: DEBUG
 simter-operation.rest-context-path: /
-#simter.jackson.disabled: true
-#simter.kotlinx-serialization.disabled: true
+simter:
+  jackson.disabled: true
+  kotlinx-serialization:
+    disabled: false
+    remove-class-discriminator: true
+    class-discriminator: _type # default 'type'

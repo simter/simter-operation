@@ -1,15 +1,17 @@
 package tech.simter.operation.rest.webflux.handler
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Flux
+import tech.simter.exception.PermissionDeniedException
 import tech.simter.operation.core.OperationService
 import tech.simter.operation.test.TestHelper.randomOperation
 import tech.simter.operation.test.TestHelper.randomOperationItem
@@ -27,8 +29,8 @@ import java.time.temporal.ChronoUnit.SECONDS
 @MockkBean(OperationService::class)
 @WebFluxTest
 class FindByTargetHandlerTest @Autowired constructor(
+  private val json: Json,
   private val client: WebTestClient,
-  private val mapper: ObjectMapper,
   private val service: OperationService
 ) {
   @Test
@@ -43,7 +45,7 @@ class FindByTargetHandlerTest @Autowired constructor(
       items = setOf(randomOperationItem(id = "field1"), randomOperationItem(id = "field2"))
     ) // with items
     every { service.findByTarget(targetType, targetId) } returns Flux.just(operation1, operation2)
-    val responseBody = mapper.writeValueAsString(listOf(operation1, operation2))
+    val responseBody = json.encodeToString(listOf(operation1, operation2))
 
     // invoke
     val response = client.get().uri("/target/$targetType/$targetId").exchange()
@@ -67,5 +69,18 @@ class FindByTargetHandlerTest @Autowired constructor(
       .exchange()
       .expectStatus().isNoContent
       .expectBody().isEmpty
+  }
+
+  @Test
+  fun `failed by PermissionDenied`() {
+    // mock
+    val targetType = randomString()
+    val targetId = randomString()
+    every { service.findByTarget(targetType, targetId) } returns Flux.error(PermissionDeniedException())
+
+    // invoke and verify
+    client.get().uri("/target/$targetType/$targetId")
+      .exchange().expectStatus().isForbidden
+    verify { service.findByTarget(targetType, targetId) }
   }
 }

@@ -1,5 +1,8 @@
 package tech.simter.operation.core
 
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.springframework.data.annotation.Id
 import java.time.OffsetDateTime
 import java.util.*
@@ -8,6 +11,7 @@ import java.util.*
  * The Operation view information.
  *
  * @author xz
+ * @author RJ
  */
 interface OperationView {
   val id: String
@@ -21,18 +25,21 @@ interface OperationView {
   val targetId: String
   val batch: String?
 
+  @Serializable
+  @SerialName("OperationView")
   data class Impl(
     @Id
     override val id: String,
     override val type: String,
+    @Contextual
     override val ts: OffsetDateTime,
-    override val title: String?,
-    override val result: String?,
-    override val remark: String?,
+    override val title: String? = null,
+    override val result: String? = null,
+    override val remark: String? = null,
     override val operatorName: String,
     override val targetType: String,
     override val targetId: String,
-    override val batch: String?
+    override val batch: String? = null
   ) : OperationView
 
   companion object {

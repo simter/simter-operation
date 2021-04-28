@@ -64,40 +64,31 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
+      <groupId>com.owlike</groupId>
+      <artifactId>genson</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>tech.simter.operation</groupId>
       <artifactId>simter-operation-core</artifactId>
     </dependency>
     <dependency>
       <groupId>tech.simter.operation</groupId>
       <artifactId>simter-operation-service-impl</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>tech.simter.operation</groupId>
       <artifactId>simter-operation-rest-webflux</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webflux</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.module</groupId>
-      <artifactId>jackson-module-kotlin</artifactId>
-    </dependency>
-
-    <!-- json-p jsr353 by jackson-->
-    <dependency>
-      <groupId>org.glassfish</groupId>
-      <artifactId>javax.json</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jsr353</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jsr310</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-json</artifactId>
       <scope>runtime</scope>
     </dependency>
 

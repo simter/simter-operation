@@ -1,12 +1,12 @@
 package tech.simter.operation.impl.dao.web
 
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.data.domain.Page
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Repository
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import tech.simter.kotlin.data.Page
 import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationView
