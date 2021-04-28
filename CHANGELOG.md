@@ -1,9 +1,10 @@
 # simter-operation changelog
 
-## 1.0.1 - 2021-01-21
+## 2.0.0-M2 - 2021-04-28
 
-- Fixed POST url missing trailing slash error
-    - For compatible with next spring-boot-2.4
+- Upgrade to simter-3.0.0-M2 (spring-boot-2.4.5)
+- Use ·tech.simter.kotlin.data.Page` instead of `org.springframework.data.domain.Page`
+- Upgrade code to use kotlinx-serialization
 
 ## 2.0.0-M1 - 2020-12-22
 
@@ -13,6 +14,13 @@
 - Add integration test for find pageable operations
 - Add integration test for find by batch
 - Add integration test for find by target
+- Fixed POST url missing trailing slash error
+    > For compatible with next spring-boot-2.4
+
+## 1.0.1 - 2021-01-21
+
+- Fixed POST url missing trailing slash error
+    > For compatible with next spring-boot-2.4
 
 ## 1.0.0 - 2020-11-20
 
