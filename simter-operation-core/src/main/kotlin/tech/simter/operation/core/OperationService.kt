@@ -25,6 +25,7 @@ interface OperationService {
    *
    * - auto set [Operation.ts] to current timestamp.
    * - auto set [Operation.operatorId] and [Operation.operatorName] from context.
+   * - If without user context, instead to set [Operation.operatorId]=0, [Operation.operatorName]=UNKNOWN.
    *
    * @return [Mono] signaling when operation created
    */

@@ -18,6 +18,26 @@ interface OperationDao {
   fun create(operation: Operation): Mono<Void>
 
   /**
+   * Create one [Operation].
+   *
+   * - auto set [Operation.ts] to current timestamp.
+   * - auto set [Operation.operatorId] and [Operation.operatorName] from context.
+   * - If without user context, instead to set [Operation.operatorId]=0, [Operation.operatorName]=UNKNOWN.
+   *
+   * @return [Mono] signaling when operation created
+   */
+  fun create(
+    type: String,
+    targetType: String,
+    targetId: String,
+    title: String? = null,
+    batch: String? = null,
+    items: Set<Operation.Item> = emptySet(),
+    remark: String? = null,
+    result: String? = null
+  ): Mono<Void>
+
+  /**
    * Find the specific [id] [Operation] instance.
    *
    * Return [Mono.empty] if not exists.
