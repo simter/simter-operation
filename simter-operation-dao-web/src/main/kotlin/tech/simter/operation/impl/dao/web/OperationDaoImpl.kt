@@ -11,6 +11,7 @@ import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationView
 import tech.simter.reactive.context.SystemContext
+import tech.simter.reactive.security.ReactiveSecurityService
 import tech.simter.reactive.web.webfilter.JwtWebFilter.Companion.JWT_HEADER_NAME
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -24,6 +25,7 @@ import javax.json.JsonObjectBuilder
  */
 @Repository
 class OperationDaoImpl(
+  private val securityService: ReactiveSecurityService,
   @Qualifier(WEB_CLIENT_KEY)
   val webClient: WebClient
 ) : OperationDao {
@@ -43,6 +45,34 @@ class OperationDaoImpl(
         .retrieve()
         .bodyToMono(Void::class.java)
     }
+  }
+
+  override fun create(
+    type: String,
+    targetType: String,
+    targetId: String,
+    title: String?,
+    batch: String?,
+    items: Set<Operation.Item>,
+    remark: String?,
+    result: String?
+  ): Mono<Void> {
+    return securityService.getAuthenticatedUser()
+      .map { it.orElseGet { SystemContext.User(id = 0, account = "UNKNOWN", name = "UNKNOWN") } } // get context user info
+      .flatMap { user ->
+        this.create(Operation.of(
+          type = type,
+          operatorId = user.id.toString(),
+          operatorName = user.name,
+          targetType = targetType,
+          targetId = targetId,
+          title = title,
+          batch = batch,
+          items = items,
+          remark = remark,
+          result = result
+        ))
+      }
   }
 
   override fun get(id: String): Mono<Operation> {

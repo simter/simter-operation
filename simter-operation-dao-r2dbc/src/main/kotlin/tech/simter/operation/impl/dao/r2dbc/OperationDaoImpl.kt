@@ -21,6 +21,8 @@ import tech.simter.operation.core.Operation
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationView
 import tech.simter.r2dbc.kotlin.bindNullable
+import tech.simter.reactive.context.SystemContext
+import tech.simter.reactive.security.ReactiveSecurityService
 import java.time.OffsetDateTime
 
 /**
@@ -32,6 +34,7 @@ import java.time.OffsetDateTime
  */
 @Repository
 class OperationDaoImpl @Autowired constructor(
+  private val securityService: ReactiveSecurityService,
   private val databaseClient: DatabaseClient,
   private val entityOperations: R2dbcEntityOperations
 ) : OperationDao {
@@ -87,6 +90,34 @@ class OperationDaoImpl @Autowired constructor(
 
       result.then(spec.then())
     }
+  }
+
+  override fun create(
+    type: String,
+    targetType: String,
+    targetId: String,
+    title: String?,
+    batch: String?,
+    items: Set<Operation.Item>,
+    remark: String?,
+    result: String?
+  ): Mono<Void> {
+    return securityService.getAuthenticatedUser()
+      .map { it.orElseGet { SystemContext.User(id = 0, account = "UNKNOWN", name = "UNKNOWN") } } // get context user info
+      .flatMap { user ->
+        this.create(Operation.of(
+          type = type,
+          operatorId = user.id.toString(),
+          operatorName = user.name,
+          targetType = targetType,
+          targetId = targetId,
+          title = title,
+          batch = batch,
+          items = items,
+          remark = remark,
+          result = result
+        ))
+      }
   }
 
   @Transactional(readOnly = true)

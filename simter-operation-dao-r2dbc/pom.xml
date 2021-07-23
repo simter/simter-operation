@@ -35,6 +35,10 @@
       <artifactId>simter-r2dbc-ext</artifactId>
     </dependency>
     <dependency>
+      <groupId>tech.simter.reactive</groupId>
+      <artifactId>simter-reactive-security</artifactId>
+    </dependency>
+    <dependency>
       <groupId>tech.simter.operation</groupId>
       <artifactId>simter-operation-core</artifactId>
     </dependency>

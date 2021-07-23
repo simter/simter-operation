@@ -56,6 +56,10 @@
       <artifactId>simter-reactive-jpa</artifactId>
     </dependency>
     <dependency>
+      <groupId>tech.simter.reactive</groupId>
+      <artifactId>simter-reactive-security</artifactId>
+    </dependency>
+    <dependency>
       <groupId>tech.simter</groupId>
       <artifactId>simter-util</artifactId>
     </dependency>
