@@ -2,7 +2,7 @@
 #proxy.host: 127.0.0.1
 #proxy.port: 8888
 
-server-url: @server-url@
+server.url: @server.url@
 spring.main.banner-mode: 'off'
 logging:
   file.name: target/test.log
