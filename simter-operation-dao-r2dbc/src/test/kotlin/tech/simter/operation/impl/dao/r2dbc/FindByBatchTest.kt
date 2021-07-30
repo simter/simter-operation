@@ -23,7 +23,7 @@ import java.time.temporal.ChronoUnit
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @DataR2dbcTest
-class FindByBatchMethodImplTest @Autowired constructor(
+class FindByBatchTest @Autowired constructor(
   private val dao: OperationDao
 ) {
   @Test

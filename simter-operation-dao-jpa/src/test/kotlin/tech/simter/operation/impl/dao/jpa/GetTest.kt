@@ -17,7 +17,7 @@ import tech.simter.reactive.test.jpa.TestEntityManager
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @ReactiveDataJpaTest
-class GetMethodImplTest @Autowired constructor(
+class GetTest @Autowired constructor(
   val rem: TestEntityManager,
   private val dao: OperationDao
 ) {

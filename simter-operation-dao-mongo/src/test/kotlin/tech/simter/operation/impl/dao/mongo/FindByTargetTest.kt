@@ -22,7 +22,7 @@ import java.time.temporal.ChronoUnit
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @DataMongoTest
-class FindByTargetMethodImplTest @Autowired constructor(
+class FindByTargetTest @Autowired constructor(
   private val repository: OperationReactiveRepository,
   private val dao: OperationDao
 ) {

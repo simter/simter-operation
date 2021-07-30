@@ -16,7 +16,7 @@ import tech.simter.operation.test.TestHelper.randomOperationItem
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @WebFluxTest
-class CreateMethodImplTest @Autowired constructor(
+class CreateTest @Autowired constructor(
   private val dao: OperationDao
 ) {
   @Test

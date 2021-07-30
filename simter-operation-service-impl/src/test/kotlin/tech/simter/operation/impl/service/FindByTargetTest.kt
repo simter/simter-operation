@@ -12,17 +12,17 @@ import tech.simter.operation.OPERATION_READ
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
 import tech.simter.operation.test.TestHelper.randomOperation
-import tech.simter.operation.test.TestHelper.randomOperationBatch
+import tech.simter.operation.test.TestHelper.randomOperationTargetId
+import tech.simter.operation.test.TestHelper.randomOperationTargetType
 import tech.simter.reactive.security.ModuleAuthorizer
 
 /**
- * Test [OperationServiceImpl.findByBatch].
+ * Test [OperationServiceImpl.findByTarget].
  *
- * @author zh
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
-class FindByBatchMethodImplTest @Autowired constructor(
+class FindByTargetTest @Autowired constructor(
   private val moduleAuthorizer: ModuleAuthorizer,
   private val dao: OperationDao,
   private val service: OperationService
@@ -30,30 +30,32 @@ class FindByBatchMethodImplTest @Autowired constructor(
   @Test
   fun `found something`() {
     // mock
-    val batch = randomOperationBatch()
-    val operation1 = randomOperation(batch = batch)
-    val operation2 = randomOperation(batch = batch)
-    every { dao.findByBatch(batch) } returns Flux.just(operation1, operation2)
+    val targetType = randomOperationTargetType()
+    val targetId = randomOperationTargetId()
+    val operation1 = randomOperation(targetType = targetType)
+    val operation2 = randomOperation(targetType = targetType)
+    every { dao.findByTarget(targetType, targetId) } returns Flux.just(operation1, operation2)
     every { moduleAuthorizer.verifyHasPermission(OPERATION_READ) } returns Mono.empty()
 
     // invoke and verify
-    service.findByBatch(batch)
+    service.findByTarget(targetType, targetId)
       .test()
       .expectNext(operation1)
       .expectNext(operation2)
       .verifyComplete()
-    verify(exactly = 1) { dao.findByBatch(batch) }
+    verify(exactly = 1) { dao.findByTarget(targetType, targetId) }
   }
 
   @Test
   fun `found nothing`() {
     // mock
-    val batch = randomOperationBatch()
-    every { dao.findByBatch(batch) } returns Flux.empty()
+    val targetType = randomOperationTargetType()
+    val targetId = randomOperationTargetId()
+    every { dao.findByTarget(targetType, targetId) } returns Flux.empty()
     every { moduleAuthorizer.verifyHasPermission(OPERATION_READ) } returns Mono.empty()
 
     // invoke and verify
-    service.findByBatch(batch).test().verifyComplete()
-    verify(exactly = 1) { dao.findByBatch(batch) }
+    service.findByTarget(targetType, targetId).test().verifyComplete()
+    verify(exactly = 1) { dao.findByTarget(targetType, targetId) }
   }
 }

@@ -1,15 +1,15 @@
-package tech.simter.operation.impl.dao.mongo
+package tech.simter.operation.impl.dao.jpa
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import reactor.kotlin.test.test
 import tech.simter.operation.core.OperationDao
-import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationItemPo
-import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationPo
+import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperationItemPo
+import tech.simter.operation.impl.dao.jpa.TestHelper.randomOperationPo
 import tech.simter.operation.test.TestHelper.randomOperationBatch
-import tech.simter.util.RandomUtils.randomString
+import tech.simter.reactive.test.jpa.ReactiveDataJpaTest
+import tech.simter.reactive.test.jpa.TestEntityManager
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
@@ -20,13 +20,13 @@ import java.time.temporal.ChronoUnit
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
-@DataMongoTest
-class FindByBatchMethodImplTest @Autowired constructor(
-  private val repository: OperationReactiveRepository,
+@ReactiveDataJpaTest
+class FindByBatchTest @Autowired constructor(
+  val rem: TestEntityManager,
   private val dao: OperationDao
 ) {
   @Test
-  fun `find something`() {
+  fun `found something`() {
     // init data
     val batch = randomOperationBatch()
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
@@ -34,26 +34,22 @@ class FindByBatchMethodImplTest @Autowired constructor(
     val operation2 = randomOperationPo(batch = batch, ts = now.minusHours(1),
       items = setOf(randomOperationItemPo(id = "field1"), randomOperationItemPo(id = "field2"))
     ) // with items
-    val operation3 = randomOperationPo(batch = randomString()) // another batch
-    repository
-      .saveAll(listOf(operation1, operation2, operation3))
-      .then().test().verifyComplete()
+    val operation3 = randomOperationPo(batch = randomOperationBatch()) // another batch
+    rem.persist(operation1, operation2, operation3)
 
     // invoke and verify
     dao.findByBatch(batch).test().expectNext(operation1).expectNext(operation2).verifyComplete()
   }
 
   @Test
-  fun `find nothing 1`() {
+  fun `found nothing 1`() {
     dao.findByBatch(randomOperationBatch()).test().verifyComplete()
   }
 
   @Test
-  fun `find nothing 2`() {
+  fun `found nothing 2`() {
     // init data
-    repository
-      .saveAll(listOf(randomOperationPo(batch = randomOperationBatch())))
-      .then().test().verifyComplete()
+    rem.persist(randomOperationPo(batch = randomOperationBatch()))
 
     // invoke and verify
     dao.findByBatch(randomOperationBatch()).test().verifyComplete()

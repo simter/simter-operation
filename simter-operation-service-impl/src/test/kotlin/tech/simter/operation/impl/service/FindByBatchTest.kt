@@ -5,48 +5,55 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kotlin.test.test
 import tech.simter.operation.OPERATION_READ
 import tech.simter.operation.core.OperationDao
 import tech.simter.operation.core.OperationService
 import tech.simter.operation.test.TestHelper.randomOperation
-import tech.simter.operation.test.TestHelper.randomOperationId
+import tech.simter.operation.test.TestHelper.randomOperationBatch
 import tech.simter.reactive.security.ModuleAuthorizer
 
 /**
- * Test [OperationServiceImpl.get].
+ * Test [OperationServiceImpl.findByBatch].
  *
  * @author zh
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
-class GetMethodImplTest @Autowired constructor(
+class FindByBatchTest @Autowired constructor(
   private val moduleAuthorizer: ModuleAuthorizer,
   private val dao: OperationDao,
   private val service: OperationService
 ) {
   @Test
-  fun `get existent data`() {
+  fun `found something`() {
     // mock
-    val data = randomOperation()
-    every { dao.get(data.id) } returns Mono.just(data)
+    val batch = randomOperationBatch()
+    val operation1 = randomOperation(batch = batch)
+    val operation2 = randomOperation(batch = batch)
+    every { dao.findByBatch(batch) } returns Flux.just(operation1, operation2)
     every { moduleAuthorizer.verifyHasPermission(OPERATION_READ) } returns Mono.empty()
 
     // invoke and verify
-    service.get(data.id).test().expectNext(data).verifyComplete()
-    verify(exactly = 1) { dao.get(data.id) }
+    service.findByBatch(batch)
+      .test()
+      .expectNext(operation1)
+      .expectNext(operation2)
+      .verifyComplete()
+    verify(exactly = 1) { dao.findByBatch(batch) }
   }
 
   @Test
-  fun `get nonexistent data`() {
+  fun `found nothing`() {
     // mock
-    val id = randomOperationId()
-    every { dao.get(id) } returns Mono.empty()
+    val batch = randomOperationBatch()
+    every { dao.findByBatch(batch) } returns Flux.empty()
     every { moduleAuthorizer.verifyHasPermission(OPERATION_READ) } returns Mono.empty()
 
     // invoke and verify
-    service.get(id).test().expectComplete().verify()
-    verify(exactly = 1) { dao.get(id) }
+    service.findByBatch(batch).test().verifyComplete()
+    verify(exactly = 1) { dao.findByBatch(batch) }
   }
 }

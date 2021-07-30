@@ -20,7 +20,7 @@ import tech.simter.reactive.security.ModuleAuthorizer
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
-class CreateMethodImplTest @Autowired constructor(
+class CreateTest @Autowired constructor(
   private val moduleAuthorizer: ModuleAuthorizer,
   private val dao: OperationDao,
   private val service: OperationService

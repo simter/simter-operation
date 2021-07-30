@@ -17,7 +17,7 @@ import tech.simter.util.RandomUtils.randomString
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @DataMongoTest
-class GetMethodImplTest @Autowired constructor(
+class GetTest @Autowired constructor(
   private val repository: OperationReactiveRepository,
   private val dao: OperationDao
 ) {

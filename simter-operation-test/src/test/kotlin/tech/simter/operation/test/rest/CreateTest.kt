@@ -17,7 +17,7 @@ import tech.simter.operation.test.rest.TestHelper.jsonb
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @WebFluxTest
-class CreateOperationTest @Autowired constructor(
+class CreateTest @Autowired constructor(
   private val client: WebTestClient
 ) {
   @Test

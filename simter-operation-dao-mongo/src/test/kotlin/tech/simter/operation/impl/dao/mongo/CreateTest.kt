@@ -17,7 +17,7 @@ import tech.simter.operation.impl.dao.mongo.TestHelper.randomOperationPo
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @DataMongoTest
-class CreateMethodImplTest @Autowired constructor(
+class CreateTest @Autowired constructor(
   private val repository: OperationReactiveRepository,
   private val dao: OperationDao
 ) {

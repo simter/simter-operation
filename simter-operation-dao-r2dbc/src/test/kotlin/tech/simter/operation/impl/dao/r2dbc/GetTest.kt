@@ -17,7 +17,7 @@ import tech.simter.util.RandomUtils.randomString
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @DataR2dbcTest
-class GetMethodImplTest @Autowired constructor(
+class GetTest @Autowired constructor(
   private val dao: OperationDao
 ) {
   @Test

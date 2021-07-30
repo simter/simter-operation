@@ -22,7 +22,7 @@ import tech.simter.util.RandomUtils.randomString
  * @author xz
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
-class FindMethodImplTest @Autowired constructor(
+class FindTest @Autowired constructor(
   private val moduleAuthorizer: ModuleAuthorizer,
   private val dao: OperationDao,
   private val service: OperationService
