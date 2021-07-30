@@ -13,17 +13,13 @@
   <description>Dao Implementation By R2DBC</description>
   <properties>
     <db.platform>none</db.platform>
+    <db.init-mode>always</db.init-mode>
     <db.host>localhost</db.host>
     <db.port>~</db.port>
     <db.name>testdb</db.name>
     <db.username>tester</db.username>
     <db.password>password</db.password>
-    <db.url>~</db.url>
-    <db.protocol>~</db.protocol>
-    <db.options>{}</db.options>
-    <db.driver-class>~</db.driver-class>
-    <db.init-mode>never</db.init-mode>
-    <db.continue-on-error>false</db.continue-on-error>
+    <db.url>r2dbc:${db.platform}://${db.host}:${db.port}/${db.name}</db.url>
   </properties>
   <dependencies>
     <dependency>
@@ -59,16 +55,13 @@
   </dependencies>
   <profiles>
     <profile>
-      <id>embedded-h2</id>
+      <id>h2</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
         <db.platform>h2</db.platform>
-        <db.init-mode>always</db.init-mode>
-        <db.protocol>mem</db.protocol>
-        <!-- see https://github.com/r2dbc/r2dbc-h2/issues/19 -->
-        <db.options>{DB_CLOSE_DELAY: 10}</db.options>
+        <db.url>~</db.url>
       </properties>
       <dependencies>
         <dependency>
@@ -84,44 +77,12 @@
       </dependencies>
     </profile>
     <profile>
-      <id>embedded-postgres</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <properties>
-        <db.platform>postgres</db.platform>
-        <db.init-mode>always</db.init-mode>
-        <!-- default postgres port is 5432, plus 1 to avoid conflict -->
-        <db.port>5433</db.port>
-      </properties>
-      <dependencies>
-        <dependency>
-          <groupId>io.r2dbc</groupId>
-          <artifactId>r2dbc-postgresql</artifactId>
-          <scope>test</scope>
-        </dependency>
-
-        <!-- embedded postgres -->
-        <dependency>
-          <groupId>tech.simter</groupId>
-          <artifactId>simter-embedded-database-ext</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>ru.yandex.qatools.embed</groupId>
-          <artifactId>postgresql-embedded</artifactId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
       <id>postgres</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
         <db.platform>postgres</db.platform>
-        <db.init-mode>always</db.init-mode>
         <db.port>5432</db.port>
       </properties>
       <dependencies>
@@ -133,44 +94,12 @@
       </dependencies>
     </profile>
     <profile>
-      <id>embedded-mysql</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <properties>
-        <db.platform>mysql</db.platform>
-        <db.init-mode>always</db.init-mode>
-        <!-- default mysql port is 3306, plus 1 to avoid conflict -->
-        <db.port>3307</db.port>
-      </properties>
-      <dependencies>
-        <dependency>
-          <groupId>dev.miku</groupId>
-          <artifactId>r2dbc-mysql</artifactId>
-          <scope>test</scope>
-        </dependency>
-
-        <!-- embedded mysql -->
-        <dependency>
-          <groupId>tech.simter</groupId>
-          <artifactId>simter-embedded-database-ext</artifactId>
-          <scope>runtime</scope>
-        </dependency>
-        <dependency>
-          <groupId>com.wix</groupId>
-          <artifactId>wix-embedded-mysql</artifactId>
-          <scope>runtime</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
       <id>mysql</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
         <db.platform>mysql</db.platform>
-        <db.init-mode>always</db.init-mode>
         <db.port>3306</db.port>
       </properties>
       <dependencies>
@@ -188,7 +117,6 @@
       </activation>
       <properties>
         <db.platform>mssql</db.platform>
-        <db.init-mode>always</db.init-mode>
         <db.port>1433</db.port>
       </properties>
       <dependencies>
