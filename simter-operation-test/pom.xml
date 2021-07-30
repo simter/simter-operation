@@ -20,6 +20,17 @@
       <groupId>tech.simter</groupId>
       <artifactId>simter-util</artifactId>
     </dependency>
+
+    <!-- test -->
+    <dependency>
+      <groupId>tech.simter</groupId>
+      <artifactId>simter-kotlin</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>tech.simter.reactive</groupId>
+      <artifactId>simter-reactive-web</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webflux</artifactId>
@@ -31,47 +42,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>tech.simter.reactive</groupId>
-      <artifactId>simter-reactive-web</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- test -->
-    <!-- json jsr353 by jackson-->
-    <dependency>
-      <groupId>org.glassfish</groupId>
-      <artifactId>javax.json</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <!-- jsonb by jackson-->
-    <dependency>
-      <groupId>tech.simter</groupId>
-      <artifactId>simter-jackson-jsonb</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.json.bind</groupId>
-      <artifactId>javax.json.bind-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.module</groupId>
-      <artifactId>jackson-module-parameter-names</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jdk8</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jsr310</artifactId>
+      <groupId>com.owlike</groupId>
+      <artifactId>genson</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

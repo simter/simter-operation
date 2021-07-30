@@ -1,25 +1,27 @@
 package tech.simter.operation.test.rest
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.stereotype.Component
 import org.springframework.test.web.reactive.server.WebTestClient
 import tech.simter.operation.core.Operation
 import tech.simter.operation.test.TestHelper.randomOperation
-import javax.json.bind.Jsonb
-import javax.json.bind.JsonbBuilder
 
-object TestHelper {
-  /** a share jsonb instance */
-  val jsonb: Jsonb = JsonbBuilder.create()
-
+@Component
+class TestHelper @Autowired constructor(
+  private val json: Json,
+  private val client: WebTestClient
+) {
   /** create one operation */
-  fun createOneOperation(
-    client: WebTestClient,
+  fun createOne(
     operation: Operation = randomOperation()
   ): Operation {
     client.post()
       .uri("/")
       .contentType(APPLICATION_JSON)
-      .bodyValue(jsonb.toJson(operation))
+      .bodyValue(json.encodeToString(operation))
       .exchange()
       .expectStatus().isNoContent
       .expectBody().isEmpty

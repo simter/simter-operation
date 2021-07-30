@@ -1,19 +1,20 @@
 package tech.simter.operation.test.rest
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
+import tech.simter.kotlin.data.Page
 import tech.simter.operation.core.OperationView
 import tech.simter.operation.test.TestHelper.randomOperation
 import tech.simter.operation.test.TestHelper.randomOperationBatch
 import tech.simter.operation.test.TestHelper.randomOperationTargetId
 import tech.simter.operation.test.TestHelper.randomOperationTargetType
 import tech.simter.operation.test.TestHelper.randomOperationTitle
-import tech.simter.operation.test.rest.TestHelper.createOneOperation
-import tech.simter.operation.test.rest.TestHelper.jsonb
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
@@ -25,7 +26,9 @@ import java.time.temporal.ChronoUnit
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @WebFluxTest
 class FindPageTest @Autowired constructor(
-  private val client: WebTestClient
+  private val json: Json,
+  private val client: WebTestClient,
+  private val helper: TestHelper
 ) {
   @Test
   fun `not found`() {
@@ -48,9 +51,9 @@ class FindPageTest @Autowired constructor(
     val operation1 = randomOperation(targetType = targetType1, targetId = targetId1, ts = now)
     val operation2 = randomOperation(targetType = targetType1, targetId = targetId2, ts = now.minusSeconds(1))
     val operation3 = randomOperation(targetType = targetType2, targetId = targetId1, ts = now.minusSeconds(2))
-    createOneOperation(client = client, operation = operation1)
-    createOneOperation(client = client, operation = operation2)
-    createOneOperation(client = client, operation = operation3)
+    helper.createOne(operation = operation1)
+    helper.createOne(operation = operation2)
+    helper.createOne(operation = operation3)
 
     // 1. find all targets
     var rows = listOf(OperationView.from(operation1), OperationView.from(operation2), OperationView.from(operation3))
@@ -59,12 +62,15 @@ class FindPageTest @Autowired constructor(
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
       .expectBody()
-      .json(jsonb.toJson(mapOf(
-        "count" to rows.size,
-        "pageNo" to 1,
-        "pageSize" to 25,
-        "rows" to rows))
-      )
+      .json(json.encodeToString(Page.toMap(
+        page = Page.of(
+          limit = 25,
+          offset = 0L,
+          total = rows.size.toLong(),
+          rows = rows
+        ),
+        json = json
+      )))
 
     // 2. find only targetType1
     rows = listOf(OperationView.from(operation1), OperationView.from(operation2))
@@ -73,12 +79,15 @@ class FindPageTest @Autowired constructor(
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
       .expectBody()
-      .json(jsonb.toJson(mapOf(
-        "count" to rows.size,
-        "pageNo" to 1,
-        "pageSize" to 25,
-        "rows" to rows))
-      )
+      .json(json.encodeToString(Page.toMap(
+        page = Page.of(
+          limit = 25,
+          offset = 0L,
+          total = rows.size.toLong(),
+          rows = rows
+        ),
+        json = json
+      )))
 
     // 3. find only targetId1
     rows = listOf(OperationView.from(operation1), OperationView.from(operation3))
@@ -87,12 +96,15 @@ class FindPageTest @Autowired constructor(
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
       .expectBody()
-      .json(jsonb.toJson(mapOf(
-        "count" to rows.size,
-        "pageNo" to 1,
-        "pageSize" to 25,
-        "rows" to rows))
-      )
+      .json(json.encodeToString(Page.toMap(
+        page = Page.of(
+          limit = 25,
+          offset = 0L,
+          total = rows.size.toLong(),
+          rows = rows
+        ),
+        json = json
+      )))
   }
 
   @Test
@@ -104,9 +116,9 @@ class FindPageTest @Autowired constructor(
     val operation1 = randomOperation(batch = batch1, ts = now)
     val operation2 = randomOperation(batch = batch1, ts = now.minusSeconds(1))
     val operation3 = randomOperation(batch = batch2, ts = now.minusSeconds(2))
-    createOneOperation(client = client, operation = operation1)
-    createOneOperation(client = client, operation = operation2)
-    createOneOperation(client = client, operation = operation3)
+    helper.createOne(operation = operation1)
+    helper.createOne(operation = operation2)
+    helper.createOne(operation = operation3)
 
     // 1. find all batches
     var rows = listOf(OperationView.from(operation1), OperationView.from(operation2), OperationView.from(operation3))
@@ -115,12 +127,15 @@ class FindPageTest @Autowired constructor(
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
       .expectBody()
-      .json(jsonb.toJson(mapOf(
-        "count" to rows.size,
-        "pageNo" to 1,
-        "pageSize" to 25,
-        "rows" to rows))
-      )
+      .json(json.encodeToString(Page.toMap(
+        page = Page.of(
+          limit = 25,
+          offset = 0L,
+          total = rows.size.toLong(),
+          rows = rows
+        ),
+        json = json
+      )))
 
     // 2. find only batch1
     rows = listOf(OperationView.from(operation1), OperationView.from(operation2))
@@ -129,12 +144,15 @@ class FindPageTest @Autowired constructor(
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
       .expectBody()
-      .json(jsonb.toJson(mapOf(
-        "count" to rows.size,
-        "pageNo" to 1,
-        "pageSize" to 25,
-        "rows" to rows))
-      )
+      .json(json.encodeToString(Page.toMap(
+        page = Page.of(
+          limit = 25,
+          offset = 0L,
+          total = rows.size.toLong(),
+          rows = rows
+        ),
+        json = json
+      )))
   }
 
   @Test
@@ -145,8 +163,8 @@ class FindPageTest @Autowired constructor(
     val title2 = randomOperationTitle(prefix = "title2")
     val operation1 = randomOperation(title = title1, ts = now)
     val operation2 = randomOperation(title = title2, ts = now.minusSeconds(1))
-    createOneOperation(client = client, operation = operation1)
-    createOneOperation(client = client, operation = operation2)
+    helper.createOne(operation = operation1)
+    helper.createOne(operation = operation2)
 
     // search title1
     val rows = listOf(OperationView.from(operation1))
@@ -155,11 +173,14 @@ class FindPageTest @Autowired constructor(
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
       .expectBody()
-      .json(jsonb.toJson(mapOf(
-        "count" to rows.size,
-        "pageNo" to 1,
-        "pageSize" to 25,
-        "rows" to rows))
-      )
+      .json(json.encodeToString(Page.toMap(
+        page = Page.of(
+          limit = 25,
+          offset = 0L,
+          total = rows.size.toLong(),
+          rows = rows
+        ),
+        json = json
+      )))
   }
 }

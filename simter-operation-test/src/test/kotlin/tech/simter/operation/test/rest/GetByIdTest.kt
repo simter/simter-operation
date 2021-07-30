@@ -1,5 +1,7 @@
 package tech.simter.operation.test.rest
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
@@ -8,18 +10,18 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
 import tech.simter.operation.test.TestHelper.randomOperation
 import tech.simter.operation.test.TestHelper.randomOperationId
-import tech.simter.operation.test.rest.TestHelper.createOneOperation
-import tech.simter.operation.test.rest.TestHelper.jsonb
 
 /**
- * Test `GET /$id` to load a operation.
+ * Test `GET /$id` to load an operation.
  *
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @WebFluxTest
 class GetByIdTest @Autowired constructor(
-  private val client: WebTestClient
+  private val json: Json,
+  private val client: WebTestClient,
+  private val helper: TestHelper
 ) {
   @Test
   fun `not found`() {
@@ -32,8 +34,7 @@ class GetByIdTest @Autowired constructor(
   @Test
   fun `get it`() {
     // prepare data
-    val operation = randomOperation()
-    createOneOperation(client = client, operation = operation)
+    val operation = helper.createOne(randomOperation())
 
     // get it
     client.get().uri("/${operation.id}")
@@ -41,6 +42,6 @@ class GetByIdTest @Autowired constructor(
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
       .expectBody()
-      .json(jsonb.toJson(operation))
+      .json(json.encodeToString(operation))
   }
 }

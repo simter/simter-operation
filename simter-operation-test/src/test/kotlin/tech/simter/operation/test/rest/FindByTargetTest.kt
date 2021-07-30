@@ -1,5 +1,7 @@
 package tech.simter.operation.test.rest
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
@@ -9,8 +11,6 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import tech.simter.operation.test.TestHelper.randomOperation
 import tech.simter.operation.test.TestHelper.randomOperationTargetId
 import tech.simter.operation.test.TestHelper.randomOperationTargetType
-import tech.simter.operation.test.rest.TestHelper.createOneOperation
-import tech.simter.operation.test.rest.TestHelper.jsonb
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
@@ -22,7 +22,9 @@ import java.time.temporal.ChronoUnit
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @WebFluxTest
 class FindByTargetTest @Autowired constructor(
-  private val client: WebTestClient
+  private val json: Json,
+  private val client: WebTestClient,
+  private val helper: TestHelper
 ) {
   @Test
   fun `not found`() {
@@ -42,9 +44,9 @@ class FindByTargetTest @Autowired constructor(
     val operation1 = randomOperation(targetType = targetType1, targetId = targetId, ts = now)
     val operation2 = randomOperation(targetType = targetType1, targetId = targetId, ts = now.minusSeconds(1))
     val operation3 = randomOperation(targetType = targetType2, targetId = targetId, ts = now.minusSeconds(2))
-    createOneOperation(client = client, operation = operation1)
-    createOneOperation(client = client, operation = operation2)
-    createOneOperation(client = client, operation = operation3)
+    helper.createOne(operation = operation1)
+    helper.createOne(operation = operation2)
+    helper.createOne(operation = operation3)
 
     // get it
     client.get().uri("/target/$targetType1/$targetId")
@@ -52,6 +54,6 @@ class FindByTargetTest @Autowired constructor(
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
       .expectBody()
-      .json(jsonb.toJson(listOf(operation1, operation2)))
+      .json(json.encodeToString(listOf(operation1, operation2)))
   }
 }
