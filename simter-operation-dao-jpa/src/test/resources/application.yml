@@ -1,8 +1,36 @@
 spring:
   main.banner-mode: 'off'
   profiles.active:
-    - database
     - jpa-@db.jpa-implementation@
+  sql.init:
+    platform: @db.platform@
+    encoding: UTF-8
+    mode: @db.init-mode@ # never|embedded|always
+    # available when mode=embedded|always
+    schema-locations:
+      # drop
+      - classpath:tech/simter/operation/sql/@db.platform@/schema-drop.sql
+      # create
+      - classpath:tech/simter/operation/sql/@db.platform@/schema-create.sql
+    data-locations:
+      - classpath:tech/simter/operation/sql/@db.platform@/data.sql
+  test.database.replace: none
+  datasource:
+    url: @db.url@
+    username: @db.username@
+    password: @db.password@
+    driver-class-name: @db.driver-class@
+    # hikari 数据库连接池配置 https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+    hikari:
+      pool-name: HikariPool4Kv
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      # default 0 means leak detection is disabled, mini value is 2000ms
+      # -- JPA scheduler default value is 60s
+      leak-detection-threshold: 65000
 logging:
   file.name: target/test.log
   level: # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
@@ -15,7 +43,7 @@ logging:
     org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory: INFO # INFO - Starting embedded database: url='jdbc:h2:mem:...', username='sa'
     #org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG # DEBUG - show executing SQL script file and result
 
-    #---- embed postgres ----#
-    #de.flapdoodle.embed: DEBUG
-    #ru.yandex.qatools.embed: DEBUG
-    #ru.yandex.qatools.embed.postgresql.PostgresProcess: INFO # INFO - trying to stop postgresql
+    #---- spring data ----#
+    #org.springframework.data.convert.CustomConversions: DEBUG # DEBUG to show spring custom converter
+    #org.springframework.data.repository.core.support.RepositoryFactorySupport: DEBUG # DEBUG to show repository instance creation
+    #org.springframework.data.repository.config.RepositoryConfigurationDelegate: TRACE # TRACE to show repository delegate
