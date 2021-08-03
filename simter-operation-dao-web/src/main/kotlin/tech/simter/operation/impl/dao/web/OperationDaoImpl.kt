@@ -1,5 +1,6 @@
 package tech.simter.operation.impl.dao.web
 
+import kotlinx.serialization.encodeToString
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Repository
@@ -13,10 +14,7 @@ import tech.simter.operation.core.OperationView
 import tech.simter.reactive.context.SystemContext
 import tech.simter.reactive.security.ReactiveSecurityService
 import tech.simter.reactive.web.webfilter.JwtWebFilter.Companion.JWT_HEADER_NAME
-import java.time.format.DateTimeFormatter
 import java.util.*
-import javax.json.Json
-import javax.json.JsonObjectBuilder
 
 /**
  * The implementation of [OperationDao] by WebFlux.
@@ -25,6 +23,7 @@ import javax.json.JsonObjectBuilder
  */
 @Repository
 class OperationDaoImpl(
+  private val json: kotlinx.serialization.json.Json,
   private val securityService: ReactiveSecurityService,
   @Qualifier(WEB_CLIENT_KEY)
   val webClient: WebClient
@@ -41,7 +40,8 @@ class OperationDaoImpl(
       webClient.post().uri("/")
         .apply { addAuthorizationHeader(this, it) }
         .contentType(APPLICATION_JSON)
-        .bodyValue(toJson(operation).build().toString())
+        .bodyValue(json.encodeToString(operation))
+        //.bodyValue(toJson(operation).build().toString())
         .retrieve()
         .bodyToMono(Void::class.java)
     }
@@ -113,37 +113,5 @@ class OperationDaoImpl(
     search: String?
   ): Mono<Page<OperationView>> {
     TODO("not implemented")
-  }
-
-  private val tsFormatter: DateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-  private fun toJson(operation: Operation): JsonObjectBuilder {
-    val builder = Json.createObjectBuilder()
-      .add("id", operation.id)
-      .add("ts", operation.ts.format(tsFormatter))
-      .add("type", operation.type)
-      .add("operatorId", operation.operatorId)
-      .add("operatorName", operation.operatorName)
-      .add("targetId", operation.targetId)
-      .add("targetType", operation.targetType)
-    if (operation.title != null) builder.add("title", operation.title)
-    if (operation.remark != null) builder.add("remark", operation.remark)
-    if (operation.result != null) builder.add("result", operation.result)
-    if (operation.batch != null) builder.add("batch", operation.batch)
-    if (operation.items.isNotEmpty()) {
-      val items = Json.createArrayBuilder()
-      operation.items.forEach { items.add(toJson(it)) }
-      builder.add("items", items)
-    }
-    return builder
-  }
-
-  private fun toJson(item: Operation.Item): JsonObjectBuilder {
-    val builder = Json.createObjectBuilder()
-      .add("id", item.id)
-      .add("valueType", item.valueType)
-    if (item.title != null) builder.add("title", item.title)
-    if (item.oldValue != null) builder.add("oldValue", item.oldValue)
-    if (item.newValue != null) builder.add("newValue", item.newValue)
-    return builder
   }
 }
