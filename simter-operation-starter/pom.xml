@@ -363,7 +363,6 @@
         <db.jpa-implementation>hibernate</db.jpa-implementation>
         <db.platform>postgres</db.platform>
         <db.port>5432</db.port>
-        <db.init-mode>never</db.init-mode>
         <db.url><![CDATA[jdbc:postgresql://${db.host}:${db.port}/${db.name}]]> </db.url>
         <db.driver-class>org.postgresql.Driver</db.driver-class>
       </properties>

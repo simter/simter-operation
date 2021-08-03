@@ -23,7 +23,7 @@ See [rest-api.md](../docs/rest-api.md).
 Use `-P {profile-name}` to override the defaults. Such as:
 
 ```bash
-mvn spring-boot:run -P r2dbc-embedded-postgres
+mvn spring-boot:run -P r2dbc-postgres
 ```
 
 ## Maven Properties
