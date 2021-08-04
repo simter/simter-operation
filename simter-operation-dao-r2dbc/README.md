@@ -40,7 +40,7 @@ mvn test -D db.name=testdb
 | mysql    |         |     √     |
 | mssql    |         |     √     |
 
-The default profile is `embedded-h2`.
+The default profile is `h2`.
 Use `-P {profile-name}` to override default. Such as:
 
 ```bash
