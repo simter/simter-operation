@@ -7,6 +7,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.http.MediaType.TEXT_PLAIN
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
@@ -31,6 +32,8 @@ import java.time.temporal.ChronoUnit.SECONDS
 @MockkBean(OperationService::class)
 @WebFluxTest
 class GetByIdHandlerTest @Autowired constructor(
+  @Value("\${simter-operation.rest-context-path}")
+  private val contextPath: String,
   private val json: Json,
   private val client: WebTestClient,
   private val service: OperationService
@@ -48,7 +51,7 @@ class GetByIdHandlerTest @Autowired constructor(
     val responseBody = json.encodeToString(operation)
 
     // invoke
-    val response = client.get().uri("/$id").exchange()
+    val response = client.get().uri("$contextPath/$id").exchange()
 
     // verify
     response.expectStatus().isOk
@@ -64,7 +67,7 @@ class GetByIdHandlerTest @Autowired constructor(
     every { service.get(id) } returns Mono.empty()
 
     // invoke and verify
-    client.get().uri("/$id")
+    client.get().uri("$contextPath/$id")
       .exchange()
       .expectStatus().isNotFound
       .expectBody().isEmpty
@@ -78,7 +81,7 @@ class GetByIdHandlerTest @Autowired constructor(
     every { service.get(id) } returns Mono.error(PermissionDeniedException(msg))
 
     // invoke and verify
-    client.get().uri("/$id")
+    client.get().uri("$contextPath/$id")
       .exchange()
       .expectStatus().isForbidden
       .expectHeader().contentTypeCompatibleWith(TEXT_PLAIN)

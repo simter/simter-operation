@@ -7,6 +7,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
@@ -28,6 +29,8 @@ import java.time.temporal.ChronoUnit.MINUTES
 @MockkBean(OperationService::class)
 @WebFluxTest
 class CreateHandlerTest @Autowired constructor(
+  @Value("\${simter-operation.rest-context-path}")
+  private val contextPath: String,
   private val json: Json,
   private val client: WebTestClient,
   private val service: OperationService
@@ -40,7 +43,7 @@ class CreateHandlerTest @Autowired constructor(
 
     // invoke
     val requestBody = json.encodeToString(operation)
-    val response = client.post().uri("/")
+    val response = client.post().uri("$contextPath/")
       .contentType(APPLICATION_JSON)
       .bodyValue(requestBody)
       .exchange()
@@ -62,7 +65,7 @@ class CreateHandlerTest @Autowired constructor(
     // invoke
     val requestBody = json.encodeToString(operation)
     //println("requestBody=$requestBody")
-    val response = client.post().uri("/")
+    val response = client.post().uri("$contextPath/")
       .contentType(APPLICATION_JSON)
       .bodyValue(requestBody)
       .exchange()

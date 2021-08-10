@@ -8,7 +8,7 @@ logging:
     #tech.simter: INFO
     #tech.simter.operation: ERROR
     #org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener: DEBUG
-simter-operation.rest-context-path: /
+simter-operation.rest-context-path: /operation
 simter:
   jackson.disabled: true
   kotlinx-serialization:

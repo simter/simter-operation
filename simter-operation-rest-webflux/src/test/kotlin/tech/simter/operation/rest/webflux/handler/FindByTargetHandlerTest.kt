@@ -7,6 +7,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
@@ -29,6 +30,8 @@ import java.time.temporal.ChronoUnit.SECONDS
 @MockkBean(OperationService::class)
 @WebFluxTest
 class FindByTargetHandlerTest @Autowired constructor(
+  @Value("\${simter-operation.rest-context-path}")
+  private val contextPath: String,
   private val json: Json,
   private val client: WebTestClient,
   private val service: OperationService
@@ -48,7 +51,7 @@ class FindByTargetHandlerTest @Autowired constructor(
     val responseBody = json.encodeToString(listOf(operation1, operation2))
 
     // invoke
-    val response = client.get().uri("/target/$targetType/$targetId").exchange()
+    val response = client.get().uri("$contextPath/target/$targetType/$targetId").exchange()
 
     // verify
     response.expectStatus().isOk
@@ -65,7 +68,7 @@ class FindByTargetHandlerTest @Autowired constructor(
     every { service.findByTarget(targetType, targetId) } returns Flux.empty()
 
     // invoke and verify
-    client.get().uri("/target/$targetType/$targetId")
+    client.get().uri("$contextPath/target/$targetType/$targetId")
       .exchange()
       .expectStatus().isNoContent
       .expectBody().isEmpty
@@ -79,7 +82,7 @@ class FindByTargetHandlerTest @Autowired constructor(
     every { service.findByTarget(targetType, targetId) } returns Flux.error(PermissionDeniedException())
 
     // invoke and verify
-    client.get().uri("/target/$targetType/$targetId")
+    client.get().uri("$contextPath/target/$targetType/$targetId")
       .exchange().expectStatus().isForbidden
     verify { service.findByTarget(targetType, targetId) }
   }
