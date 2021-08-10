@@ -54,6 +54,6 @@ class FindHandler @Autowired constructor(
   }
 
   companion object {
-    val REQUEST_PREDICATE: RequestPredicate = GET("/")
+    val REQUEST_PREDICATE: RequestPredicate = GET("").or(GET("/"))
   }
 }

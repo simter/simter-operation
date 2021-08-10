@@ -5,8 +5,12 @@ import io.mockk.every
 import io.mockk.verify
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
@@ -18,6 +22,7 @@ import tech.simter.operation.core.OperationService
 import tech.simter.operation.core.OperationView
 import tech.simter.operation.test.TestHelper.randomOperationView
 import tech.simter.util.RandomUtils.randomString
+import java.util.stream.Stream
 
 /**
  * Test [FindHandler]
@@ -28,13 +33,21 @@ import tech.simter.util.RandomUtils.randomString
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @MockkBean(OperationService::class)
 @WebFluxTest
+@TestInstance(PER_CLASS)
 class FindHandlerTest @Autowired constructor(
+  @Value("\${simter-operation.rest-context-path}")
+  private val contextPath: String,
   private val json: Json,
   private val client: WebTestClient,
   private val service: OperationService
 ) {
-  @Test
-  fun `find something`() {
+  private fun urlProvider(): Stream<String> {
+    return Stream.of(contextPath, "$contextPath/")
+  }
+
+  @ParameterizedTest
+  @MethodSource("urlProvider")
+  fun `find something`(url: String) {
     // mock
     val pageNo = 1
     val pageSize = 25
@@ -55,7 +68,7 @@ class FindHandlerTest @Autowired constructor(
 
     every { service.find(pageNo, pageSize, batches, targetTypes, targetIds, search) } returns Mono.just(page)
 
-    val response = client.get().uri("/?batch=$batch1&batch=$batch2&target-type=$targetType1" +
+    val response = client.get().uri("$url?batch=$batch1&batch=$batch2&target-type=$targetType1" +
       "&target-type=$targetType2&target-id=$targetId1&target-id=$targetId2" +
       "&page-no=$pageNo&page-size=$pageSize&search=$search").exchange()
 
@@ -72,8 +85,9 @@ class FindHandlerTest @Autowired constructor(
     verify { service.find(pageNo, pageSize, batches, targetTypes, targetIds, search) }
   }
 
-  @Test
-  fun `find nothing`() {
+  @ParameterizedTest
+  @MethodSource("urlProvider")
+  fun `find nothing`(url: String) {
     // mock
     val pageNo = 1
     val pageSize = 25
@@ -82,7 +96,7 @@ class FindHandlerTest @Autowired constructor(
 
     every { service.find(pageNo, pageSize, null, null, null, null) } returns Mono.just(page)
 
-    val response = client.get().uri("/?page-no=$pageNo&page-size=$pageSize").exchange()
+    val response = client.get().uri("$url?page-no=$pageNo&page-size=$pageSize").exchange()
 
     // invoke
     response
@@ -97,13 +111,14 @@ class FindHandlerTest @Autowired constructor(
     verify { service.find(pageNo, pageSize, null, null, null, null) }
   }
 
-  @Test
-  fun `failed by PermissionDenied`() {
+  @ParameterizedTest
+  @MethodSource("urlProvider")
+  fun `failed by PermissionDenied`(url: String) {
     // mock
     every { service.find() } returns Mono.error(PermissionDeniedException())
 
     // invoke and verify
-    client.get().uri("/").exchange().expectStatus().isForbidden
+    client.get().uri(url).exchange().expectStatus().isForbidden
     verify { service.find() }
   }
 }
