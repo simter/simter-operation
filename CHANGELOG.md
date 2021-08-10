@@ -1,5 +1,25 @@
 # simter-operation changelog
 
+## 2.0.0-M3 - 2021-08-10
+
+- Upgrade to simter-3.0.0-M3 (spring-boot-2.5.3)
+- Add convenient dao method: `create(type, targretId, ....)`
+    > auto get context user as operator
+- Simplify unit test class name
+  > Such as rename `Delete...Test` to `DeleteTest`
+- Response BadRequest status if raise SerializationException
+- Use kotlinx-serialization to deal the integration test json code
+- Separate `server-url` to `server.url` and `server.context-path`
+- Use kotlinx-serialization to convert obj to json on dao-web/OperationDaoImpl.create
+    > Instead of javax.json.Json
+- Refactor rest-unit-test code to use configurable context-path
+- Refactor rest-integration-test code to use configurable context-path
+- Polishing rest-api.md to make context-path more clear
+- Fixed `GET /operation` api implementation
+    > Compatible with `GET /operation/`
+- Fixed `POST /operation` api implementation
+    > Compatible with `POST /operation/`
+
 ## 2.0.0-M2 - 2021-04-28
 
 - Upgrade to simter-3.0.0-M2 (spring-boot-2.4.5)
