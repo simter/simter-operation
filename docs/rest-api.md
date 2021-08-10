@@ -1,26 +1,25 @@
 # Rest API for simter-operation
 
-The rest context path could be configured by property `simter-operation.rest-context-path`.
-Its default value is `/operation`. The below URL is all relative to this context path.
-For example an url `/target/User/admin`, its really path should be `{context-path}/target/User/admin`.
+The rest context-path could be configured by property `simter-operation.rest-context-path`.
+Its default value is `/operation`. The below URL use the default context-path value.
 
 Provide rest APIs:
 
-| SN | Method | Url                           | Supported | Description
-|----|--------|-------------------------------|:---------:|-------------
-| 1  | POST   | /                             |     √     | Create one operation
-| 2  | GET    | /target/$targetType/$targetId |     √     | Find all operations of specific target
-| 3  | GET    | /batch/$batch                 |     √     | Find all operations of specific batch
-| 4  | GET    | /$id                          |     √     | Get one operation
-| 5  | GET    | /                             |     √     | Find pageable operations
-| 6  | GET    | /target-type                  |     √     | Find all target types
+| SN | Method | Url                                     | Supported | Description
+|----|--------|-----------------------------------------|:---------:|-------------
+| 1  | POST   | /operation                              |     √     | Create one operation
+| 2  | GET    | /operation/target/$targetType/$targetId |     √     | Find all operations of specific target
+| 3  | GET    | /operation/batch/$batch                 |     √     | Find all operations of specific batch
+| 4  | GET    | /operation/$id                          |     √     | Get one operation
+| 5  | GET    | /operation                              |     √     | Find pageable operations
+| 6  | GET    | /operation/target-type                  |     √     | Find all target types
 
 ## 1. Create one operation
 
 ### Request
 
 ```
-POST /
+POST /operation
 Content-Type : application/json
 
 $operation
@@ -59,7 +58,7 @@ Find all operations of specific target type and id. Order by `Operation.ts` desc
 ### Request
 
 ```
-GET /target/$targetType/$targetId
+GET /operation/target/$targetType/$targetId
 ```
 
 ### Response
@@ -92,7 +91,7 @@ Find all operations of specific batch. Order by `Operation.ts` descendant.
 ### Request
 
 ```
-GET /batch/$batch
+GET /operation/batch/$batch
 ```
 
 ### Response
@@ -120,7 +119,7 @@ Get one operation of specific id.
 ### Request
 
 ```
-GET /$id
+GET /operation/$id
 ```
 
 ### Response
@@ -146,7 +145,7 @@ If not exists, response:
 **Request**
 
 ```
-GET /?batch=x&target-type=x&target-id=x&search=x&page-no=x&page-size=x
+GET /operation?batch=x&target-type=x&target-id=x&search=x&page-no=x&page-size=x
 ```
 
 | Name        | Require | Description
@@ -198,7 +197,7 @@ Permission denied!
 **Request**
 
 ```
-GET /target-type
+GET /operation/target-type
 ```
 
 **Response**
