@@ -4,30 +4,34 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.reactive.server.WebTestClient
 import tech.simter.operation.test.TestHelper.randomOperation
 import tech.simter.operation.test.TestHelper.randomOperationBatch
+import tech.simter.operation.test.rest.UnitTestConfiguration
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
 /**
- * Test `GET /batch/{batch}` to find all operations of specific batch.
+ * Test `GET /operation/batch/{batch}` to find all operations of specific batch.
  *
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @WebFluxTest
 class FindByBatchTest @Autowired constructor(
+  @Value("\${server.context-path}")
+  private val contextPath: String,
   private val json: Json,
   private val client: WebTestClient,
   private val helper: TestHelper
 ) {
   @Test
   fun `not found`() {
-    client.get().uri("/batch/${randomOperationBatch()}")
+    client.get().uri("$contextPath/batch/${randomOperationBatch()}")
       .exchange()
       .expectStatus().isNoContent
       .expectBody().isEmpty
@@ -47,7 +51,7 @@ class FindByBatchTest @Autowired constructor(
     helper.createOne(operation = operation3)
 
     // get it
-    client.get().uri("/batch/$batch1")
+    client.get().uri("$contextPath/batch/$batch1")
       .exchange()
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)

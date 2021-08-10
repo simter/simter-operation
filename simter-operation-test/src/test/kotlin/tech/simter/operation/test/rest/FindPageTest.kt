@@ -2,8 +2,12 @@ package tech.simter.operation.test.rest
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
@@ -15,24 +19,34 @@ import tech.simter.operation.test.TestHelper.randomOperationBatch
 import tech.simter.operation.test.TestHelper.randomOperationTargetId
 import tech.simter.operation.test.TestHelper.randomOperationTargetType
 import tech.simter.operation.test.TestHelper.randomOperationTitle
+import tech.simter.operation.test.rest.UnitTestConfiguration
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
+import java.util.stream.Stream
 
 /**
- * Test `GET /` to find pageable operations.
+ * Test `GET /operation` to find pageable operations.
  *
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @WebFluxTest
+@TestInstance(PER_CLASS)
 class FindPageTest @Autowired constructor(
+  @Value("\${server.context-path}")
+  private val contextPath: String,
   private val json: Json,
   private val client: WebTestClient,
   private val helper: TestHelper
 ) {
-  @Test
-  fun `not found`() {
-    client.get().uri("/?batch=${randomOperationBatch()}")
+  private fun urlProvider(): Stream<String> {
+    return Stream.of(contextPath, "$contextPath/")
+  }
+
+  @ParameterizedTest
+  @MethodSource("urlProvider")
+  fun `not found`(url: String) {
+    client.get().uri("$url?batch=${randomOperationBatch()}")
       .exchange()
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
@@ -40,8 +54,9 @@ class FindPageTest @Autowired constructor(
       .json("""{"count":0,"pageNo":1,"pageSize":25,"rows":[]}""")
   }
 
-  @Test
-  fun `find page by target`() {
+  @ParameterizedTest
+  @MethodSource("urlProvider")
+  fun `find page by target`(url: String) {
     // prepare data
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
     val targetType1 = randomOperationTargetType()
@@ -57,7 +72,7 @@ class FindPageTest @Autowired constructor(
 
     // 1. find all targets
     var rows = listOf(OperationView.from(operation1), OperationView.from(operation2), OperationView.from(operation3))
-    client.get().uri("/?target-type=$targetType1&target-type=$targetType2")
+    client.get().uri("$url?target-type=$targetType1&target-type=$targetType2")
       .exchange()
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
@@ -74,7 +89,7 @@ class FindPageTest @Autowired constructor(
 
     // 2. find only targetType1
     rows = listOf(OperationView.from(operation1), OperationView.from(operation2))
-    client.get().uri("/?target-type=$targetType1")
+    client.get().uri("$url?target-type=$targetType1")
       .exchange()
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
@@ -91,7 +106,7 @@ class FindPageTest @Autowired constructor(
 
     // 3. find only targetId1
     rows = listOf(OperationView.from(operation1), OperationView.from(operation3))
-    client.get().uri("/?target-id=$targetId1")
+    client.get().uri("$url?target-id=$targetId1")
       .exchange()
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
@@ -107,8 +122,9 @@ class FindPageTest @Autowired constructor(
       )))
   }
 
-  @Test
-  fun `find page by batch`() {
+  @ParameterizedTest
+  @MethodSource("urlProvider")
+  fun `find page by batch`(url: String) {
     // prepare data
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
     val batch1 = randomOperationBatch()
@@ -122,7 +138,7 @@ class FindPageTest @Autowired constructor(
 
     // 1. find all batches
     var rows = listOf(OperationView.from(operation1), OperationView.from(operation2), OperationView.from(operation3))
-    client.get().uri("/?batch=$batch1&batch=$batch2")
+    client.get().uri("$url?batch=$batch1&batch=$batch2")
       .exchange()
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
@@ -139,7 +155,7 @@ class FindPageTest @Autowired constructor(
 
     // 2. find only batch1
     rows = listOf(OperationView.from(operation1), OperationView.from(operation2))
-    client.get().uri("/?batch=$batch1")
+    client.get().uri("$url?batch=$batch1")
       .exchange()
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
@@ -155,8 +171,9 @@ class FindPageTest @Autowired constructor(
       )))
   }
 
-  @Test
-  fun `find page by search title`() {
+  @ParameterizedTest
+  @MethodSource("urlProvider")
+  fun `find page by search title`(url: String) {
     // prepare data
     val now = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS)
     val title1 = randomOperationTitle(prefix = "title1")
@@ -168,7 +185,7 @@ class FindPageTest @Autowired constructor(
 
     // search title1
     val rows = listOf(OperationView.from(operation1))
-    client.get().uri("/?search=$title1")
+    client.get().uri("$url?search=$title1")
       .exchange()
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)

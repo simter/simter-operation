@@ -4,6 +4,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
@@ -11,24 +12,27 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import tech.simter.operation.test.TestHelper.randomOperation
 import tech.simter.operation.test.TestHelper.randomOperationTargetId
 import tech.simter.operation.test.TestHelper.randomOperationTargetType
+import tech.simter.operation.test.rest.UnitTestConfiguration
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
 /**
- * Test `GET /target/$targetType/$targetId` to find all operations of specific targetType and targetId.
+ * Test `GET /operation/target/$targetType/$targetId` to find all operations of specific targetType and targetId.
  *
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
 @WebFluxTest
 class FindByTargetTest @Autowired constructor(
+  @Value("\${server.context-path}")
+  private val contextPath: String,
   private val json: Json,
   private val client: WebTestClient,
   private val helper: TestHelper
 ) {
   @Test
   fun `not found`() {
-    client.get().uri("/target/${randomOperationTargetType()}/${randomOperationTargetId()}")
+    client.get().uri("$contextPath/target/${randomOperationTargetType()}/${randomOperationTargetId()}")
       .exchange()
       .expectStatus().isNoContent
       .expectBody().isEmpty
@@ -49,7 +53,7 @@ class FindByTargetTest @Autowired constructor(
     helper.createOne(operation = operation3)
 
     // get it
-    client.get().uri("/target/$targetType1/$targetId")
+    client.get().uri("$contextPath/target/$targetType1/$targetId")
       .exchange()
       .expectStatus().isOk
       .expectHeader().contentType(APPLICATION_JSON)
