@@ -31,6 +31,8 @@ class CreateHandler @Autowired constructor(
   }
 
   companion object {
-    val REQUEST_PREDICATE: RequestPredicate = POST("/").and(contentType(APPLICATION_JSON))
+    private val MAIN_REQUEST_PREDICATE: RequestPredicate = POST("").and(contentType(APPLICATION_JSON))
+    private val COMPATIBLE_REQUEST_PREDICATE: RequestPredicate = POST("/").and(contentType(APPLICATION_JSON))
+    val REQUEST_PREDICATE: RequestPredicate = MAIN_REQUEST_PREDICATE.or(COMPATIBLE_REQUEST_PREDICATE)
   }
 }
