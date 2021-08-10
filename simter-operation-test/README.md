@@ -30,14 +30,15 @@ This will run all the integration test on each rest-api define in <[rest-api.md]
 
 Want to run the integration test on the real server, just add specific param:
 
-| ParamName  | Remark         | Default value
-|------------|----------------|---------------
-| server.url | server address | http://127.0.0.1:9014/operation
+| ParamName           | Remark                 | Default value
+|---------------------|------------------------|---------------
+| server.url          | server address         | http://127.0.0.1:9014
+| server.context-path | operation context-path | /operation
 
 Such as:
 
 ```shell
-$ mvn clean test -P integration-test -D server.url=http://127.0.0.1:9014/operation
+$ mvn clean test -P integration-test -D server.url=http://127.0.0.1:9014
 ```
 
 

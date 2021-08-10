@@ -48,7 +48,8 @@
     </dependency>
   </dependencies>
   <properties>
-    <server.url>http://localhost:9014/operation</server.url>
+    <server.url>http://localhost:9014</server.url>
+    <server.context-path>/operation</server.context-path>
   </properties>
   <build>
     <plugins>
