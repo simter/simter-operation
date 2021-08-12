@@ -1,6 +1,5 @@
 package tech.simter.operation.rest.webflux.handler
 
-import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
 import kotlinx.serialization.encodeToString
@@ -27,7 +26,6 @@ import java.time.temporal.ChronoUnit.SECONDS
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
-@MockkBean(OperationService::class)
 @WebFluxTest
 class FindByTargetHandlerTest @Autowired constructor(
   @Value("\${simter-operation.rest-context-path}")

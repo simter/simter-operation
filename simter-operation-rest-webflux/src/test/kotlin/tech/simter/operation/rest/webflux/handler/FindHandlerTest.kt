@@ -1,6 +1,5 @@
 package tech.simter.operation.rest.webflux.handler
 
-import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
 import kotlinx.serialization.encodeToString
@@ -31,7 +30,6 @@ import java.util.stream.Stream
  * @author RJ
  */
 @SpringJUnitConfig(UnitTestConfiguration::class)
-@MockkBean(OperationService::class)
 @WebFluxTest
 @TestInstance(PER_CLASS)
 class FindHandlerTest @Autowired constructor(
