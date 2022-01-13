@@ -19,7 +19,6 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlinx</groupId>

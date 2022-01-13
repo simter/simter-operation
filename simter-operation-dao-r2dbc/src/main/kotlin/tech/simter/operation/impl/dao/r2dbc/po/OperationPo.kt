@@ -1,8 +1,6 @@
 package tech.simter.operation.impl.dao.r2dbc.po
 
-import org.springframework.data.annotation.AccessType
 import org.springframework.data.annotation.Id
-import org.springframework.data.annotation.Transient
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Table
 import tech.simter.operation.TABLE_OPERATION
@@ -11,8 +9,8 @@ import java.time.OffsetDateTime
 
 @Table(TABLE_OPERATION)
 data class OperationPo(
-  @Id @JvmField
-  override val id: String,
+  @Id
+  private val id: String,
   override val ts: OffsetDateTime = OffsetDateTime.now(),
   override val type: String,
   override val operatorId: String,
@@ -25,13 +23,8 @@ data class OperationPo(
   override val batch: String? = null,
   val itemsCount: Short = 0.toShort()
 ) : Operation, Persistable<String> {
-  override fun getId(): String {
-    return this.id
-  }
-
-  override fun isNew(): Boolean {
-    return true
-  }
+  override fun getId() = id
+  override fun isNew() = true
 
   companion object {
     fun from(operation: Operation, itemsCount: Short): OperationPo {

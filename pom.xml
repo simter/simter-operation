@@ -5,7 +5,7 @@
   <parent>
     <groupId>tech.simter</groupId>
     <artifactId>simter-dependencies</artifactId>
-    <version>3.0.0-M3</version>
+    <version>3.0.0-M6</version>
     <relativePath/>
   </parent>
   <groupId>tech.simter.operation</groupId>
@@ -14,7 +14,7 @@
   <packaging>pom</packaging>
   <description>Builder</description>
   <properties>
-    <revision>2.0.0-M3</revision>
+    <revision>2.0.0-M4</revision>
     <simter-operation.version>${revision}</simter-operation.version>
   </properties>
   <modules>

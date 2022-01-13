@@ -18,7 +18,7 @@ import javax.persistence.FetchType.EAGER
 data class OperationPo(
   @Id
   @Column(nullable = false, length = 36)
-  override val id: String = UUID.randomUUID().toString(),
+  private val id: String = UUID.randomUUID().toString(),
   override val ts: OffsetDateTime = OffsetDateTime.now(),
   override val type: String,
   override val operatorId: String,
@@ -30,6 +30,9 @@ data class OperationPo(
   override val result: String? = null,
   override val batch: String? = null
 ) : Operation {
+  override fun getId() = id
+  override fun isNew() = true
+
   /** Items total count */
   private var itemsCount: Short = 0.toShort()
 

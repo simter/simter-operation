@@ -13,7 +13,7 @@ import java.util.*
 @Document(collection = TABLE_OPERATION)
 data class OperationPo(
   @Id
-  override val id: String = UUID.randomUUID().toString(),
+  private val id: String = UUID.randomUUID().toString(),
   override val ts: OffsetDateTime = OffsetDateTime.now(),
   override val type: String,
   override val operatorId: String,
@@ -26,6 +26,9 @@ data class OperationPo(
   override val batch: String? = null,
   override val items: Set<Operation.Item.Impl> = emptySet()
 ) : Operation {
+  override fun getId() = id
+  override fun isNew() = true
+
   companion object {
     fun from(operation: Operation): OperationPo {
       return OperationPo(
