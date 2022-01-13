@@ -1,5 +1,12 @@
 # simter-operation changelog
 
+## 2.0.0-M4 - 2022-01-13
+
+- Upgrade to simter-3.0.0-M6 (spring-boot-2.6.2)
+- Set starter to no r2dbc-pool config by default
+- Fixed kotlin-1.6+ compile error on `@JvmField`
+    > JvmField cannot be applied to a property that overrides some other property
+
 ## 2.0.0-M3 - 2021-08-10
 
 - Upgrade to simter-3.0.0-M3 (spring-boot-2.5.3)
