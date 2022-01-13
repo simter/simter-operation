@@ -3,6 +3,7 @@ package tech.simter.operation.core
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.springframework.data.domain.Persistable
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -14,8 +15,8 @@ import java.util.*
  *
  * @author RJ
  */
-interface Operation {
-  val id: String
+interface Operation: Persistable<String> {
+  override fun getId(): String
 
   /** The operated date-time */
   val ts: OffsetDateTime
@@ -58,8 +59,8 @@ interface Operation {
   /**
    * The operation item.
    */
-  interface Item {
-    val id: String
+  interface Item: Persistable<String> {
+    override fun getId(): String
 
     /** item title, label or name */
     val title: String?
@@ -80,12 +81,15 @@ interface Operation {
     @Serializable
     @SerialName("Operation.Item")
     data class Impl(
-      override val id: String,
+      private val id: String,
       override val title: String? = null,
       override val valueType: String,
       override val oldValue: String? = null,
       override val newValue: String? = null
     ) : Item {
+      override fun getId() = id
+      override fun isNew() = true
+
       companion object {
         fun from(item: Item): Impl {
           return if (item is Impl) item
@@ -143,7 +147,7 @@ interface Operation {
   @Serializable
   @SerialName("Operation")
   data class Impl(
-    override val id: String = UUID.randomUUID().toString(),
+    private val id: String = UUID.randomUUID().toString(),
     @Contextual
     override val ts: OffsetDateTime = OffsetDateTime.now(),
     override val type: String,
@@ -156,7 +160,10 @@ interface Operation {
     override val result: String? = null,
     override val batch: String? = null,
     override val items: Set<Item.Impl> = emptySet()
-  ) : Operation
+  ) : Operation {
+    override fun getId() = id
+    override fun isNew() = true
+  }
 
   companion object {
     /** Create an immutable [Operation] instance */

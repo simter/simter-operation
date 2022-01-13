@@ -15,12 +15,15 @@ import javax.persistence.*
 @IdClass(OperationItemPo.GlobalId::class)
 data class OperationItemPo(
   @Id
-  override val id: String,
+  private val id: String,
   override val title: String? = id,
   override val valueType: String,
   override val oldValue: String? = null,
   override val newValue: String? = null
 ) : Operation.Item {
+  override fun getId() = id
+  override fun isNew() = true
+
   @Id
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   @JoinColumn(name = "pid", nullable = false)
@@ -28,8 +31,8 @@ data class OperationItemPo(
 
   @Embeddable
   data class GlobalId(
-    val parent: String,
-    val id: String
+    var parent: String,
+    var id: String
   ) : java.io.Serializable
 
   companion object {

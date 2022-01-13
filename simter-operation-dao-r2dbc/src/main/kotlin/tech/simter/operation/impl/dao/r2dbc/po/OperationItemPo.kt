@@ -9,13 +9,13 @@ import tech.simter.operation.core.Operation
 @Table(TABLE_OPERATION_ITEM)
 data class OperationItemPo(
   val pid: String,
-  @Id @JvmField
-  override val id: String,
+  @Id
+  private val id: String,
   override val title: String? = id,
   override val valueType: String,
   override val oldValue: String? = null,
   override val newValue: String? = null
-) : Operation.Item, Persistable<String> {
+) : Operation.Item {
   override fun getId(): String {
     return this.id
   }
