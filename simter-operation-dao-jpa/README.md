@@ -30,7 +30,7 @@ mvn test -P jpa-hibernate,embedded-h2 \
 && mvn test -P jpa-eclipselink,embedded-mysql
 ```
 
-If want to run test on different host database, manual run bellow command:
+Want to run test on different host database, manual run bellow command:
 
 ```
 mvn test -P jpa-hibernate,postgres \
@@ -58,17 +58,17 @@ mvn test -D db.name=testdb
 
 ## Maven Profiles
 
-| SN | Name              | Type               | Default | Supported |
-|----|-------------------|--------------------|---------|:---------:|
-|  1 | jpa-hibernate     | JPA Implementation | true    |     √     |
-|  2 | jpa-eclipselink   | JPA Implementation |         |     √     |
-|  3 | embedded-h2       | Embedded Database  | true    |     √     |
-|  4 | embedded-hsql     | Embedded Database  |         |     √     |
-|  5 | embedded-derby    | Embedded Database  |         |     √     |
-|  6 | embedded-postgres | Embedded Database  |         |     √     |
-|  7 | embedded-mysql    | Embedded Database  |         |     √     |
-|  8 | postgres          | Host Database      |         |     √     |
-|  9 | mysql             | Host Database      |         |     √     |
+| SN  | Name              | Type               | Default | Supported |
+|-----|-------------------|--------------------|---------|:---------:|
+| 1   | jpa-hibernate     | JPA Implementation | true    |     √     |
+| 2   | jpa-eclipselink   | JPA Implementation |         |     √     |
+| 3   | embedded-h2       | Embedded Database  | true    |     √     |
+| 4   | embedded-hsql     | Embedded Database  |         |     √     |
+| 5   | embedded-derby    | Embedded Database  |         |     √     |
+| 6   | embedded-postgres | Embedded Database  |         |     √     |
+| 7   | embedded-mysql    | Embedded Database  |         |     √     |
+| 8   | postgres          | Host Database      |         |     √     |
+| 9   | mysql             | Host Database      |         |     √     |
 
 The default profile is `jpa-hibernate` and `embedded-h2`.
 Use `-P {profile-name}` to override default. Such as:
@@ -81,12 +81,12 @@ mvn test -P {profile-name}
 
 ## YML Files
 
-| SN | Name                            | Remark               |
-|----|---------------------------------|----------------------|
-|  1 | application.yml                 |                      |
-|  2 | application-database.yml        | Database Config      |
-|  3 | application-jpa-hibernate.yml   | [Hibernate] Config   |
-|  4 | application-jpa-eclipselink.yml | [EclipseLink] Config |
+| SN  | Name                            | Remark               |
+|-----|---------------------------------|----------------------|
+| 1   | application.yml                 |                      |
+| 2   | application-database.yml        | Database Config      |
+| 3   | application-jpa-hibernate.yml   | [Hibernate] Config   |
+| 4   | application-jpa-eclipselink.yml | [EclipseLink] Config |
 
 
 [simter-embedded-database-ext]: https://github.com/simter/simter-embedded-database-ext

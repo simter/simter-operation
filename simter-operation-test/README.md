@@ -30,10 +30,10 @@ This will run all the integration test on each rest-api define in <[rest-api.md]
 
 Want to run the integration test on the real server, just add specific param:
 
-| ParamName           | Remark                 | Default value
-|---------------------|------------------------|---------------
-| server.url          | server address         | http://127.0.0.1:9014
-| server.context-path | operation context-path | /operation
+| ParamName           | Remark                 | Default value         |
+|---------------------|------------------------|-----------------------|
+| server.url          | server address         | http://127.0.0.1:9014 |
+| server.context-path | operation context-path | /operation            |
 
 Such as:
 
