@@ -41,10 +41,14 @@ spring:
     url: @db.url@
     username: @db.username@
     password: @db.password@
-    #pool:
-      #enabled: true  # depends on r2dbc-pool
-      #initial-size: 1 # default 10
-      #max-size: 5     # default 10
+  #pool:
+    #enabled: true  # default true and depends on r2dbc-pool
+    #initial-size: 1 # default 10
+    #max-size: 5     # default 10
+    #max-idle-time: 30m # default 30m
+    #max-create-connection-time: ~ # default wait indefinitely
+    #max-acquire-time: ~ # default wait indefinitely
+    #max-life-time: ~ # default infinite
   datasource:
     url: @db.url@
     username: @db.username@
