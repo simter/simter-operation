@@ -1,5 +1,10 @@
 spring:
   main.banner-mode: 'off'
+  # Since spring-boot-2.7, Embedded Mongo 3.4 has dropped support for configuring Mongo features.
+  # see https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.7-Release-Notes#springmongodbembeddedfeatures-configuration-property-removed
+  # see https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo.spring/blob/spring-2.7.x/HowTo.md#usage
+  autoconfigure.exclude: org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
+de.flapdoodle:
   mongodb:
     embedded:
       version: @simter.embedded-database.mongo.version@

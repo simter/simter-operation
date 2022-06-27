@@ -17,10 +17,10 @@ spring:
     url: @db.url@
     username: @db.username@
     password: @db.password@
-    pool:
+    #pool:
       #enabled: true  # depends on r2dbc-pool
-      initial-size: 1 # default 10
-      max-size: 5     # default 10
+      #initial-size: 1 # default 10
+      #max-size: 5     # default 10
 logging:
   file.name: target/test.log
   # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
