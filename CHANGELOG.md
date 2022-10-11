@@ -1,5 +1,9 @@
 # simter-operation changelog
 
+## 2.1.0 - 2022-10-11
+
+- Upgrade to simter-3.3.0 (spring-boot-2.7.4)
+
 ## 2.0.0 - 2022-06-27
 
 - Upgrade to simter-3.0.0 (spring-boot-2.7.0 and Java-17)
